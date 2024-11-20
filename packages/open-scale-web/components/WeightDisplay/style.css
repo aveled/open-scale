@@ -1,0 +1,12 @@
+.weight-display {
+    font-size: 3rem;
+    font-weight: bold;
+    color: #dcbdbd;
+    text-align: center;
+    margin: 20px;
+}
+
+.weight-display span {
+    font-size: 1.5rem;
+    color: #e99292;
+}
