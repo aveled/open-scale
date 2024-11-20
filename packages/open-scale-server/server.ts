@@ -70,6 +70,15 @@ class ScaleManager {
         this.errors = [];
     }
 
+    public stop() {
+        this.activeScale = false;
+    }
+
+    public tare() {
+        this.currentWeight = 0;
+        // this.client.writeRegisters(0, [1]);
+    }
+
 
     private weightLoop() {
         setInterval(async () => {
@@ -196,13 +205,31 @@ const handlerStart = async (_req: Request) => {
     });
 }
 
-// curl -X POST -H "Content-Type: application/json" -d '{"targetWeight": 15000}' http://localhost:8485/new-weight
-const handlerNewWeight = async (req: Request) => {
+// curl -X POST http://localhost:8485/stop
+const handlerStop = async (_req: Request) => {
+    scaleManager.stop();
+
+    return handlerResponse({
+        status: true,
+    });
+}
+
+// curl -X POST -H "Content-Type: application/json" -d '{"targetWeight": 15000}' http://localhost:8485/target-weight
+const handlerTargetWeight = async (req: Request) => {
     const {
         targetWeight,
     } = await req.json();
 
     scaleManager.setTargetWeight(targetWeight);
+
+    return handlerResponse({
+        status: true,
+    });
+}
+
+// curl -X POST http://localhost:8485/tare
+const handlerTare = async (_req: Request) => {
+    scaleManager.tare();
 
     return handlerResponse({
         status: true,
@@ -244,7 +271,9 @@ const handlerOptions = async (_req: Request) => {
 const PATHS = {
     STATUS: '/status',
     START: '/start',
-    NEW_WEIGHT: '/new-weight',
+    STOP: '/stop',
+    TARGET_WEIGHT: '/target-weight',
+    TARE: '/tare',
     CLEAR_ERRORS: '/clear-errors',
 } as const;
 
@@ -254,13 +283,17 @@ const handlers = {
     },
     POST: {
         [PATHS.START]: handlerStart,
-        [PATHS.NEW_WEIGHT]: handlerNewWeight,
+        [PATHS.STOP]: handlerStop,
+        [PATHS.TARGET_WEIGHT]: handlerTargetWeight,
+        [PATHS.TARE]: handlerTare,
         [PATHS.CLEAR_ERRORS]: handlerClearErrors,
     },
     OPTIONS: {
         [PATHS.STATUS]: handlerOptions,
         [PATHS.START]: handlerOptions,
-        [PATHS.NEW_WEIGHT]: handlerOptions,
+        [PATHS.STOP]: handlerOptions,
+        [PATHS.TARGET_WEIGHT]: handlerOptions,
+        [PATHS.TARE]: handlerOptions,
         [PATHS.CLEAR_ERRORS]: handlerOptions,
     },
 } as const;

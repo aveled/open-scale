@@ -8,6 +8,7 @@ import {
 import {
     ENDPOINT,
     PATHS,
+    defaultTargetWeights,
 } from '@/data/index';
 
 import WeightDisplay from '@/components/WeightDisplay';
@@ -21,6 +22,92 @@ export default function Home() {
     const [errors, setErros] = useState([]);
 
 
+    const start = async () => {
+        try {
+            setActiveScale(true);
+
+            const response = await fetch(ENDPOINT + PATHS.START, {
+                method: 'POST',
+            });
+            const {
+                status,
+            } = await response.json();
+
+            if (!status) {
+                setActiveScale(false);
+                return;
+            }
+        } catch (error: any) {
+            return;
+        }
+    }
+
+    const stop = async () => {
+        try {
+            setActiveScale(false);
+
+            const response = await fetch(ENDPOINT + PATHS.STOP, {
+                method: 'POST',
+            });
+            const {
+                status,
+            } = await response.json();
+
+            if (!status) {
+                setActiveScale(true);
+                return;
+            }
+        } catch (error: any) {
+            return;
+        }
+    }
+
+    const tare = async () => {
+        try {
+            const oldWeight = currentWeight;
+            setCurrentWeight(0);
+
+            const response = await fetch(ENDPOINT + PATHS.TARE, {
+                method: 'POST',
+            });
+            const {
+                status,
+            } = await response.json();
+
+            if (!status) {
+                setCurrentWeight(oldWeight);
+                return;
+            }
+        } catch (error: any) {
+            return;
+        }
+    }
+
+    const newTargetWeight = async (weight: number) => {
+        try {
+            const oldWeight = targetWeight;
+            setTargetWeight(weight);
+
+            const response = await fetch(ENDPOINT + PATHS.TARGET_WEIGHT, {
+                method: 'POST',
+                body: JSON.stringify({
+                    targetWeight: weight,
+                }),
+            });
+            const {
+                status,
+            } = await response.json();
+
+            if (!status) {
+                setTargetWeight(oldWeight);
+                return;
+            }
+        } catch (error: any) {
+            return;
+        }
+    }
+
+
     useEffect(() => {
         const load = async () => {
             try {
@@ -29,7 +116,6 @@ export default function Home() {
                     status,
                     data,
                 } = await response.json();
-                console.log(data);
 
                 if (!status) {
                     return;
@@ -72,6 +158,51 @@ export default function Home() {
                 <WeightDisplay
                     weight={targetWeight}
                 />
+            </div>
+
+            <div
+                className="grid gap-8"
+            >
+                <button
+                    onClick={() => {
+                        start();
+                    }}
+                >
+                    start
+                </button>
+
+                {activeScale && (
+                    <button
+                        onClick={() => {
+                            stop();
+                        }}
+                    >
+                        stop
+                    </button>
+                )}
+
+                <button
+                    onClick={() => {
+                        tare();
+                    }}
+                >
+                    tare
+                </button>
+            </div>
+
+            <div
+                className="flex gap-4 justify-center items-center text-xl"
+            >
+                {defaultTargetWeights.map((weight, index) => (
+                    <button
+                        key={index}
+                        onClick={() => {
+                            newTargetWeight(weight);
+                        }}
+                    >
+                        {(weight / 1000)}
+                    </button>
+                ))}
             </div>
         </div>
     );
