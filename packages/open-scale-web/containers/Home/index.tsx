@@ -156,6 +156,7 @@ export default function Home() {
                     pointerEvents: 'none',
                     userSelect: 'none',
                 }}
+                priority={true}
             />
 
             <WeightDisplay
@@ -171,6 +172,7 @@ export default function Home() {
                             pointerEvents: 'none',
                             userSelect: 'none',
                         }}
+                        priority={true}
                     />
                 </>)}
                 weight={currentWeight}
@@ -189,6 +191,7 @@ export default function Home() {
                             pointerEvents: 'none',
                             userSelect: 'none',
                         }}
+                        priority={true}
                     />
                 </>)}
                 weight={targetWeight}
