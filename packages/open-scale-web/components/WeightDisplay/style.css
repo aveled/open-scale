@@ -1,12 +1,16 @@
 .weight-display {
-    font-size: 3rem;
-    font-weight: bold;
-    color: #dcbdbd;
+    color: #eab5b5;
     text-align: center;
     margin: 20px;
+    user-select: none;
 }
 
-.weight-display span {
-    font-size: 1.5rem;
-    color: #e99292;
+.weight-char {
+    font-size: 3rem;
+    font-weight: bold;
+    display: inline-block;
+    width: 50px;
+    background: #5a5a5a;
+    padding: 10px;
+    border-left: 2px solid #444;
 }

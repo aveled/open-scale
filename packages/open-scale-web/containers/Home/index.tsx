@@ -5,6 +5,8 @@ import {
     useEffect,
 } from 'react';
 
+import Image from 'next/image';
+
 import {
     ENDPOINT,
     PATHS,
@@ -142,23 +144,55 @@ export default function Home() {
 
     return (
         <div
-            className="grid place-content-center h-full gap-8 text-center"
+            className="grid place-content-center h-full gap-12 text-center"
         >
-            <div>
-                current weight
+            <Image
+                src="/open-scale.png"
+                alt="open scale"
+                width={200}
+                height={200}
+                style={{
+                    margin: '0 auto',
+                    pointerEvents: 'none',
+                    userSelect: 'none',
+                }}
+            />
 
-                <WeightDisplay
-                    weight={currentWeight}
-                />
-            </div>
+            <WeightDisplay
+                // icon={(<>current</>)}
+                icon={(<>
+                    <Image
+                        src="/current-level.svg"
+                        alt="current-level"
+                        width={70}
+                        height={70}
+                        style={{
+                            margin: '0 auto',
+                            pointerEvents: 'none',
+                            userSelect: 'none',
+                        }}
+                    />
+                </>)}
+                weight={currentWeight}
+            />
 
-            <div>
-                target weight
-
-                <WeightDisplay
-                    weight={targetWeight}
-                />
-            </div>
+            <WeightDisplay
+                // icon={(<>target</>)}
+                icon={(<>
+                    <Image
+                        src="/target.svg"
+                        alt="target"
+                        width={70}
+                        height={70}
+                        style={{
+                            margin: '0 auto',
+                            pointerEvents: 'none',
+                            userSelect: 'none',
+                        }}
+                    />
+                </>)}
+                weight={targetWeight}
+            />
 
             <div
                 className="grid gap-8"
