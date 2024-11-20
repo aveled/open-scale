@@ -6,11 +6,13 @@ import './style.css';
 interface WeightDisplayProps {
     icon: JSX.Element;
     weight: number;
+    setView: () => void;
 }
 
 const WeightDisplay: React.FC<WeightDisplayProps> = ({
     icon,
     weight,
+    setView,
 }) => {
     const formattedWeight = (weight / 1000).toLocaleString('de-DE', {
         minimumFractionDigits: 3,
@@ -18,7 +20,12 @@ const WeightDisplay: React.FC<WeightDisplayProps> = ({
     }).padStart(6, '0').split('');
 
     return (
-        <div className="weight-display flex items-center justify-center">
+        <div
+            className="weight-display flex items-center justify-center cursor-pointer"
+            onClick={() => {
+                setView();
+            }}
+        >
             <div
                 className="flex items-center justify-center text-xl font-bold mr-4"
                 style={{

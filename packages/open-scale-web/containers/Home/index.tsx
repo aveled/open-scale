@@ -18,6 +18,8 @@ import WeightDisplay from '@/components/WeightDisplay';
 
 
 export default function Home() {
+    const [view, setView] = useState<'general' | 'settings' | 'current' | 'target'>('general');
+
     const [activeScale, setActiveScale] = useState(false);
     const [currentWeight, setCurrentWeight] = useState(0);
     const [targetWeight, setTargetWeight] = useState(0);
@@ -176,6 +178,16 @@ export default function Home() {
                     />
                 </>)}
                 weight={currentWeight}
+                setView={() => {
+                    setView('current');
+                }}
+            />
+
+            <hr
+                style={{
+                    width: '100%',
+                    border: '1px solid #eab5b5',
+                }}
             />
 
             <WeightDisplay
@@ -195,52 +207,78 @@ export default function Home() {
                     />
                 </>)}
                 weight={targetWeight}
+                setView={() => {
+                    setView('target');
+                }}
             />
 
             <div
                 className="grid gap-8"
             >
-                <button
-                    onClick={() => {
-                        start();
-                    }}
-                >
-                    start
-                </button>
+                {view === 'general' && (
+                    <>
+                        <button
+                            className="text-2xl font-bold p-4 rounded-full select-none bg-[#5a5a5a] text-[#eab5b5]"
+                            onClick={() => {
+                                start();
+                            }}
+                        >
+                            START
+                        </button>
 
-                {activeScale && (
-                    <button
-                        onClick={() => {
-                            stop();
-                        }}
-                    >
-                        stop
-                    </button>
+                        {activeScale && (
+                            <button
+                                className="text-2xl font-bold p-4 rounded-full select-none bg-[#5a5a5a] text-[#eab5b5]"
+                                onClick={() => {
+                                    stop();
+                                }}
+                            >
+                                STOP
+                            </button>
+                        )}
+                    </>
                 )}
 
-                <button
-                    onClick={() => {
-                        tare();
-                    }}
-                >
-                    tare
-                </button>
-            </div>
-
-            <div
-                className="flex gap-4 justify-center items-center text-xl"
-            >
-                {defaultTargetWeights.map((weight, index) => (
+                {view === 'current' && (
                     <button
-                        key={index}
+                        className="text-2xl font-bold p-4 rounded-full select-none bg-[#5a5a5a] text-[#eab5b5]"
                         onClick={() => {
-                            newTargetWeight(weight);
+                            tare();
                         }}
                     >
-                        {(weight / 1000)}
+                        TARE
                     </button>
-                ))}
+                )}
             </div>
+
+            {view === 'target' && (
+                <div
+                    className="grid grid-cols-4 gap-4 justify-center items-center text-xl"
+                >
+                    {defaultTargetWeights.map((weight, index) => (
+                        <button
+                            key={index}
+                            className="flex items-center justify-center text-2xl font-bold p-4 rounded-full select-none bg-[#5a5a5a] text-[#eab5b5]"
+                            onClick={() => {
+                                newTargetWeight(weight);
+                            }}
+                            style={{
+                                width: '80px',
+                                height: '80px',
+                                margin: '10px',
+                            }}
+                        >
+                            {(weight / 1000)}
+
+                            <span
+                                className="text-sm ml-2"
+                            >
+                                kg
+                            </span>
+                        </button>
+                    ))}
+                </div>
+            )}
         </div>
     );
 }
