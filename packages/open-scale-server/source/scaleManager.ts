@@ -1,13 +1,8 @@
 import ModbusRTU from 'npm:modbus-serial';
 
 import {
-    WEIGHT_REGISTER,
-    START_FEED_REGISTER,
-    STOP_FEED_REGISTER,
-    SPEED_FEED_REGISTER,
-    TARE_REGISTER,
-    FAST_SPEED_FEED,
-    SLOW_SPEED_FEED,
+    REGISTERS,
+    FEED_SPEED,
     FAST_SLOW_PERCENTAGE,
     DEFAULT_TARGET_WEIGHT,
     NO_WEIGHT_ERROR,
@@ -76,7 +71,7 @@ class ScaleManager {
 
     public tare() {
         this.currentWeight = 0;
-        this.client.writeRegisters(TARE_REGISTER, [1]);
+        this.client.writeRegisters(REGISTERS.TARE, [1]);
     }
 
     public clearErrors() {
@@ -84,14 +79,14 @@ class ScaleManager {
     }
 
     public async __testSetWeight__(targetWeight: number) {
-        await this.client.writeRegisters(WEIGHT_REGISTER, [targetWeight]);
+        await this.client.writeRegisters(REGISTERS.WEIGHT, [targetWeight]);
     }
 
 
     private weightLoop() {
         setInterval(async () => {
             try {
-                const weightRegister = await this.client.readHoldingRegisters(WEIGHT_REGISTER, 1);
+                const weightRegister = await this.client.readHoldingRegisters(REGISTERS.WEIGHT, 1);
                 this.currentWeight = weightRegister.data[0];
             } catch (_e) {
                 if (!this.errors.includes(NO_WEIGHT_ERROR)) {
@@ -106,7 +101,7 @@ class ScaleManager {
             if (!this.activeScale) {
                 if (this.feedStarted) {
                     this.feedStarted = false;
-                    await this.client.writeRegisters(STOP_FEED_REGISTER, [1]);
+                    await this.client.writeRegisters(REGISTERS.STOP_FEED, [1]);
                 }
                 return;
             }
@@ -117,12 +112,12 @@ class ScaleManager {
                 if (this.targetWeight * FAST_SLOW_PERCENTAGE < this.currentWeight) {
                     if (!this.feedSet) {
                         this.feedSet = true;
-                        await this.client.writeRegisters(SPEED_FEED_REGISTER, [FAST_SPEED_FEED]);
+                        await this.client.writeRegisters(REGISTERS.SPEED_FEED, [FEED_SPEED.FAST]);
                     }
                 } else {
                     if (!this.feedSet) {
                         this.feedSet = true;
-                        await this.client.writeRegisters(SPEED_FEED_REGISTER, [SLOW_SPEED_FEED]);
+                        await this.client.writeRegisters(REGISTERS.SPEED_FEED, [FEED_SPEED.SLOW]);
                     }
                 }
 
@@ -130,7 +125,7 @@ class ScaleManager {
                     this.feedStarted = true;
                     this.feedSet = false;
 
-                    await this.client.writeRegisters(START_FEED_REGISTER, [1]);
+                    await this.client.writeRegisters(REGISTERS.START_FEED, [1]);
                 }
             } else {
                 this.feedStarted = false;
@@ -138,7 +133,7 @@ class ScaleManager {
 
                 if (!this.feedStopped) {
                     this.feedStopped = true;
-                    await this.client.writeRegisters(STOP_FEED_REGISTER, [1]);
+                    await this.client.writeRegisters(REGISTERS.STOP_FEED, [1]);
 
                     this.activeScale = false;
 
