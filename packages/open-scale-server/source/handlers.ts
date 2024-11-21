@@ -1,6 +1,6 @@
 // deno-lint-ignore-file require-await no-explicit-any
 
-import scaleManager from './ScaleManager.ts';
+import scaleManager from './scaleManager.ts';
 
 
 
