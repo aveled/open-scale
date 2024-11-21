@@ -4,6 +4,10 @@ import ModbusRTU from 'npm:modbus-serial';
 
 
 
+const registers: Record<number, number> = Array.from({ length: 100 }, (_, i) => i)
+    .reduce((acc, cur) => ({ ...acc, [cur]: 0 }), {});
+
+
 const vector = {
     getInputRegister: function(addr: any, unitID: any) {
         // Synchronous handling
@@ -13,7 +17,7 @@ const vector = {
         // Asynchronous handling (with callback)
         setTimeout(function() {
             // callback = function(err, value)
-            callback(null, addr + 8000);
+            callback(null, registers[addr]);
         }, 10);
     },
     getCoil: function(addr: any, unitID: any) {
@@ -27,6 +31,7 @@ const vector = {
     setRegister: function(addr: any, value: any, unitID: any) {
         // Asynchronous handling supported also here
         console.log("set register", addr, value, unitID);
+        registers[addr] = value;
         return;
     },
     setCoil: function(addr: any, value: any, unitID: any) {
