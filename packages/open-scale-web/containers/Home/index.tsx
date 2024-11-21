@@ -38,7 +38,7 @@ export default function Home() {
     const [activeScale, setActiveScale] = useState(false);
     const [currentWeight, setCurrentWeight] = useState(0);
     const [targetWeight, setTargetWeight] = useState(0);
-    const [errors, setErros] = useState<string[]>([]);
+    const [errors, setErrors] = useState<string[]>([]);
 
 
     const start = async () => {
@@ -152,12 +152,15 @@ export default function Home() {
                 setActiveScale(active);
                 setCurrentWeight(currentWeight);
                 setTargetWeight(targetWeight);
-                setErros(errors);
+                setErrors(errors);
 
                 if (loading) {
                     setLoading(false);
                 }
             } catch (_e: any) {
+                setErrors([
+                    'Server Unavailable',
+                ]);
                 return;
             }
         }
@@ -174,6 +177,43 @@ export default function Home() {
         loading,
     ]);
 
+
+    if (errors.length > 0) {
+        return (
+            <div
+                className="grid place-content-center h-screen gap-6 text-center"
+            >
+                <h1
+                    className="text-2xl"
+                >
+                    errors
+                </h1>
+
+                <div
+                    className="grid gap-6"
+                >
+                    {errors.map((error, index) => {
+                        return (
+                            <div
+                                key={index}
+                            >
+                                {error}
+                            </div>
+                        );
+                    })}
+                </div>
+
+                <Button
+                    text="CLEAR"
+                    onClick={() => {
+                        fetch(ENDPOINT + PATHS.CLEAR_ERRORS, {
+                            method: 'POST',
+                        });
+                    }}
+                />
+            </div>
+        );
+    }
 
     if (loading) {
         return;
