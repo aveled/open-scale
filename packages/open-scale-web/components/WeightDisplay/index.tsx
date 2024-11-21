@@ -32,23 +32,24 @@ const WeightDisplay: React.FC<WeightDisplayProps> = ({
                 {icon}
             </div>
 
-            {formattedWeight.map(char => (
-                <span
+            {formattedWeight.map((char, i) => (
+                <div
                     key={Math.random() + ''}
                     className="weight-char"
                     style={{
                         backgroundColor: char === ',' ? '#444' : 'auto',
+                        borderLeft: i === 0 ? '2px solid transparent' : 'auto',
                     }}
                 >
                     {char}
-                </span>
+                </div>
             ))}
 
-            <span
+            <div
                 className="ml-4 text-3xl inline-block font-bold"
             >
                 kg
-            </span>
+            </div>
         </div>
     );
 };
