@@ -20,6 +20,38 @@ import Button from '@/components/Button';
 
 
 
+const currentLevelIcon = (
+    <Image
+        src="/current-level.svg"
+        alt="current-level"
+        width={70}
+        height={70}
+        style={{
+            margin: '0 auto',
+            pointerEvents: 'none',
+            userSelect: 'none',
+        }}
+        priority={true}
+    />
+);
+
+const currentTargetIcon = (
+    <Image
+        src="/target.svg"
+        alt="target"
+        width={70}
+        height={70}
+        style={{
+            margin: '0 auto',
+            pointerEvents: 'none',
+            userSelect: 'none',
+        }}
+        priority={true}
+    />
+);
+
+
+
 export default function Home() {
     const [view, setView] = useState<'general' | 'settings' | 'current' | 'target'>('general');
     const [showCustomInput, setShowCustomInput] = useState(false);
@@ -169,6 +201,7 @@ export default function Home() {
                         cursor: 'pointer',
                     }}
                     priority={true}
+                    draggable={false}
                     onClick={() => {
                         setView('settings');
                     }}
@@ -178,24 +211,12 @@ export default function Home() {
             {(view === 'general' || view === 'current') && (
                 <WeightDisplay
                     // icon={(<>current</>)}
-                    icon={(<>
-                        <Image
-                            src="/current-level.svg"
-                            alt="current-level"
-                            width={70}
-                            height={70}
-                            style={{
-                                margin: '0 auto',
-                                pointerEvents: 'none',
-                                userSelect: 'none',
-                            }}
-                            priority={true}
-                        />
-                    </>)}
+                    icon={currentLevelIcon}
                     weight={currentWeight}
                     setView={() => {
                         setView('current');
                     }}
+                    clickable={view === 'general'}
                 />
             )}
 
@@ -212,24 +233,12 @@ export default function Home() {
             && (
                 <WeightDisplay
                     // icon={(<>target</>)}
-                    icon={(<>
-                        <Image
-                            src="/target.svg"
-                            alt="target"
-                            width={70}
-                            height={70}
-                            style={{
-                                margin: '0 auto',
-                                pointerEvents: 'none',
-                                userSelect: 'none',
-                            }}
-                            priority={true}
-                        />
-                    </>)}
+                    icon={currentTargetIcon}
                     weight={targetWeight}
                     setView={() => {
                         setView('target');
                     }}
+                    clickable={view === 'general'}
                 />
             )}
 
@@ -237,20 +246,7 @@ export default function Home() {
             && showCustomInput
             && (
                 <WeightDisplayInput
-                    icon={(<>
-                        <Image
-                            src="/target.svg"
-                            alt="target"
-                            width={70}
-                            height={70}
-                            style={{
-                                margin: '0 auto',
-                                pointerEvents: 'none',
-                                userSelect: 'none',
-                            }}
-                            priority={true}
-                        />
-                    </>)}
+                    icon={currentTargetIcon}
                     weight={targetWeight}
                     update={(value) => {
                         newTargetWeight(value);
@@ -261,22 +257,25 @@ export default function Home() {
             <div
                 className="grid gap-6 mt-8"
             >
-                {view === 'general' && !activeScale && (
-                    <Button
-                        text="START"
-                        onClick={() => {
-                            start();
-                        }}
-                    />
-                )}
+                {view === 'general' && (
+                    <>
+                        <Button
+                            text="START"
+                            onClick={() => {
+                                start();
+                            }}
+                            disabled={activeScale}
+                        />
 
-                {view === 'general' && activeScale && (
-                    <Button
-                        text="STOP"
-                        onClick={() => {
-                            stop();
-                        }}
-                    />
+                        {activeScale && (
+                            <Button
+                                text="STOP"
+                                onClick={() => {
+                                    stop();
+                                }}
+                            />
+                        )}
+                    </>
                 )}
 
                 {view === 'current' && (
@@ -351,14 +350,18 @@ export default function Home() {
             )}
 
             {view !== 'general' && (
-                <button
-                    className="text-lg font-bold p-4 rounded-full select-none text-[#eab5b5]"
-                    onClick={() => {
-                        setView('general');
-                    }}
+                <div
+                    className="mt-8"
                 >
-                    HOME
-                </button>
+                    <button
+                        className="text-lg font-bold p-4 rounded-full select-none text-[#eab5b5]"
+                        onClick={() => {
+                            setView('general');
+                        }}
+                    >
+                        HOME
+                    </button>
+                </div>
             )}
         </div>
     );

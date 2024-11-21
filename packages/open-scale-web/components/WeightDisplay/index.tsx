@@ -7,12 +7,14 @@ interface WeightDisplayProps {
     icon: JSX.Element;
     weight: number;
     setView: () => void;
+    clickable?: boolean;
 }
 
 const WeightDisplay: React.FC<WeightDisplayProps> = ({
     icon,
     weight,
     setView,
+    clickable = true,
 }) => {
     const formattedWeight = (weight / 1000).toLocaleString('de-DE', {
         minimumFractionDigits: 3,
@@ -21,8 +23,12 @@ const WeightDisplay: React.FC<WeightDisplayProps> = ({
 
     return (
         <div
-            className="weight-display flex items-center justify-center cursor-pointer"
+            className={`weight-display flex items-center justify-center ${clickable ? 'cursor-pointer' : ''}`}
             onClick={() => {
+                if (!clickable) {
+                    return;
+                }
+
                 setView();
             }}
         >
