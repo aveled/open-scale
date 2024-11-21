@@ -2,14 +2,55 @@
 
 const ENDPOINT = 'http://localhost:8485';
 
+
 async function setWeight(weight: number) {
-    fetch(ENDPOINT + '/test-set-weight', {
+    await fetch(ENDPOINT + '/test-set-weight', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
         },
         body: JSON.stringify({
             weight,
+        }),
+    });
+}
+
+
+async function getStatus() {
+    const response = await fetch(ENDPOINT + '/status');
+    return await response.json();
+}
+
+async function assertWeight(value: number) {
+    const status = await getStatus();
+
+    if (status.data.currentWeight !== value) {
+        throw new Error(`Weight is not ${value} but ${status.data.currentWeight}`);
+    } else {
+        console.log(`[assert] Weight is ${value}`);
+    }
+}
+
+async function start() {
+    await fetch(ENDPOINT + '/start', {
+        method: 'POST',
+    });
+}
+
+async function stop() {
+    await fetch(ENDPOINT + '/stop', {
+        method: 'POST',
+    });
+}
+
+async function setTargetWeight(weight: number) {
+    await fetch(ENDPOINT + '/target-weight', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+            targetWeight: weight,
         }),
     });
 }
@@ -23,13 +64,23 @@ async function delay(seconds: number) {
 
 
 const testSuite = async () => {
+    await setWeight(0);
+
+    await setTargetWeight(10000);
+    await start();
+    await assertWeight(0);
+    await delay(0.2);
     await setWeight(2000);
+    await delay(0.2);
+    await assertWeight(2000);
     await delay(1);
-    await setWeight(3000);
+    await setWeight(9500);
+    await delay(0.2);
+    await assertWeight(9500);
     await delay(1);
-    await setWeight(4000);
-    await delay(1);
-    await setWeight(5000);
+    await setWeight(9990);
+    await delay(0.2);
+    await assertWeight(9990);
 }
 
 testSuite();
