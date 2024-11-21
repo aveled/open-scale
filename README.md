@@ -1,10 +1,10 @@
 <p align="center">
     <a target="_blank" href="https://aveled.com">
-        <img src="https://raw.githubusercontent.com/aveled/open-scale/master/about/identity/open-scale.png" height="250px">
+        <img src="https://raw.githubusercontent.com/aveled/open-scale/main/about/identity/open-scale.png" height="250px">
     </a>
     <br />
     <br />
-    <a target="_blank" href="https://github.com/aveled/open-scale/blob/master/LICENSE">
+    <a target="_blank" href="https://github.com/aveled/open-scale/blob/main/LICENSE">
         <img src="https://img.shields.io/badge/license-DEL-blue.svg?colorB=1380C3&style=for-the-badge" alt="License: DEL">
     </a>
 </p>
@@ -34,6 +34,15 @@
 
 ## About
 
+Open Scale provides infrastructure for weight measurement.
+
+<p align="center">
+    <img src="https://raw.githubusercontent.com/aveled/open-scale/main/about/images/ss-1.png" height="500px">
+</p>
+
+<p align="center">
+    <img src="https://raw.githubusercontent.com/aveled/open-scale/main/about/images/ss-2.png" height="500px">
+</p>
 
 
 
@@ -45,7 +54,7 @@
 
 [@aveled/open-scale-server][open-scale-server] • the backend server
 
-[open-scale-server]: https://github.com/aveled/open-scale/tree/master/packages/open-scale-server
+[open-scale-server]: https://github.com/aveled/open-scale/tree/main/packages/open-scale-server
 
 
 <a target="_blank" href="https://www.npmjs.com/package/@aveled/open-scale-web">
@@ -54,7 +63,7 @@
 
 [@aveled/open-scale-web][open-scale-web] • the frontend server
 
-[open-scale-web]: https://github.com/aveled/open-scale/tree/master/packages/open-scale-server
+[open-scale-web]: https://github.com/aveled/open-scale/tree/main/packages/open-scale-server
 
 
 
