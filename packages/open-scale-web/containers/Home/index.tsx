@@ -156,10 +156,13 @@ export default function Home() {
                 height={150}
                 style={{
                     margin: '0 auto',
-                    pointerEvents: 'none',
                     userSelect: 'none',
+                    cursor: 'pointer',
                 }}
                 priority={true}
+                onClick={() => {
+                    setView('settings');
+                }}
             />
 
             {(view === 'general' || view === 'current') && (
@@ -276,6 +279,20 @@ export default function Home() {
                             </span>
                         </button>
                     ))}
+                </div>
+            )}
+
+            {view === 'settings' && (
+                <div
+                    className="grid gap-6"
+                >
+                    <div>
+                        language
+                    </div>
+
+                    <div>
+                        theme
+                    </div>
                 </div>
             )}
 
