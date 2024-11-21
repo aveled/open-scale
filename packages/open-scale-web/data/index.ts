@@ -9,6 +9,8 @@ export const PATHS = {
     CLEAR_ERRORS: '/clear-errors',
 } as const;
 
+export const LOADING_INTERVAL = 1_000; // ms
+
 
 
 export const defaultTargetWeights = [
@@ -20,3 +22,7 @@ export const defaultTargetWeights = [
     30_000,
     50_000,
 ];
+
+
+export type ViewType =
+    | 'general' | 'settings' | 'current' | 'target';

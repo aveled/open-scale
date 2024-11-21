@@ -6,54 +6,32 @@ import {
     useEffect,
 } from 'react';
 
-import Image from 'next/image';
-
 import {
     ENDPOINT,
     PATHS,
-    defaultTargetWeights,
+    LOADING_INTERVAL,
+
+    ViewType,
 } from '@/data/index';
 
+import {
+    currentLevelIcon,
+    currentTargetIcon,
+} from '@/data/icons';
+
+import OpenScaleImage from '@/components/OpenScaleImage';
 import WeightDisplay from '@/components/WeightDisplay';
 import WeightDisplayInput from '@/components/WeightDisplayInput';
+import WeightSelector from '@/components/WeightSelector';
 import Button from '@/components/Button';
-
-
-
-const currentLevelIcon = (
-    <Image
-        src="/current-level.svg"
-        alt="current-level"
-        width={70}
-        height={70}
-        style={{
-            margin: '0 auto',
-            pointerEvents: 'none',
-            userSelect: 'none',
-        }}
-        priority={true}
-    />
-);
-
-const currentTargetIcon = (
-    <Image
-        src="/target.svg"
-        alt="target"
-        width={70}
-        height={70}
-        style={{
-            margin: '0 auto',
-            pointerEvents: 'none',
-            userSelect: 'none',
-        }}
-        priority={true}
-    />
-);
+import HomeButton from '@/components/HomeButton';
 
 
 
 export default function Home() {
-    const [view, setView] = useState<'general' | 'settings' | 'current' | 'target'>('general');
+    const [loading, setLoading] = useState(true);
+
+    const [view, setView] = useState<ViewType>('general');
     const [showCustomInput, setShowCustomInput] = useState(false);
 
     const [activeScale, setActiveScale] = useState(false);
@@ -174,39 +152,41 @@ export default function Home() {
                 setCurrentWeight(currentWeight);
                 setTargetWeight(targetWeight);
                 setErros(errors);
+
+                if (loading) {
+                    setLoading(false);
+                }
             } catch (_e: any) {
                 return;
             }
         }
 
         load();
-    }, []);
+        const interval = setInterval(() => {
+            load();
+        }, LOADING_INTERVAL);
 
+        return () => {
+            clearInterval(interval);
+        }
+    }, [
+        loading,
+    ]);
+
+
+    if (loading) {
+        return;
+    }
 
     return (
         <div
             className="grid place-content-center h-full gap-6 text-center"
         >
-            <div
-                className="my-8"
-            >
-                <Image
-                    src="/open-scale.png"
-                    alt="open scale"
-                    width={150}
-                    height={150}
-                    style={{
-                        margin: '0 auto',
-                        userSelect: 'none',
-                        cursor: 'pointer',
-                    }}
-                    priority={true}
-                    draggable={false}
-                    onClick={() => {
-                        setView('settings');
-                    }}
-                />
-            </div>
+            <OpenScaleImage
+                setView={() => {
+                    setView('settings');
+                }}
+            />
 
             {(view === 'general' || view === 'current') && (
                 <WeightDisplay
@@ -289,50 +269,10 @@ export default function Home() {
             </div>
 
             {view === 'target' && (
-                <>
-                    <div
-                        className="grid grid-cols-3 lg:grid-cols-4 gap-4 justify-center items-center text-xl"
-                    >
-                        {defaultTargetWeights.map((weight, index) => (
-                            <button
-                                key={index}
-                                className="flex items-center justify-center text-2xl font-bold p-4 rounded-full select-none bg-[#5a5a5a] text-[#eab5b5]"
-                                onClick={() => {
-                                    setShowCustomInput(false);
-                                    newTargetWeight(weight);
-                                }}
-                                style={{
-                                    width: '80px',
-                                    height: '80px',
-                                    margin: '10px',
-                                }}
-                            >
-                                {(weight / 1000)}
-
-                                <span
-                                    className="text-sm ml-2"
-                                >
-                                    kg
-                                </span>
-                            </button>
-                        ))}
-
-                        <button
-                            className="flex items-center justify-center text-2xl font-bold p-4 rounded-full select-none bg-[#5a5a5a] text-[#eab5b5]"
-                            onClick={() => {
-                                setShowCustomInput(show => !show);
-                            }}
-                            style={{
-                                width: '80px',
-                                height: '80px',
-                                margin: '10px',
-                                fontSize: '2.8rem',
-                            }}
-                        >
-                            &#9998;
-                        </button>
-                    </div>
-                </>
+                <WeightSelector
+                    newTargetWeight={newTargetWeight}
+                    setShowCustomInput={setShowCustomInput}
+                />
             )}
 
             {view === 'settings' && (
@@ -350,18 +290,11 @@ export default function Home() {
             )}
 
             {view !== 'general' && (
-                <div
-                    className="mt-8"
-                >
-                    <button
-                        className="text-lg font-bold p-4 rounded-full select-none text-[#eab5b5]"
-                        onClick={() => {
-                            setView('general');
-                        }}
-                    >
-                        HOME
-                    </button>
-                </div>
+                <HomeButton
+                    setView={() => {
+                        setView('general');
+                    }}
+                />
             )}
         </div>
     );
