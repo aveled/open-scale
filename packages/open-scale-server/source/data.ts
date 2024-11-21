@@ -17,7 +17,7 @@ export const DEFAULT_ERROR_PERCENTAGE = 1;
 export const WEIGHT_INTERVAL = 100;
 export const FEED_INTERVAL = 95;
 export const ERRORS = {
-    NO_WEIGHT: 'NO_WEIGHT',
-    FEED_ERROR: 'FEED_ERROR',
     OVERSHOOT: 'OVERSHOOT',
+    NO_WEIGHT: 'NO_WEIGHT',
+    NO_FEED: 'NO_FEED',
 } as const;
