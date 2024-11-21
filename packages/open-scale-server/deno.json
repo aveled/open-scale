@@ -2,7 +2,7 @@
     "tasks": {
         "dev": "deno run -A --watch --env-file server.ts",
         "run": "deno run -A --env-file server.ts",
-        "mock": "deno run -A tester-modbus.ts",
+        "modbus": "deno run -A tester-modbus.ts",
         "tester": "deno run -A tester-weight.ts"
     },
     "imports": {
