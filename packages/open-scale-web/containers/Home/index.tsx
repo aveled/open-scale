@@ -14,6 +14,7 @@ import {
 } from '@/data/index';
 
 import WeightDisplay from '@/components/WeightDisplay';
+import Button from '@/components/Button';
 
 
 
@@ -146,13 +147,13 @@ export default function Home() {
 
     return (
         <div
-            className="grid place-content-center h-full gap-12 text-center"
+            className="grid place-content-center h-full gap-6 text-center mt-8"
         >
             <Image
                 src="/open-scale.png"
                 alt="open scale"
-                width={200}
-                height={200}
+                width={150}
+                height={150}
                 style={{
                     margin: '0 auto',
                     pointerEvents: 'none',
@@ -161,93 +162,91 @@ export default function Home() {
                 priority={true}
             />
 
-            <WeightDisplay
-                // icon={(<>current</>)}
-                icon={(<>
-                    <Image
-                        src="/current-level.svg"
-                        alt="current-level"
-                        width={70}
-                        height={70}
-                        style={{
-                            margin: '0 auto',
-                            pointerEvents: 'none',
-                            userSelect: 'none',
-                        }}
-                        priority={true}
-                    />
-                </>)}
-                weight={currentWeight}
-                setView={() => {
-                    setView('current');
-                }}
-            />
+            {(view === 'general' || view === 'current') && (
+                <WeightDisplay
+                    // icon={(<>current</>)}
+                    icon={(<>
+                        <Image
+                            src="/current-level.svg"
+                            alt="current-level"
+                            width={70}
+                            height={70}
+                            style={{
+                                margin: '0 auto',
+                                pointerEvents: 'none',
+                                userSelect: 'none',
+                            }}
+                            priority={true}
+                        />
+                    </>)}
+                    weight={currentWeight}
+                    setView={() => {
+                        setView('current');
+                    }}
+                />
+            )}
 
-            <hr
-                style={{
-                    width: '100%',
-                    border: '1px solid #eab5b5',
-                }}
-            />
+            {view === 'general' && (
+                <hr
+                    style={{
+                        width: '100%',
+                        border: '1px solid #eab5b5',
+                    }}
+                />
+            )}
 
-            <WeightDisplay
-                // icon={(<>target</>)}
-                icon={(<>
-                    <Image
-                        src="/target.svg"
-                        alt="target"
-                        width={70}
-                        height={70}
-                        style={{
-                            margin: '0 auto',
-                            pointerEvents: 'none',
-                            userSelect: 'none',
-                        }}
-                        priority={true}
-                    />
-                </>)}
-                weight={targetWeight}
-                setView={() => {
-                    setView('target');
-                }}
-            />
+            {(view === 'general' || view === 'target') && (
+                <WeightDisplay
+                    // icon={(<>target</>)}
+                    icon={(<>
+                        <Image
+                            src="/target.svg"
+                            alt="target"
+                            width={70}
+                            height={70}
+                            style={{
+                                margin: '0 auto',
+                                pointerEvents: 'none',
+                                userSelect: 'none',
+                            }}
+                            priority={true}
+                        />
+                    </>)}
+                    weight={targetWeight}
+                    setView={() => {
+                        setView('target');
+                    }}
+                />
+            )}
 
             <div
-                className="grid gap-8"
+                className="grid gap-6 mt-8"
             >
-                {view === 'general' && (
-                    <>
-                        <button
-                            className="text-2xl font-bold p-4 rounded-full select-none bg-[#5a5a5a] text-[#eab5b5]"
-                            onClick={() => {
-                                start();
-                            }}
-                        >
-                            START
-                        </button>
+                {view === 'general' && !activeScale && (
+                    <Button
+                        text="START"
+                        onClick={() => {
+                            start();
+                        }}
+                    />
+                )}
 
-                        {activeScale && (
-                            <button
-                                className="text-2xl font-bold p-4 rounded-full select-none bg-[#5a5a5a] text-[#eab5b5]"
-                                onClick={() => {
-                                    stop();
-                                }}
-                            >
-                                STOP
-                            </button>
-                        )}
-                    </>
+                {view === 'general' && activeScale && (
+                    <Button
+                        text="STOP"
+                        onClick={() => {
+                            stop();
+                        }}
+                    />
                 )}
 
                 {view === 'current' && (
-                    <button
-                        className="text-2xl font-bold p-4 rounded-full select-none bg-[#5a5a5a] text-[#eab5b5]"
+                    <Button
+                        text="TARE"
                         onClick={() => {
                             tare();
                         }}
-                    >
-                        TARE
-                    </button>
+                    />
                 )}
             </div>
 
@@ -278,6 +277,17 @@ export default function Home() {
                         </button>
                     ))}
                 </div>
+            )}
+
+            {view !== 'general' && (
+                <button
+                    className="text-lg font-bold p-4 rounded-full select-none text-[#eab5b5]"
+                    onClick={() => {
+                        setView('general');
+                    }}
+                >
+                    HOME
+                </button>
             )}
         </div>
     );
