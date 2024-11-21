@@ -103,7 +103,7 @@ const handlerTestSetWeight = async (req: Request) => {
         weight,
     } = await req.json();
 
-    scaleManager.testSetWeight(weight);
+    scaleManager.__testSetWeight__(weight);
 
     return handlerResponse({
         status: true,

@@ -5,6 +5,7 @@ import {
     START_FEED_REGISTER,
     STOP_FEED_REGISTER,
     SPEED_FEED_REGISTER,
+    TARE_REGISTER,
     FAST_SPEED_FEED,
     SLOW_SPEED_FEED,
     FAST_SLOW_PERCENTAGE,
@@ -69,20 +70,20 @@ class ScaleManager {
         return this.errors;
     }
 
-    public clearErrors() {
-        this.errors = [];
-    }
-
     public stop() {
         this.activeScale = false;
     }
 
     public tare() {
         this.currentWeight = 0;
-        // this.client.writeRegisters(0, [1]);
+        this.client.writeRegisters(TARE_REGISTER, [1]);
     }
 
-    public async testSetWeight(targetWeight: number) {
+    public clearErrors() {
+        this.errors = [];
+    }
+
+    public async __testSetWeight__(targetWeight: number) {
         await this.client.writeRegisters(WEIGHT_REGISTER, [targetWeight]);
     }
 
