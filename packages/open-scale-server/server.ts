@@ -79,6 +79,10 @@ class ScaleManager {
         // this.client.writeRegisters(0, [1]);
     }
 
+    public async testSetWeight(targetWeight: number) {
+        await this.client.writeRegisters(WEIGHT_REGISTER, [targetWeight]);
+    }
+
 
     private weightLoop() {
         setInterval(async () => {
@@ -252,6 +256,19 @@ const handlerNotFound = () => {
     );
 }
 
+// curl -X POST -H "Content-Type: application/json" -d '{"targetWeight": 15000}' http://localhost:8485/test-set-weight
+const handlerTestSetWeight = async (req: Request) => {
+    const {
+        targetWeight,
+    } = await req.json();
+
+    scaleManager.testSetWeight(targetWeight);
+
+    return handlerResponse({
+        status: true,
+    });
+}
+
 
 // disable cors for Deno server
 const corsHeaders = {
@@ -275,6 +292,7 @@ const PATHS = {
     TARGET_WEIGHT: '/target-weight',
     TARE: '/tare',
     CLEAR_ERRORS: '/clear-errors',
+    TEST_SET_WEIGHT: '/test-set-weight',
 } as const;
 
 const handlers = {
@@ -287,6 +305,7 @@ const handlers = {
         [PATHS.TARGET_WEIGHT]: handlerTargetWeight,
         [PATHS.TARE]: handlerTare,
         [PATHS.CLEAR_ERRORS]: handlerClearErrors,
+        [PATHS.TEST_SET_WEIGHT]: handlerTestSetWeight,
     },
     OPTIONS: {
         [PATHS.STATUS]: handlerOptions,
