@@ -25,6 +25,7 @@ interface WeightDisplayInputProps {
 const WeightDisplayInput: React.FC<WeightDisplayInputProps> = ({
     icon,
     weight,
+    update,
 }) => {
     const formattedWeight = (weight / 1000).toLocaleString('de-DE', {
         minimumFractionDigits: 3,
@@ -47,7 +48,7 @@ const WeightDisplayInput: React.FC<WeightDisplayInputProps> = ({
 
             {formattedWeight.map((char, i) => (
                 <div
-                    key={Math.random() + ''}
+                    key={'char' + i}
                     className="relative"
                 >
                     {selectedChar === i && (
@@ -57,6 +58,25 @@ const WeightDisplayInput: React.FC<WeightDisplayInputProps> = ({
                                 if (selectedChar !== i) {
                                     return;
                                 }
+
+                                const numbers = (availableNumbers as any)[i];
+                                if (!numbers) {
+                                    return;
+                                }
+
+                                const currentValue = parseInt(char, 10);
+                                const currentIndex = numbers.indexOf(currentValue);
+                                const nextIndex = (currentIndex + 1) % numbers.length;
+                                const nextValue = numbers[nextIndex];
+                                const newWeightString = formattedWeight.map((c, j) => {
+                                    if (j === i) {
+                                        return nextValue;
+                                    }
+
+                                    return c;
+                                }).join('');
+                                const newWeight = parseFloat(newWeightString.replace(',', '.')) * 1000;
+                                update(newWeight);
                             }}
                             style={{
                                 fontSize: '1.5rem',
@@ -91,6 +111,25 @@ const WeightDisplayInput: React.FC<WeightDisplayInputProps> = ({
                                 if (selectedChar !== i) {
                                     return;
                                 }
+
+                                const numbers = (availableNumbers as any)[i];
+                                if (!numbers) {
+                                    return;
+                                }
+
+                                const currentValue = parseInt(char, 10);
+                                const currentIndex = numbers.indexOf(currentValue);
+                                const nextIndex = (currentIndex - 1 + numbers.length) % numbers.length;
+                                const nextValue = numbers[nextIndex];
+                                const newWeightString = formattedWeight.map((c, j) => {
+                                    if (j === i) {
+                                        return nextValue;
+                                    }
+
+                                    return c;
+                                }).join('');
+                                const newWeight = parseFloat(newWeightString.replace(',', '.')) * 1000;
+                                update(newWeight);
                             }}
                             style={{
                                 fontSize: '1.5rem',
