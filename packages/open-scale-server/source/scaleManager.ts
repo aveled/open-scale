@@ -9,6 +9,8 @@ import {
     WEIGHT_INTERVAL,
     FEED_INTERVAL,
     ERRORS,
+
+    RecordEvent,
 } from './data.ts';
 import modbus from './modbus.ts';
 import database from './database.ts';
@@ -134,14 +136,17 @@ class ScaleManager {
         return this.currentWeight >= lowerBound && this.currentWeight <= upperBound;
     }
 
-    private recordScaleEvent() {
+    private async recordScaleEvent() {
         const data = [
             Date.now(),
             this.targetWeight,
             this.currentWeight,
-        ];
-
+        ] satisfies RecordEvent;
         logger('info', 'Record scale event', data);
+
+        await database.update((db) => {
+            db.events.push(data);
+        });
     }
 
 

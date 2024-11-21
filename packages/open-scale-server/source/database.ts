@@ -8,6 +8,8 @@ import { JSONFile } from 'lowdb/node';
 import {
     DEFAULT_TARGET_WEIGHT,
     DEFAULT_ERROR_PERCENTAGE,
+
+    Database,
 } from './data.ts';
 
 
@@ -22,13 +24,10 @@ const DATABASE_PATH = path.join(
     OPEN_SCALE_DIR,
     '/db.json',
 );
-interface Database {
-    targetWeight: number;
-    errorPercentage: number;
-}
 const defaultData: Database = {
     targetWeight: DEFAULT_TARGET_WEIGHT,
     errorPercentage: DEFAULT_ERROR_PERCENTAGE,
+    events: [],
 };
 const database = new Low<Database>(new JSONFile(DATABASE_PATH), defaultData);
 

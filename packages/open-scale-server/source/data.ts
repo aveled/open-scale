@@ -21,3 +21,12 @@ export const ERRORS = {
     NO_WEIGHT: 'NO_WEIGHT',
     NO_FEED: 'NO_FEED',
 } as const;
+
+
+
+export type RecordEvent = [number, number, number];
+export interface Database {
+    targetWeight: number;
+    errorPercentage: number;
+    events: RecordEvent[];
+}
