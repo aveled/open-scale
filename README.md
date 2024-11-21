@@ -1,6 +1,6 @@
 <p align="center">
     <a target="_blank" href="https://aveled.com">
-        <img src="https://raw.githubusercontent.com/aveled/open-scale/main/about/identity/open-scale.png" height="250px">
+        <img src="https://raw.githubusercontent.com/aveled/open-scale/refs/heads/main/assets/identity/open-scale.png" height="250px">
     </a>
     <br />
     <br />
@@ -37,11 +37,11 @@
 Open Scale provides infrastructure for weight measurement.
 
 <p align="center">
-    <img src="https://raw.githubusercontent.com/aveled/open-scale/main/about/images/ss-1.png" height="500px">
+    <img src="https://raw.githubusercontent.com/aveled/open-scale/refs/heads/main/assets/images/ss-1.png" height="500px">
 </p>
 
 <p align="center">
-    <img src="https://raw.githubusercontent.com/aveled/open-scale/main/about/images/ss-2.png" height="500px">
+    <img src="https://raw.githubusercontent.com/aveled/open-scale/refs/heads/main/assets/images/ss-2.png" height="500px">
 </p>
 
 
