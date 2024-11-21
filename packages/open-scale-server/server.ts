@@ -258,6 +258,10 @@ const handlerNotFound = () => {
 
 // curl -X POST -H "Content-Type: application/json" -d '{"targetWeight": 15000}' http://localhost:8485/test-set-weight
 const handlerTestSetWeight = async (req: Request) => {
+    if (Deno.env.get('ENVIRONMENT') !== 'development') {
+        return handlerNotFound();
+    }
+
     const {
         targetWeight,
     } = await req.json();
