@@ -36,6 +36,33 @@ const WeightDisplayInput: React.FC<WeightDisplayInputProps> = ({
     const [selectedChar, setSelectedChar] = useState(0);
 
 
+    const handleArrowClick = (i: number, direction: 'up' | 'down') => {
+        if (selectedChar !== i) {
+            return;
+        }
+
+        const numbers = (availableNumbers as any)[i];
+        if (!numbers) {
+            return;
+        }
+
+        const currentValue = parseInt(formattedWeight[i], 10);
+        const currentIndex = numbers.indexOf(currentValue);
+        const nextIndex = direction === 'up'
+            ? (currentIndex + 1) % numbers.length
+            : (currentIndex - 1 + numbers.length) % numbers.length;
+        const nextValue = numbers[nextIndex];
+        const newWeightString = formattedWeight.map((c, j) => {
+            if (j === i) {
+                return nextValue;
+            }
+            return c;
+        }).join('');
+        const newWeight = parseFloat(newWeightString.replace(',', '.')) * 1000;
+        update(newWeight);
+    };
+
+
     return (
         <div
             className="weight-display flex items-center justify-center"
@@ -54,30 +81,7 @@ const WeightDisplayInput: React.FC<WeightDisplayInputProps> = ({
                     {selectedChar === i && (
                         <div
                             className={`absolute -top-9 left-0 w-full cursor-pointer`}
-                            onClick={() => {
-                                if (selectedChar !== i) {
-                                    return;
-                                }
-
-                                const numbers = (availableNumbers as any)[i];
-                                if (!numbers) {
-                                    return;
-                                }
-
-                                const currentValue = parseInt(char, 10);
-                                const currentIndex = numbers.indexOf(currentValue);
-                                const nextIndex = (currentIndex + 1) % numbers.length;
-                                const nextValue = numbers[nextIndex];
-                                const newWeightString = formattedWeight.map((c, j) => {
-                                    if (j === i) {
-                                        return nextValue;
-                                    }
-
-                                    return c;
-                                }).join('');
-                                const newWeight = parseFloat(newWeightString.replace(',', '.')) * 1000;
-                                update(newWeight);
-                            }}
+                            onClick={() => handleArrowClick(i, 'up')}
                             style={{
                                 fontSize: '1.5rem',
                             }}
@@ -107,30 +111,7 @@ const WeightDisplayInput: React.FC<WeightDisplayInputProps> = ({
                     {selectedChar === i && (
                         <div
                             className={`absolute -bottom-9 left-0 w-full cursor-pointer`}
-                            onClick={() => {
-                                if (selectedChar !== i) {
-                                    return;
-                                }
-
-                                const numbers = (availableNumbers as any)[i];
-                                if (!numbers) {
-                                    return;
-                                }
-
-                                const currentValue = parseInt(char, 10);
-                                const currentIndex = numbers.indexOf(currentValue);
-                                const nextIndex = (currentIndex - 1 + numbers.length) % numbers.length;
-                                const nextValue = numbers[nextIndex];
-                                const newWeightString = formattedWeight.map((c, j) => {
-                                    if (j === i) {
-                                        return nextValue;
-                                    }
-
-                                    return c;
-                                }).join('');
-                                const newWeight = parseFloat(newWeightString.replace(',', '.')) * 1000;
-                                update(newWeight);
-                            }}
+                            onClick={() => handleArrowClick(i, 'down')}
                             style={{
                                 fontSize: '1.5rem',
                             }}

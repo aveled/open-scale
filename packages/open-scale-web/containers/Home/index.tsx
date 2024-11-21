@@ -153,23 +153,27 @@ export default function Home() {
 
     return (
         <div
-            className="grid place-content-center h-full gap-6 text-center mt-8"
+            className="grid place-content-center h-full gap-6 text-center"
         >
-            <Image
-                src="/open-scale.png"
-                alt="open scale"
-                width={150}
-                height={150}
-                style={{
-                    margin: '0 auto',
-                    userSelect: 'none',
-                    cursor: 'pointer',
-                }}
-                priority={true}
-                onClick={() => {
-                    setView('settings');
-                }}
-            />
+            <div
+                className="my-8"
+            >
+                <Image
+                    src="/open-scale.png"
+                    alt="open scale"
+                    width={150}
+                    height={150}
+                    style={{
+                        margin: '0 auto',
+                        userSelect: 'none',
+                        cursor: 'pointer',
+                    }}
+                    priority={true}
+                    onClick={() => {
+                        setView('settings');
+                    }}
+                />
+            </div>
 
             {(view === 'general' || view === 'current') && (
                 <WeightDisplay
