@@ -48,20 +48,58 @@ const WeightDisplayInput: React.FC<WeightDisplayInputProps> = ({
             {formattedWeight.map((char, i) => (
                 <div
                     key={Math.random() + ''}
-                    className={`weight-char ${selectedChar === i ? 'weight-char-blink' : ''} ${char === ',' ? '' : 'cursor-pointer'}`}
-                    style={{
-                        backgroundColor: char === ',' ? '#444' : 'auto',
-                        borderLeft: i === 0 ? '2px solid transparent' : 'auto',
-                    }}
-                    onClick={() => {
-                        if (char === ',') {
-                            return;
-                        }
-
-                        setSelectedChar(i);
-                    }}
+                    className="relative"
                 >
-                    {char}
+                    {selectedChar === i && (
+                        <div
+                            className={`absolute -top-9 left-0 w-full cursor-pointer`}
+                            onClick={() => {
+                                if (selectedChar !== i) {
+                                    return;
+                                }
+                            }}
+                            style={{
+                                fontSize: '1.5rem',
+                            }}
+                        >
+                            {/* Up Arrow */}
+                            &#11014;
+                        </div>
+                    )}
+
+                    <div
+                        className={`weight-char ${selectedChar === i ? 'weight-char-blink' : ''} ${char === ',' ? '' : 'cursor-pointer'}`}
+                        style={{
+                            backgroundColor: char === ',' ? '#444' : 'auto',
+                            borderLeft: i === 0 ? '2px solid transparent' : 'auto',
+                        }}
+                        onClick={() => {
+                            if (char === ',') {
+                                return;
+                            }
+
+                            setSelectedChar(i);
+                        }}
+                    >
+                        {char}
+                    </div>
+
+                    {selectedChar === i && (
+                        <div
+                            className={`absolute -bottom-9 left-0 w-full cursor-pointer`}
+                            onClick={() => {
+                                if (selectedChar !== i) {
+                                    return;
+                                }
+                            }}
+                            style={{
+                                fontSize: '1.5rem',
+                            }}
+                        >
+                            {/* Down Arrow */}
+                            &#11015;
+                        </div>
+                    )}
                 </div>
             ))}
 
