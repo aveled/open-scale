@@ -13,4 +13,11 @@ export const FEED_SPEED = {
 };
 export const FAST_SLOW_PERCENTAGE = 0.95;
 export const DEFAULT_TARGET_WEIGHT = 25_000;
-export const NO_WEIGHT_ERROR = 'NO_WEIGHT';
+export const DEFAULT_ERROR_PERCENTAGE = 1;
+export const WEIGHT_INTERVAL = 100;
+export const FEED_INTERVAL = 95;
+export const ERRORS = {
+    NO_WEIGHT: 'NO_WEIGHT',
+    FEED_ERROR: 'FEED_ERROR',
+    OVERSHOOT: 'OVERSHOOT',
+} as const;
