@@ -30,7 +30,7 @@ export default function RootLayout({
             lang="en"
         >
             <body
-                className={`${geistSans.variable} ${geistMono.variable} antialiased flex justify-center min-h-screen items-center`}
+                className={`${geistSans.variable} ${geistMono.variable} antialiased`}
                 suppressHydrationWarning={true}
             >
                 {children}
