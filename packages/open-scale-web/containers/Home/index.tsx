@@ -128,6 +128,19 @@ export default function Home() {
         targetWeight,
     ]);
 
+    const clearErrors = () => {
+        try {
+            setErrors([]);
+
+            fetch(ENDPOINT + PATHS.CLEAR_ERRORS, {
+                method: 'POST',
+            });
+        } catch (error) {
+            console.log('Could not clear errors', error);
+            return;
+        }
+    }
+
 
     useEffect(() => {
         const load = async () => {
@@ -206,9 +219,7 @@ export default function Home() {
                 <Button
                     text="CLEAR"
                     onClick={() => {
-                        fetch(ENDPOINT + PATHS.CLEAR_ERRORS, {
-                            method: 'POST',
-                        });
+                        clearErrors();
                     }}
                 />
             </div>
