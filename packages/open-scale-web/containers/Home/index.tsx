@@ -142,13 +142,13 @@ export default function Home() {
                 }
 
                 const {
-                    activeScale,
+                    active,
                     currentWeight,
                     targetWeight,
                     errors,
                 } = data;
 
-                setActiveScale(activeScale);
+                setActiveScale(active);
                 setCurrentWeight(currentWeight);
                 setTargetWeight(targetWeight);
                 setErros(errors);
