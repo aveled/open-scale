@@ -255,7 +255,7 @@ export default function Home() {
 
             {view === 'target' && (
                 <div
-                    className="grid grid-cols-4 gap-4 justify-center items-center text-xl"
+                    className="grid grid-cols-3 lg:grid-cols-4 gap-4 justify-center items-center text-xl"
                 >
                     {defaultTargetWeights.map((weight, index) => (
                         <button
@@ -279,6 +279,8 @@ export default function Home() {
                             </span>
                         </button>
                     ))}
+
+                    {/* custom input */}
                 </div>
             )}
 

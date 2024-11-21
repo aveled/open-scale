@@ -27,11 +27,7 @@ const WeightDisplay: React.FC<WeightDisplayProps> = ({
             }}
         >
             <div
-                className="flex items-center justify-center text-xl font-bold mr-4"
-                style={{
-                    width: '90px',
-                    height: '90px',
-                }}
+                className="flex items-center justify-center text-xl font-bold mr-4 w-[40px] h-[40px] lg:w-[90px] lg:h-[90px]"
             >
                 {icon}
             </div>
