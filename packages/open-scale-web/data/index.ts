@@ -26,3 +26,10 @@ export const defaultTargetWeights = [
 
 export type ViewType =
     | 'general' | 'settings' | 'current' | 'target';
+
+export interface StatusData {
+    active: boolean;
+    currentWeight: number;
+    targetWeight: number;
+    errors: string[];
+}

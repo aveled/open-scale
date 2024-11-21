@@ -12,6 +12,7 @@ import {
     LOADING_INTERVAL,
 
     ViewType,
+    StatusData,
 } from '@/data/index';
 
 import {
@@ -37,7 +38,7 @@ export default function Home() {
     const [activeScale, setActiveScale] = useState(false);
     const [currentWeight, setCurrentWeight] = useState(0);
     const [targetWeight, setTargetWeight] = useState(0);
-    const [errors, setErros] = useState([]);
+    const [errors, setErros] = useState<string[]>([]);
 
 
     const start = async () => {
@@ -146,7 +147,7 @@ export default function Home() {
                     currentWeight,
                     targetWeight,
                     errors,
-                } = data;
+                } = data as StatusData;
 
                 setActiveScale(active);
                 setCurrentWeight(currentWeight);
