@@ -15,6 +15,7 @@ import {
 } from '@/data/index';
 
 import WeightDisplay from '@/components/WeightDisplay';
+import WeightDisplayInput from '@/components/WeightDisplayInput';
 import Button from '@/components/Button';
 
 
@@ -22,7 +23,6 @@ import Button from '@/components/Button';
 export default function Home() {
     const [view, setView] = useState<'general' | 'settings' | 'current' | 'target'>('general');
     const [showCustomInput, setShowCustomInput] = useState(false);
-    const [customInput, setCustomInput] = useState(0);
 
     const [activeScale, setActiveScale] = useState(false);
     const [currentWeight, setCurrentWeight] = useState(0);
@@ -150,16 +150,6 @@ export default function Home() {
         load();
     }, []);
 
-    useEffect(() => {
-        if (showCustomInput) {
-            newTargetWeight(customInput);
-        }
-    }, [
-        customInput,
-        showCustomInput,
-        newTargetWeight,
-    ]);
-
 
     return (
         <div
@@ -242,23 +232,26 @@ export default function Home() {
             {view === 'target'
             && showCustomInput
             && (
-                <div>
-                    {/* // weight display like but with increase decrease buttons */}
-                    <input
-                        type="number"
-                        value={customInput}
-                        min={0}
-                        max={50000}
-                        step={500}
-                        onFocus={(e) => {
-                            e.target.select();
-                        }}
-                        onChange={(e) => {
-                            setCustomInput(Number(e.target.value));
-                        }}
-                        className="text-2xl w-[300px] font-bold p-4 rounded-full select-none bg-[#5a5a5a] text-[#eab5b5] text-center"
-                    />
-                </div>
+                <WeightDisplayInput
+                    icon={(<>
+                        <Image
+                            src="/target.svg"
+                            alt="target"
+                            width={70}
+                            height={70}
+                            style={{
+                                margin: '0 auto',
+                                pointerEvents: 'none',
+                                userSelect: 'none',
+                            }}
+                            priority={true}
+                        />
+                    </>)}
+                    weight={targetWeight}
+                    update={(value) => {
+                        newTargetWeight(value);
+                    }}
+                />
             )}
 
             <div
@@ -302,6 +295,7 @@ export default function Home() {
                                 key={index}
                                 className="flex items-center justify-center text-2xl font-bold p-4 rounded-full select-none bg-[#5a5a5a] text-[#eab5b5]"
                                 onClick={() => {
+                                    setShowCustomInput(false);
                                     newTargetWeight(weight);
                                 }}
                                 style={{
