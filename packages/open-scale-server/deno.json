@@ -2,7 +2,8 @@
     "tasks": {
         "dev": "deno run -A --watch --env-file server.ts",
         "run": "deno run -A --env-file server.ts",
-        "mock": "deno run -A modbus-mock.ts"
+        "mock": "deno run -A modbus-mock.ts",
+        "tester": "deno run -A tester.ts"
     },
     "imports": {
         "@std/assert": "jsr:@std/assert@1",
