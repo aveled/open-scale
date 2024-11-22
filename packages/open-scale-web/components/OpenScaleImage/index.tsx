@@ -4,8 +4,10 @@ import Image from 'next/image';
 
 export default function OpenScaleImage({
     setView,
+    clickable,
 }: {
     setView: () => void;
+    clickable: boolean;
 }) {
     return (
         <div
@@ -19,7 +21,7 @@ export default function OpenScaleImage({
                 style={{
                     margin: '0 auto',
                     userSelect: 'none',
-                    cursor: 'pointer',
+                    cursor: clickable === false ? '' : 'pointer',
                 }}
                 priority={true}
                 draggable={false}

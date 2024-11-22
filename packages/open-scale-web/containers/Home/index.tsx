@@ -236,8 +236,13 @@ export default function Home() {
         >
             <OpenScaleImage
                 setView={() => {
+                    if (activeScale) {
+                        return;
+                    }
+
                     setView('settings');
                 }}
+                clickable={!activeScale}
             />
 
             {(view === 'general' || view === 'current') && (
@@ -248,7 +253,7 @@ export default function Home() {
                     setView={() => {
                         setView('current');
                     }}
-                    clickable={view === 'general'}
+                    clickable={view === 'general' && !activeScale}
                 />
             )}
 
@@ -270,7 +275,7 @@ export default function Home() {
                     setView={() => {
                         setView('target');
                     }}
-                    clickable={view === 'general'}
+                    clickable={view === 'general' && !activeScale}
                 />
             )}
 
