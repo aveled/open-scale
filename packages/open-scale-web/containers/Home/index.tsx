@@ -26,11 +26,15 @@ import WeightDisplayInput from '@/components/WeightDisplayInput';
 import WeightSelector from '@/components/WeightSelector';
 import Button from '@/components/Button';
 import HomeButton from '@/components/HomeButton';
+import Settings from '@/components/Settings';
 
 
 
 export default function Home() {
     const [loading, setLoading] = useState(true);
+
+    const [language, setLanguage] = useState('english');
+    const [theme, setTheme] = useState('dark');
 
     const [view, setView] = useState<ViewType>('general');
     const [showCustomInput, setShowCustomInput] = useState(false);
@@ -333,17 +337,12 @@ export default function Home() {
             )}
 
             {view === 'settings' && (
-                <div
-                    className="grid gap-6"
-                >
-                    <div>
-                        language
-                    </div>
-
-                    <div>
-                        theme
-                    </div>
-                </div>
+                <Settings
+                    language={language}
+                    setLanguage={setLanguage}
+                    theme={theme}
+                    setTheme={setTheme}
+                />
             )}
 
             {view !== 'general' && (
