@@ -9,12 +9,16 @@ export const i18n = {
         tare: 'tare',
         language: 'language',
         theme: 'theme',
+        errorPercentage: 'error percentage',
+        restingTime: 'resting time',
     },
     ro: {
         home: 'acasă',
         tare: 'tarare',
         language: 'limbă',
         theme: 'temă',
+        errorPercentage: 'procentaj de eroare',
+        restingTime: 'timp de așezare',
     },
 } as const;
 

@@ -6,6 +6,7 @@ export const PATHS = {
     STOP: '/stop',
     TARGET_WEIGHT: '/target-weight',
     TARE: '/tare',
+    SETTINGS: '/settings',
     CLEAR_ERRORS: '/clear-errors',
 } as const;
 
@@ -22,6 +23,31 @@ export const defaultTargetWeights = [
     30_000,
     50_000,
 ];
+
+export const errorPercentageValues = {
+    '0,1 %': 0.1,
+    '0,2 %': 0.2,
+    '0,3 %': 0.3,
+    '0,5 %': 0.5,
+    '1,0 %': 1.0,
+    '1,5 %': 1.5,
+    '2,0 %': 2.0,
+    '2,5 %': 2.5,
+    '3,0 %': 3.0,
+} as const;
+
+export const restingTimeValues = {
+    '0,1 s': 0.1,
+    '0,2 s': 0.2,
+    '0,3 s': 0.3,
+    '0,5 s': 0.5,
+    '1 s': 1.0,
+    '1,5 s': 1.5,
+    '2 s': 2.0,
+    '2,5 s': 2.5,
+    '3 s': 3.0,
+    '5 s': 5.0,
+} as const;
 
 
 export type ViewType =
