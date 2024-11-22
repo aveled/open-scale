@@ -30,3 +30,11 @@ export interface Database {
     errorPercentage: number;
     events: RecordEvent[];
 }
+
+
+export interface ScaleStatus {
+    active: boolean;
+    currentWeight: number;
+    targetWeight: number;
+    errors: string[];
+}

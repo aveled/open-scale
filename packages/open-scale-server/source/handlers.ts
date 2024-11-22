@@ -2,6 +2,10 @@
 
 import scaleManager from './scaleManager.ts';
 
+import {
+    ScaleStatus,
+} from './data.ts';
+
 
 
 const handlerResponse = <D = any>(
@@ -29,7 +33,7 @@ const handlerStatus = async (_req: Request) => {
         currentWeight: scaleManager.getCurrentWeight(),
         targetWeight: scaleManager.getTargetWeight(),
         errors: scaleManager.getErrors(),
-    };
+    } satisfies ScaleStatus;
 
     return handlerResponse({
         status: true,

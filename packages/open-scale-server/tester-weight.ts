@@ -31,6 +31,16 @@ async function assertWeight(value: number) {
     }
 }
 
+async function assertStopped() {
+    const status = await getStatus();
+
+    if (status.data.active) {
+        throw new Error('Scale is running');
+    } else {
+        console.log('[assert] Scale is stopped');
+    }
+}
+
 async function start() {
     await fetch(ENDPOINT + '/start', {
         method: 'POST',
@@ -63,8 +73,15 @@ async function delay(seconds: number) {
 
 
 
-const testSuite = async () => {
+const reset = async () => {
     await setWeight(0);
+    await delay(0.2);
+    await setWeight(0);
+    await assertStopped();
+}
+
+const scenarioTest1 = async () => {
+    await reset();
 
     await setTargetWeight(10000);
     await start();
@@ -81,6 +98,17 @@ const testSuite = async () => {
     await setWeight(9990);
     await delay(0.2);
     await assertWeight(9990);
+
+    await reset();
 }
 
-testSuite();
+
+const scenarios = [
+    ['Test 1', scenarioTest1],
+] as const;
+
+
+for (const [name, scenario] of scenarios) {
+    console.log(`Running scenario: ${name}`);
+    await scenario();
+}
