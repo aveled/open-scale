@@ -159,6 +159,7 @@ class ScaleManager {
     }
 
     public async setTargetWeight(targetWeight: number) {
+        logger('info', 'Set target weight', targetWeight);
         this.targetWeight = targetWeight;
 
         await database.update((data) => {
