@@ -6,11 +6,13 @@ import {
     FAST_SLOW_PERCENTAGE,
     DEFAULT_TARGET_WEIGHT,
     DEFAULT_ERROR_PERCENTAGE,
+    DEFAULT_RESTING_TIME,
     WEIGHT_INTERVAL,
     FEED_INTERVAL,
     ERRORS,
 
     RecordEvent,
+    ScaleSettings,
 } from './data.ts';
 import modbus from './modbus.ts';
 import database from './database.ts';
@@ -25,6 +27,7 @@ class ScaleManager {
     private currentWeight: number = 0;
     private targetWeight: number = DEFAULT_TARGET_WEIGHT;
     private errorPercentage: number = DEFAULT_ERROR_PERCENTAGE;
+    private restingTime: number = DEFAULT_RESTING_TIME;
     private activeScale: boolean = false;
     private feedStarted: boolean = false;
     private feedStopped: boolean = false;
@@ -51,6 +54,7 @@ class ScaleManager {
 
         this.targetWeight = database.data.targetWeight ?? DEFAULT_TARGET_WEIGHT;
         this.errorPercentage = database.data.errorPercentage ?? DEFAULT_ERROR_PERCENTAGE;
+        this.restingTime = database.data.restingTime ?? DEFAULT_RESTING_TIME;
     }
 
     private startMonitoring() {
@@ -136,7 +140,15 @@ class ScaleManager {
         return this.currentWeight >= lowerBound && this.currentWeight <= upperBound;
     }
 
+    private delayRestingTime() {
+        return new Promise((resolve) => {
+            setTimeout(resolve, this.restingTime);
+        });
+    }
+
     private async recordScaleEvent() {
+        await this.delayRestingTime();
+
         const data = [
             Date.now(),
             this.targetWeight,
@@ -186,6 +198,18 @@ class ScaleManager {
     public tare() {
         this.currentWeight = 0;
         this.client.writeRegisters(REGISTERS.TARE, [1]);
+    }
+
+    public async updateSettings(
+        settings: ScaleSettings,
+    ) {
+        this.errorPercentage = settings.errorPercentage;
+        this.restingTime = settings.restingTime;
+
+        await database.update((data) => {
+            data.errorPercentage = settings.errorPercentage;
+            data.restingTime = settings.restingTime;
+        });
     }
 
     public clearErrors() {

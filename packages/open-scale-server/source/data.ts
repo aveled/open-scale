@@ -12,8 +12,9 @@ export const FEED_SPEED = {
     SLOW: 20,
 };
 export const FAST_SLOW_PERCENTAGE = 0.95;
-export const DEFAULT_TARGET_WEIGHT = 25_000;
+export const DEFAULT_TARGET_WEIGHT = 25_000; // grams
 export const DEFAULT_ERROR_PERCENTAGE = 1;
+export const DEFAULT_RESTING_TIME = 1_000; // ms
 export const WEIGHT_INTERVAL = 100;
 export const FEED_INTERVAL = 95;
 export const ERRORS = {
@@ -28,6 +29,7 @@ export type RecordEvent = [number, number, number];
 export interface Database {
     targetWeight: number;
     errorPercentage: number;
+    restingTime: number;
     events: RecordEvent[];
 }
 
@@ -37,4 +39,9 @@ export interface ScaleStatus {
     currentWeight: number;
     targetWeight: number;
     errors: string[];
+}
+
+export interface ScaleSettings {
+    errorPercentage: number;
+    restingTime: number;
 }

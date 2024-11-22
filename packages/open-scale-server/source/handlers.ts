@@ -81,6 +81,22 @@ const handlerTare = async (_req: Request) => {
     });
 }
 
+const handlerSettings = async (req: Request) => {
+    const {
+        errorPercentage,
+        restingTime,
+    } = await req.json();
+
+    scaleManager.updateSettings({
+        errorPercentage,
+        restingTime,
+    });
+
+    return handlerResponse({
+        status: true,
+    });
+}
+
 // curl -X POST http://localhost:8485/clear-errors
 const handlerClearErrors = async (_req: Request) => {
     scaleManager.clearErrors();
@@ -136,6 +152,7 @@ const PATHS = {
     STOP: '/stop',
     TARGET_WEIGHT: '/target-weight',
     TARE: '/tare',
+    SETTINGS: '/settings',
     CLEAR_ERRORS: '/clear-errors',
     TEST_SET_WEIGHT: '/test-set-weight',
 } as const;
@@ -150,6 +167,7 @@ const handlers = {
         [PATHS.STOP]: handlerStop,
         [PATHS.TARGET_WEIGHT]: handlerTargetWeight,
         [PATHS.TARE]: handlerTare,
+        [PATHS.SETTINGS]: handlerSettings,
         [PATHS.CLEAR_ERRORS]: handlerClearErrors,
         [PATHS.TEST_SET_WEIGHT]: handlerTestSetWeight,
     },
@@ -159,6 +177,7 @@ const handlers = {
         [PATHS.STOP]: handlerOptions,
         [PATHS.TARGET_WEIGHT]: handlerOptions,
         [PATHS.TARE]: handlerOptions,
+        [PATHS.SETTINGS]: handlerOptions,
         [PATHS.CLEAR_ERRORS]: handlerOptions,
     },
 } as const;
