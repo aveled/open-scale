@@ -1,7 +1,16 @@
+import {
+    Language,
+    i18n,
+} from '@/data/language';
+
+
+
 export default function HomeButton({
     setView,
+    language,
 }: {
     setView: () => void;
+    language: Language,
 }) {
     return (
         <div
@@ -13,7 +22,7 @@ export default function HomeButton({
                     setView();
                 }}
             >
-                HOME
+                {i18n[language].home.toUpperCase()}
             </button>
         </div>
     );

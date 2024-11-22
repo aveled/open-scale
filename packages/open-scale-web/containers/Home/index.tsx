@@ -20,6 +20,11 @@ import {
     currentTargetIcon,
 } from '@/data/icons';
 
+import {
+    i18n,
+    Language,
+} from '@/data/language';
+
 import OpenScaleImage from '@/components/OpenScaleImage';
 import WeightDisplay from '@/components/WeightDisplay';
 import WeightDisplayInput from '@/components/WeightDisplayInput';
@@ -33,7 +38,7 @@ import Settings from '@/components/Settings';
 export default function Home() {
     const [loading, setLoading] = useState(true);
 
-    const [language, setLanguage] = useState('english');
+    const [language, setLanguage] = useState<Language>('en');
     const [theme, setTheme] = useState('dark');
 
     const [view, setView] = useState<ViewType>('general');
@@ -194,6 +199,16 @@ export default function Home() {
         loading,
     ]);
 
+    useEffect(() => {
+        if (theme === 'light') {
+            document.body.style.backgroundColor = '#f0fff0';
+        } else {
+            document.body.style.backgroundColor = '#0a0a0a';
+        }
+    }, [
+        theme,
+    ]);
+
 
     if (errors.length > 0) {
         return (
@@ -237,6 +252,9 @@ export default function Home() {
     return (
         <div
             className="grid place-content-center h-full gap-6 text-center"
+            style={{
+                filter: theme === 'light' ? 'invert(1)' : '',
+            }}
         >
             <OpenScaleImage
                 setView={() => {
@@ -321,7 +339,7 @@ export default function Home() {
 
                 {view === 'current' && (
                     <Button
-                        text="TARE"
+                        text={i18n[language].tare.toUpperCase()}
                         onClick={() => {
                             tare();
                         }}
@@ -350,6 +368,7 @@ export default function Home() {
                     setView={() => {
                         setView('general');
                     }}
+                    language={language}
                 />
             )}
         </div>

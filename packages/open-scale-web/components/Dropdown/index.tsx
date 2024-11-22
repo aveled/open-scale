@@ -124,7 +124,7 @@ export default function CustomDropdown({
                         <Dropdown.Item
                             key={selectable}
                             className={`
-                                ${selectable === selected && 'bg-[#5a5a5a] text-white cursor-default'}
+                                text-lg ${selectable === selected && 'bg-[#5a5a5a] text-white cursor-default'}
                             `}
                             onClick={() => {
                                 atSelect(selectable);
