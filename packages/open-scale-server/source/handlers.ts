@@ -32,6 +32,7 @@ const handlerStatus = async (_req: Request) => {
         active: scaleManager.isActive(),
         currentWeight: scaleManager.getCurrentWeight(),
         targetWeight: scaleManager.getTargetWeight(),
+        settings: scaleManager.getSettings(),
         errors: scaleManager.getErrors(),
     } satisfies ScaleStatus;
 

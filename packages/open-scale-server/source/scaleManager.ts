@@ -218,6 +218,16 @@ class ScaleManager {
         this.client.writeRegisters(REGISTERS.TARE, [1]);
     }
 
+    public getSettings() {
+        return {
+            fastFeedSpeed: this.fastFeedSpeed,
+            slowFeedSpeed: this.slowFeedSpeed,
+            fastSlowPercentage: this.fastSlowPercentage,
+            errorPercentage: this.errorPercentage,
+            restingTime: this.restingTime,
+        } satisfies ScaleSettings;
+    }
+
     public async updateSettings(
         settings: ScaleSettings,
     ) {
@@ -228,6 +238,9 @@ class ScaleManager {
         this.restingTime = settings.restingTime;
 
         await database.update((data) => {
+            data.fastFeedSpeed = settings.fastFeedSpeed;
+            data.slowFeedSpeed = settings.slowFeedSpeed;
+            data.fastSlowPercentage = settings.fastSlowPercentage;
             data.errorPercentage = settings.errorPercentage;
             data.restingTime = settings.restingTime;
         });

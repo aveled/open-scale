@@ -51,6 +51,7 @@ export interface ScaleStatus {
     active: boolean;
     currentWeight: number;
     targetWeight: number;
+    settings: ScaleSettings;
     errors: string[];
 }
 
