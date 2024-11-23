@@ -113,6 +113,14 @@ const handlerClearErrors = async (_req: Request) => {
     });
 }
 
+const handlerRestartServer = async (_req: Request) => {
+    // schedule restart
+
+    return handlerResponse({
+        status: true,
+    });
+}
+
 const handlerNotFound = () => {
     return handlerResponse(
         { status: false },
@@ -161,6 +169,7 @@ const PATHS = {
     TARE: '/tare',
     SETTINGS: '/settings',
     CLEAR_ERRORS: '/clear-errors',
+    RESTART_SERVER: '/restart-server',
     TEST_SET_WEIGHT: '/test-set-weight',
 } as const;
 
@@ -176,6 +185,7 @@ const handlers = {
         [PATHS.TARE]: handlerTare,
         [PATHS.SETTINGS]: handlerSettings,
         [PATHS.CLEAR_ERRORS]: handlerClearErrors,
+        [PATHS.RESTART_SERVER]: handlerRestartServer,
         [PATHS.TEST_SET_WEIGHT]: handlerTestSetWeight,
     },
     OPTIONS: {
@@ -186,6 +196,7 @@ const handlers = {
         [PATHS.TARE]: handlerOptions,
         [PATHS.SETTINGS]: handlerOptions,
         [PATHS.CLEAR_ERRORS]: handlerOptions,
+        [PATHS.RESTART_SERVER]: handlerOptions,
     },
 } as const;
 
