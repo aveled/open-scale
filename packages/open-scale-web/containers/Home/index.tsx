@@ -214,6 +214,38 @@ export default function Home() {
         theme,
     ]);
 
+    useEffect(() => {
+        const handleSocket = () => {
+            try {
+                const socket = new WebSocket(ENDPOINT.replace('http', 'ws'));
+
+                socket.addEventListener('message', (event) => {
+                    try {
+                        const {
+                            active,
+                            currentWeight,
+                            targetWeight,
+                            settings,
+                            errors,
+                        } = JSON.parse(event.data) as StatusData;
+
+                        setActiveScale(active);
+                        setCurrentWeight(currentWeight);
+                        setTargetWeight(targetWeight);
+                        setScaleSettings(settings);
+                        setErrors(errors);
+                    } catch (error) {
+                        return;
+                    }
+                });
+            } catch (error) {
+                return;
+            }
+        }
+
+        handleSocket();
+    }, []);
+
 
     if (errors.length > 0) {
         return (

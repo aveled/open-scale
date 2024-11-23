@@ -11,7 +11,7 @@ export const PATHS = {
     RESTART_SERVER: '/restart-server',
 } as const;
 
-export const LOADING_INTERVAL = 1_000; // ms
+export const LOADING_INTERVAL = 5_000; // ms
 
 
 
