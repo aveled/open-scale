@@ -24,8 +24,15 @@ export const ERRORS = {
 } as const;
 
 
-
-export type RecordEvent = [number, number, number];
+export type RecordEvent = [
+    number, // startFeedTime
+    number, // slowFeedTime difference
+    number, // currentTime difference
+    number, // targetWeight
+    number, // currentWeight difference
+    number, // errorPercentage,
+    number, // restingTime,
+];
 export interface Database {
     targetWeight: number;
     errorPercentage: number;

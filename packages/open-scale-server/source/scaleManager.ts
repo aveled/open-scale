@@ -33,6 +33,8 @@ class ScaleManager {
     private feedStopped: boolean = false;
     private feedFastSet: boolean = false;
     private feedSlowSet: boolean = false;
+    private startFeedTime: number = 0;
+    private slowFeedTime: number = 0;
     private errors: Set<string> = new Set();
 
 
@@ -99,6 +101,7 @@ class ScaleManager {
                     if (!this.feedSlowSet) {
                         logger('info', 'Set feed to slow', this.currentWeight, this.targetWeight);
                         this.feedSlowSet = true;
+                        this.slowFeedTime = Date.now();
                         await this.client.writeRegisters(REGISTERS.SPEED_FEED, [FEED_SPEED.SLOW]);
                     }
                 }
@@ -108,6 +111,7 @@ class ScaleManager {
                     this.feedFastSet = false;
                     this.feedSlowSet = false;
 
+                    this.startFeedTime = Date.now();
                     await this.client.writeRegisters(REGISTERS.START_FEED, [1]);
                 }
             } else {
@@ -149,10 +153,15 @@ class ScaleManager {
     private async recordScaleEvent() {
         await this.delayRestingTime();
 
+        const now = Date.now();
         const data = [
-            Date.now(),
+            this.startFeedTime,
+            this.slowFeedTime - this.startFeedTime,
+            now - this.startFeedTime,
             this.targetWeight,
-            this.currentWeight,
+            this.currentWeight - this.targetWeight,
+            this.errorPercentage,
+            this.restingTime,
         ] satisfies RecordEvent;
         logger('info', 'Record scale event', data);
 
