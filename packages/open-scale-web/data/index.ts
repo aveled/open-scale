@@ -24,6 +24,31 @@ export const defaultTargetWeights = [
     50_000,
 ];
 
+export const fastFeedSpeedValues = {
+    '35 Hz': 35,
+    '40 Hz': 40,
+    '45 Hz': 45,
+    '50 Hz': 50,
+} as const;
+
+export const slowFeedSpeedValues = {
+    '10 Hz': 10,
+    '15 Hz': 15,
+    '20 Hz': 20,
+    '25 Hz': 25,
+    '30 Hz': 30,
+    '35 Hz': 35,
+} as const;
+
+export const fastSlowPercentageValues = {
+    '85 %': 0.85,
+    '87 %': 0.87,
+    '90 %': 0.9,
+    '93 %': 0.93,
+    '95 %': 0.95,
+    '97 %': 0.97,
+} as const;
+
 export const errorPercentageValues = {
     '0,1 %': 0.1,
     '0,2 %': 0.2,

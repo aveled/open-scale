@@ -6,6 +6,9 @@ import {
 import {
     ENDPOINT,
     PATHS,
+    fastFeedSpeedValues,
+    slowFeedSpeedValues,
+    fastSlowPercentageValues,
     errorPercentageValues,
     restingTimeValues,
 } from '@/data/index';
@@ -31,12 +34,18 @@ export default function Settings({
     theme: string;
     setTheme: React.Dispatch<React.SetStateAction<string>>;
 }) {
+    const [fastFeedSpeed, setFastFeedSpeed] = useState<keyof typeof fastFeedSpeedValues>('50 Hz');
+    const [slowFeedSpeed, setSlowFeedSpeed] = useState<keyof typeof slowFeedSpeedValues>('20 Hz');
+    const [fastSlowPercentage, setFastSlowPercentage] = useState<keyof typeof fastSlowPercentageValues>('95 %');
     const [errorPercentage, setErrorPercentage] = useState<keyof typeof errorPercentageValues>('1,0 %');
     const [restingTime, setRestingTime] = useState<keyof typeof restingTimeValues>('1 s');
 
 
     useEffect(() => {
         const updateSettings = async (
+            fastFeedSpeed: number,
+            slowFeedSpeed: number,
+            fastSlowPercentage: number,
             errorPercentage: number,
             restingTime: number,
         ) => {
@@ -47,6 +56,9 @@ export default function Settings({
                         'Content-Type': 'application/json',
                     },
                     body: JSON.stringify({
+                        fastFeedSpeed,
+                        slowFeedSpeed,
+                        fastSlowPercentage,
                         errorPercentage,
                         restingTime,
                     }),
@@ -56,14 +68,23 @@ export default function Settings({
             }
         }
 
+        const fastFeedSpeedValue = fastFeedSpeedValues[fastFeedSpeed];
+        const slowFeedSpeedValue = slowFeedSpeedValues[slowFeedSpeed];
+        const fastSlowPercentageValue = fastSlowPercentageValues[fastSlowPercentage];
         const errorPercentageValue = errorPercentageValues[errorPercentage];
         const restingTimeValue = restingTimeValues[restingTime];
 
         updateSettings(
+            fastFeedSpeedValue,
+            slowFeedSpeedValue,
+            fastSlowPercentageValue,
             errorPercentageValue,
             restingTimeValue,
         );
     }, [
+        fastFeedSpeed,
+        slowFeedSpeed,
+        fastSlowPercentage,
         errorPercentage,
         restingTime,
     ]);
@@ -98,6 +119,39 @@ export default function Settings({
                 selected={theme}
                 atSelect={(selected) => {
                     setTheme(selected);
+                }}
+            />
+
+            <Dropdown
+                name={i18n[language].fastFeedSpeed}
+                selectables={[
+                    ...Object.keys(fastFeedSpeedValues),
+                ]}
+                selected={fastFeedSpeed}
+                atSelect={(selected) => {
+                    setFastFeedSpeed(selected as keyof typeof fastFeedSpeedValues);
+                }}
+            />
+
+            <Dropdown
+                name={i18n[language].slowFeedSpeed}
+                selectables={[
+                    ...Object.keys(slowFeedSpeedValues),
+                ]}
+                selected={slowFeedSpeed}
+                atSelect={(selected) => {
+                    setSlowFeedSpeed(selected as keyof typeof slowFeedSpeedValues);
+                }}
+            />
+
+            <Dropdown
+                name={i18n[language].fastSlowPercentage}
+                selectables={[
+                    ...Object.keys(fastSlowPercentageValues),
+                ]}
+                selected={fastSlowPercentage}
+                atSelect={(selected) => {
+                    setFastSlowPercentage(selected as keyof typeof fastSlowPercentageValues);
                 }}
             />
 
