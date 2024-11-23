@@ -82,5 +82,30 @@ export interface StatusData {
     active: boolean;
     currentWeight: number;
     targetWeight: number;
+    settings: ScaleSettings;
     errors: string[];
 }
+
+export interface ScaleSettings {
+    fastFeedSpeed: number;
+    slowFeedSpeed: number;
+    fastSlowPercentage: number;
+    errorPercentage: number;
+    restingTime: number;
+}
+
+export interface TextualScaleSettings {
+    fastFeedSpeed: string;
+    slowFeedSpeed: string;
+    fastSlowPercentage: string;
+    errorPercentage: string;
+    restingTime: string;
+}
+
+export const defaultScaleSettings: TextualScaleSettings = {
+    fastFeedSpeed: '50 Hz',
+    slowFeedSpeed: '20 Hz',
+    fastSlowPercentage: '95 %',
+    errorPercentage: '1,0 %',
+    restingTime: '1 s',
+} as const;

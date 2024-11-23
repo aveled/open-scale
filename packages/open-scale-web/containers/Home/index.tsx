@@ -7,12 +7,14 @@ import {
 } from 'react';
 
 import {
+    ViewType,
+    StatusData,
+    TextualScaleSettings,
+
     ENDPOINT,
     PATHS,
     LOADING_INTERVAL,
-
-    ViewType,
-    StatusData,
+    defaultScaleSettings,
 } from '@/data/index';
 
 import {
@@ -24,6 +26,10 @@ import {
     i18n,
     Language,
 } from '@/data/language';
+
+import {
+    mapSettingsValuesToTextual,
+} from '@/logic/utilities';
 
 import OpenScaleImage from '@/components/OpenScaleImage';
 import WeightDisplay from '@/components/WeightDisplay';
@@ -47,6 +53,7 @@ export default function Home() {
     const [activeScale, setActiveScale] = useState(false);
     const [currentWeight, setCurrentWeight] = useState(0);
     const [targetWeight, setTargetWeight] = useState(0);
+    const [scaleSettings, setScaleSettings] = useState<TextualScaleSettings>(defaultScaleSettings);
     const [errors, setErrors] = useState<string[]>([]);
 
 
@@ -168,12 +175,14 @@ export default function Home() {
                     active,
                     currentWeight,
                     targetWeight,
+                    settings,
                     errors,
                 } = data as StatusData;
 
                 setActiveScale(active);
                 setCurrentWeight(currentWeight);
                 setTargetWeight(targetWeight);
+                setScaleSettings(mapSettingsValuesToTextual(settings));
                 setErrors(errors);
 
                 if (loading) {
