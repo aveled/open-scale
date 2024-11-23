@@ -3,7 +3,7 @@ import './style.css';
 
 
 
-interface WeightDisplayProps {
+export interface WeightDisplayProps {
     icon: JSX.Element;
     weight: number;
     setView: () => void;

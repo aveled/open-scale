@@ -27,10 +27,6 @@ import {
     Language,
 } from '@/data/language';
 
-import {
-    mapSettingsValuesToTextual,
-} from '@/logic/utilities';
-
 import OpenScaleImage from '@/components/OpenScaleImage';
 import WeightDisplay from '@/components/WeightDisplay';
 import WeightDisplayInput from '@/components/WeightDisplayInput';
