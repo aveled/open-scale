@@ -6,8 +6,11 @@ import { Low } from 'lowdb';
 import { JSONFile } from 'lowdb/node';
 
 import {
+    DEFAULT_FEED_SPEED,
+    DEFAULT_FAST_SLOW_PERCENTAGE,
     DEFAULT_TARGET_WEIGHT,
     DEFAULT_ERROR_PERCENTAGE,
+    DEFAULT_RESTING_TIME,
 
     Database,
 } from './data.ts';
@@ -26,8 +29,12 @@ const setupDatabase = async () => {
         '/db.json',
     );
     const defaultData: Database = {
+        fastFeedSpeed: DEFAULT_FEED_SPEED.FAST,
+        slowFeedSpeed: DEFAULT_FEED_SPEED.SLOW,
+        fastSlowPercentage: DEFAULT_FAST_SLOW_PERCENTAGE,
         targetWeight: DEFAULT_TARGET_WEIGHT,
         errorPercentage: DEFAULT_ERROR_PERCENTAGE,
+        restingTime: DEFAULT_RESTING_TIME,
         events: [],
     };
 

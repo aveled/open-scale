@@ -7,11 +7,11 @@ export const REGISTERS = {
     SPEED_FEED: 8,
     TARE: 9,
 };
-export const FEED_SPEED = {
+export const DEFAULT_FEED_SPEED = {
     FAST: 50,
     SLOW: 20,
-};
-export const FAST_SLOW_PERCENTAGE = 0.95;
+}; // Hz
+export const DEFAULT_FAST_SLOW_PERCENTAGE = 0.95;
 export const DEFAULT_TARGET_WEIGHT = 25_000; // grams
 export const DEFAULT_ERROR_PERCENTAGE = 1;
 export const DEFAULT_RESTING_TIME = 1_000; // ms
@@ -30,10 +30,16 @@ export type RecordEvent = [
     number, // currentTime difference
     number, // targetWeight
     number, // currentWeight difference
+    number, // fastSlowPercentage
     number, // errorPercentage,
     number, // restingTime,
+    number, // fastFeedSpeed
+    number, // slowFeedSpeed
 ];
 export interface Database {
+    fastFeedSpeed: number;
+    slowFeedSpeed: number;
+    fastSlowPercentage: number;
     targetWeight: number;
     errorPercentage: number;
     restingTime: number;
@@ -49,6 +55,9 @@ export interface ScaleStatus {
 }
 
 export interface ScaleSettings {
+    fastFeedSpeed: number;
+    slowFeedSpeed: number;
+    fastSlowPercentage: number;
     errorPercentage: number;
     restingTime: number;
 }

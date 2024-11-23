@@ -83,11 +83,17 @@ const handlerTare = async (_req: Request) => {
 
 const handlerSettings = async (req: Request) => {
     const {
+        fastFeedSpeed,
+        slowFeedSpeed,
+        fastSlowPercentage,
         errorPercentage,
         restingTime,
     } = await req.json();
 
     scaleManager.updateSettings({
+        fastFeedSpeed,
+        slowFeedSpeed,
+        fastSlowPercentage,
         errorPercentage,
         restingTime,
     });

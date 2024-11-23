@@ -2,8 +2,8 @@ import ModbusRTU from 'npm:modbus-serial';
 
 import {
     REGISTERS,
-    FEED_SPEED,
-    FAST_SLOW_PERCENTAGE,
+    DEFAULT_FEED_SPEED,
+    DEFAULT_FAST_SLOW_PERCENTAGE,
     DEFAULT_TARGET_WEIGHT,
     DEFAULT_ERROR_PERCENTAGE,
     DEFAULT_RESTING_TIME,
@@ -25,6 +25,9 @@ import {
 class ScaleManager {
     private client: ModbusRTU.default;
     private currentWeight: number = 0;
+    private fastFeedSpeed: number = DEFAULT_FEED_SPEED.FAST;
+    private slowFeedSpeed: number = DEFAULT_FEED_SPEED.SLOW;
+    private fastSlowPercentage: number = DEFAULT_FAST_SLOW_PERCENTAGE;
     private targetWeight: number = DEFAULT_TARGET_WEIGHT;
     private errorPercentage: number = DEFAULT_ERROR_PERCENTAGE;
     private restingTime: number = DEFAULT_RESTING_TIME;
@@ -54,6 +57,9 @@ class ScaleManager {
     private async loadDatabase() {
         await database.read();
 
+        this.fastFeedSpeed = database.data.fastFeedSpeed ?? DEFAULT_FEED_SPEED.FAST;
+        this.slowFeedSpeed = database.data.slowFeedSpeed ?? DEFAULT_FEED_SPEED.SLOW;
+        this.fastSlowPercentage = database.data.fastSlowPercentage ?? DEFAULT_FAST_SLOW_PERCENTAGE;
         this.targetWeight = database.data.targetWeight ?? DEFAULT_TARGET_WEIGHT;
         this.errorPercentage = database.data.errorPercentage ?? DEFAULT_ERROR_PERCENTAGE;
         this.restingTime = database.data.restingTime ?? DEFAULT_RESTING_TIME;
@@ -91,18 +97,18 @@ class ScaleManager {
             if (!this.checkWeight()) {
                 this.feedStopped = false;
 
-                if (this.currentWeight < this.targetWeight * FAST_SLOW_PERCENTAGE) {
+                if (this.currentWeight < this.targetWeight * this.fastSlowPercentage) {
                     if (!this.feedFastSet) {
                         logger('info', 'Set feed to fast', this.currentWeight, this.targetWeight);
                         this.feedFastSet = true;
-                        await this.client.writeRegisters(REGISTERS.SPEED_FEED, [FEED_SPEED.FAST]);
+                        await this.client.writeRegisters(REGISTERS.SPEED_FEED, [this.fastFeedSpeed]);
                     }
                 } else {
                     if (!this.feedSlowSet) {
                         logger('info', 'Set feed to slow', this.currentWeight, this.targetWeight);
                         this.feedSlowSet = true;
                         this.slowFeedTime = Date.now();
-                        await this.client.writeRegisters(REGISTERS.SPEED_FEED, [FEED_SPEED.SLOW]);
+                        await this.client.writeRegisters(REGISTERS.SPEED_FEED, [this.slowFeedSpeed]);
                     }
                 }
 
@@ -160,8 +166,11 @@ class ScaleManager {
             now - this.startFeedTime,
             this.targetWeight,
             this.currentWeight - this.targetWeight,
+            this.fastSlowPercentage,
             this.errorPercentage,
             this.restingTime,
+            this.fastFeedSpeed,
+            this.slowFeedSpeed,
         ] satisfies RecordEvent;
         logger('info', 'Record scale event', data);
 
@@ -212,6 +221,9 @@ class ScaleManager {
     public async updateSettings(
         settings: ScaleSettings,
     ) {
+        this.fastFeedSpeed = settings.fastFeedSpeed;
+        this.slowFeedSpeed = settings.slowFeedSpeed;
+        this.fastSlowPercentage = settings.fastSlowPercentage;;
         this.errorPercentage = settings.errorPercentage;
         this.restingTime = settings.restingTime;
 
