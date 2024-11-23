@@ -2,12 +2,14 @@ interface ButtonProps {
     text: string;
     onClick: () => void;
     disabled?: boolean;
+    small?: boolean;
 }
 
 const Button: React.FC<ButtonProps> = ({
     text,
     onClick,
     disabled = false,
+    small = false,
 }) => {
     return (
         <button
@@ -21,7 +23,9 @@ const Button: React.FC<ButtonProps> = ({
             onMouseLeave={(e) => {
                 e.currentTarget.style.backgroundColor = '#5a5a5a';
             }}
-            className="text-2xl font-bold p-4 w-[300px] mx-auto my-0 rounded-full select-none bg-[#5a5a5a] text-[#eab5b5]"
+            className={
+                `${small ? 'text-lg p-2 w-[200px]' : 'text-2xl p-4 w-[300px]'} font-bold mx-auto my-0 rounded-full select-none bg-[#5a5a5a] text-[#eab5b5]`
+            }
             disabled={disabled}
             style={{
                 opacity: disabled ? 0.4 : 1,

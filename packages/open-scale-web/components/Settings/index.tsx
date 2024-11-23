@@ -13,6 +13,7 @@ import {
     fastSlowPercentageValues,
     errorPercentageValues,
     restingTimeValues,
+    defaultScaleSettings,
 } from '@/data/index';
 
 import {
@@ -22,6 +23,7 @@ import {
 } from '@/data/language';
 
 import Dropdown from '@/components/Dropdown';
+import Button from '@/components/Button';
 
 
 
@@ -43,6 +45,27 @@ export default function Settings({
     const [fastSlowPercentage, setFastSlowPercentage] = useState<keyof typeof fastSlowPercentageValues>(values.fastSlowPercentage);
     const [errorPercentage, setErrorPercentage] = useState<keyof typeof errorPercentageValues>(values.errorPercentage);
     const [restingTime, setRestingTime] = useState<keyof typeof restingTimeValues>(values.restingTime);
+
+
+    const reset = () => {
+        setLanguage('en');
+        setTheme('dark');
+        setFastFeedSpeed(defaultScaleSettings.fastFeedSpeed);
+        setSlowFeedSpeed(defaultScaleSettings.slowFeedSpeed);
+        setFastSlowPercentage(defaultScaleSettings.fastSlowPercentage);
+        setErrorPercentage(defaultScaleSettings.errorPercentage);
+        setRestingTime(defaultScaleSettings.restingTime);
+    }
+
+    const restartServer = async () => {
+        try {
+            await fetch(ENDPOINT + PATHS.RESTART_SERVER, {
+                method: 'POST',
+            });
+        } catch (error) {
+            return;
+        }
+    }
 
 
     useEffect(() => {
@@ -194,6 +217,26 @@ export default function Settings({
                     setRestingTime(selected as keyof typeof restingTimeValues);
                 }}
             />
+
+            <div
+                className="mt-12 grid gap-12"
+            >
+                <Button
+                    text="RESET"
+                    onClick={() => {
+                        reset();
+                    }}
+                    small={true}
+                />
+
+                <Button
+                    text="RESTART"
+                    onClick={() => {
+                        restartServer();
+                    }}
+                    small={true}
+                />
+            </div>
         </div>
     );
 }
