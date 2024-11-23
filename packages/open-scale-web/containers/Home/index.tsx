@@ -271,7 +271,12 @@ export default function Home() {
                         return;
                     }
 
-                    setView('settings');
+                    if (view === 'general') {
+                        setView('settings');
+                        return;
+                    }
+
+                    setView('general');
                 }}
                 clickable={!activeScale}
             />
