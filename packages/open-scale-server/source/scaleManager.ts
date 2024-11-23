@@ -13,6 +13,7 @@ import {
 
     RecordEvent,
     ScaleSettings,
+    ScaleStatus,
 } from './data.ts';
 import modbus from './modbus.ts';
 import database from './database.ts';
@@ -39,6 +40,7 @@ class ScaleManager {
     private startFeedTime: number = 0;
     private slowFeedTime: number = 0;
     private errors: Set<string> = new Set();
+    private sockets = new Map<string, WebSocket>();
 
 
     constructor(
@@ -74,7 +76,13 @@ class ScaleManager {
         setInterval(async () => {
             try {
                 const weightRegister = await this.client.readHoldingRegisters(REGISTERS.WEIGHT, 1);
-                this.currentWeight = weightRegister.data[0];
+                const newWeight = weightRegister.data[0];
+                if (this.currentWeight === newWeight) {
+                    return;
+                }
+
+                this.currentWeight = newWeight;
+                this.messageSockets();
             } catch (_e) {
                 this.errors.add(ERRORS.NO_WEIGHT);
             }
@@ -179,6 +187,14 @@ class ScaleManager {
         });
     }
 
+    private messageSockets() {
+        const status = this.getStatus();
+
+        this.sockets.forEach((socket) => {
+            socket.send(JSON.stringify(status));
+        });
+    }
+
 
     public getCurrentWeight() {
         return this.currentWeight;
@@ -218,6 +234,16 @@ class ScaleManager {
         this.client.writeRegisters(REGISTERS.TARE, [1]);
     }
 
+    public getStatus() {
+        return {
+            active: this.isActive(),
+            currentWeight: this.getCurrentWeight(),
+            targetWeight: this.getTargetWeight(),
+            settings: this.getSettings(),
+            errors: this.getErrors(),
+        } satisfies ScaleStatus;
+    }
+
     public getSettings() {
         return {
             fastFeedSpeed: this.fastFeedSpeed,
@@ -244,10 +270,21 @@ class ScaleManager {
             data.errorPercentage = settings.errorPercentage;
             data.restingTime = settings.restingTime;
         });
+
+        this.messageSockets();
     }
 
     public clearErrors() {
         this.errors.clear();
+    }
+
+    public handleSocket(socketID: string, socket: WebSocket) {
+        this.sockets.set(socketID, socket);
+    }
+
+    public closeSocket(socketID: string, socket: WebSocket) {
+        this.sockets.delete(socketID);
+        socket.close();
     }
 
     public async __testSetWeight__(targetWeight: number) {
