@@ -14,7 +14,7 @@ export default function HomeButton({
 }) {
     return (
         <div
-            className="mt-8"
+            className="my-8"
         >
             <button
                 className="text-lg font-bold p-4 rounded-full select-none text-[#eab5b5]"
