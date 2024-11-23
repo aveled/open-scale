@@ -98,6 +98,7 @@ class ScaleManager {
                     this.feedSlowSet = false;
 
                     await this.client.writeRegisters(REGISTERS.STOP_FEED, [1]);
+                    this.messageSockets();
                 }
                 return;
             }
@@ -110,6 +111,7 @@ class ScaleManager {
                         logger('info', 'Set feed to fast', this.currentWeight, this.targetWeight);
                         this.feedFastSet = true;
                         await this.client.writeRegisters(REGISTERS.SPEED_FEED, [this.fastFeedSpeed]);
+                        this.messageSockets();
                     }
                 } else {
                     if (!this.feedSlowSet) {
@@ -117,6 +119,7 @@ class ScaleManager {
                         this.feedSlowSet = true;
                         this.slowFeedTime = Date.now();
                         await this.client.writeRegisters(REGISTERS.SPEED_FEED, [this.slowFeedSpeed]);
+                        this.messageSockets();
                     }
                 }
 
@@ -127,6 +130,7 @@ class ScaleManager {
 
                     this.startFeedTime = Date.now();
                     await this.client.writeRegisters(REGISTERS.START_FEED, [1]);
+                    this.messageSockets();
                 }
             } else {
                 this.feedStarted = false;
@@ -140,6 +144,7 @@ class ScaleManager {
                     this.activeScale = false;
 
                     this.recordScaleEvent();
+                    this.messageSockets();
                 }
             }
         }, FEED_INTERVAL);
@@ -211,10 +216,13 @@ class ScaleManager {
         await database.update((data) => {
             data.targetWeight = targetWeight;
         });
+
+        this.messageSockets();
     }
 
     public setActive(active: boolean) {
         this.activeScale = active;
+        this.messageSockets();
     }
 
     public isActive() {
@@ -232,6 +240,7 @@ class ScaleManager {
     public tare() {
         this.currentWeight = 0;
         this.client.writeRegisters(REGISTERS.TARE, [1]);
+        this.messageSockets();
     }
 
     public getStatus() {
@@ -276,6 +285,7 @@ class ScaleManager {
 
     public clearErrors() {
         this.errors.clear();
+        this.messageSockets();
     }
 
     public handleSocket(socketID: string, socket: WebSocket) {
