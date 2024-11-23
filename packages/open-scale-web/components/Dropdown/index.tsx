@@ -62,12 +62,14 @@ export default function CustomDropdown({
     selectables,
     tooltip,
     atSelect,
+    atClick,
 }: {
     name: string,
     selected: string,
     selectables: string[],
     tooltip?: React.ReactNode,
     atSelect: (selected: string) => void,
+    atClick?: () => void,
 }) {
     return (
         <div
@@ -76,7 +78,14 @@ export default function CustomDropdown({
             <div
                 className="flex items-center justify-between gap-2"
             >
-                <div>
+                <div
+                    onClick={() => {
+                        if (atClick) {
+                            atClick();
+                        }
+                    }}
+                    className={`${atClick ? 'editable' : ''}`}
+                >
                     {name}
                 </div>
 

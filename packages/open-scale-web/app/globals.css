@@ -14,3 +14,17 @@ body {
     background: var(--background);
     font-family: Arial, Helvetica, sans-serif;
 }
+
+
+.editable {
+    position: relative;
+    cursor: pointer;
+}
+
+.editable::before {
+    content: '✎';
+    position: absolute;
+    top: 0;
+    left: -30px;
+    width: 30px;
+}

@@ -1,0 +1,42 @@
+.input-number {
+    color: #eab5b5;
+    text-align: center;
+    margin: 20px;
+    user-select: none;
+}
+
+.input-number-char {
+    font-size: 3rem;
+    font-weight: bold;
+    display: inline-block;
+    width: 50px;
+    background: #5a5a5a;
+    padding: 10px;
+    border-left: 2px solid #444;
+}
+
+@media (max-width: 1024px) {
+    .input-number-char {
+        font-size: 2rem;
+        width: 30px;
+        padding: 5px;
+    }
+}
+
+
+/* // animation background color switch */
+@keyframes color-switch {
+    0% {
+        background: #5a5a5a;
+    }
+    50% {
+        background: #9d7a7a;
+    }
+    100% {
+        background: #5a5a5a;
+    }
+}
+
+.input-number-char-blink {
+    animation: color-switch 1.5s infinite;
+}

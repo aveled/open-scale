@@ -9,7 +9,7 @@ import {
 import {
     ViewType,
     StatusData,
-    TextualScaleSettings,
+    ScaleSettings,
 
     ENDPOINT,
     PATHS,
@@ -53,7 +53,7 @@ export default function Home() {
     const [activeScale, setActiveScale] = useState(false);
     const [currentWeight, setCurrentWeight] = useState(0);
     const [targetWeight, setTargetWeight] = useState(0);
-    const [scaleSettings, setScaleSettings] = useState<TextualScaleSettings>(defaultScaleSettings);
+    const [scaleSettings, setScaleSettings] = useState<ScaleSettings>(defaultScaleSettings);
     const [errors, setErrors] = useState<string[]>([]);
 
 
@@ -182,7 +182,7 @@ export default function Home() {
                 setActiveScale(active);
                 setCurrentWeight(currentWeight);
                 setTargetWeight(targetWeight);
-                setScaleSettings(mapSettingsValuesToTextual(settings));
+                setScaleSettings(settings);
                 setErrors(errors);
 
                 if (loading) {
@@ -190,7 +190,7 @@ export default function Home() {
                 }
             } catch (_e: any) {
                 setErrors([
-                    'Server Unavailable',
+                    'NO_SERVER',
                 ]);
                 return;
             }

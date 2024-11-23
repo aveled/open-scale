@@ -4,7 +4,7 @@ import {
 } from 'react';
 
 import {
-    TextualScaleSettings,
+    ScaleSettings,
 
     ENDPOINT,
     PATHS,
@@ -24,6 +24,7 @@ import {
 
 import Dropdown from '@/components/Dropdown';
 import Button from '@/components/Button';
+import DropdownInputNumber from '@/components/DropdownInputNumber';
 
 
 
@@ -38,13 +39,13 @@ export default function Settings({
     setLanguage: React.Dispatch<React.SetStateAction<Language>>;
     theme: string;
     setTheme: React.Dispatch<React.SetStateAction<string>>;
-    values: TextualScaleSettings;
+    values: ScaleSettings;
 }) {
-    const [fastFeedSpeed, setFastFeedSpeed] = useState<keyof typeof fastFeedSpeedValues>(values.fastFeedSpeed);
-    const [slowFeedSpeed, setSlowFeedSpeed] = useState<keyof typeof slowFeedSpeedValues>(values.slowFeedSpeed);
-    const [fastSlowPercentage, setFastSlowPercentage] = useState<keyof typeof fastSlowPercentageValues>(values.fastSlowPercentage);
-    const [errorPercentage, setErrorPercentage] = useState<keyof typeof errorPercentageValues>(values.errorPercentage);
-    const [restingTime, setRestingTime] = useState<keyof typeof restingTimeValues>(values.restingTime);
+    const [fastFeedSpeed, setFastFeedSpeed] = useState(values.fastFeedSpeed);
+    const [slowFeedSpeed, setSlowFeedSpeed] = useState(values.slowFeedSpeed);
+    const [fastSlowPercentage, setFastSlowPercentage] = useState(values.fastSlowPercentage);
+    const [errorPercentage, setErrorPercentage] = useState(values.errorPercentage);
+    const [restingTime, setRestingTime] = useState(values.restingTime);
 
 
     const reset = () => {
@@ -69,13 +70,7 @@ export default function Settings({
 
 
     useEffect(() => {
-        const updateSettings = async (
-            fastFeedSpeed: number,
-            slowFeedSpeed: number,
-            fastSlowPercentage: number,
-            errorPercentage: number,
-            restingTime: number,
-        ) => {
+        const updateSettings = async () => {
             try {
                 await fetch(ENDPOINT + PATHS.SETTINGS, {
                     method: 'POST',
@@ -95,19 +90,7 @@ export default function Settings({
             }
         }
 
-        const fastFeedSpeedValue = fastFeedSpeedValues[fastFeedSpeed];
-        const slowFeedSpeedValue = slowFeedSpeedValues[slowFeedSpeed];
-        const fastSlowPercentageValue = fastSlowPercentageValues[fastSlowPercentage];
-        const errorPercentageValue = errorPercentageValues[errorPercentage];
-        const restingTimeValue = restingTimeValues[restingTime];
-
-        updateSettings(
-            fastFeedSpeedValue,
-            slowFeedSpeedValue,
-            fastSlowPercentageValue,
-            errorPercentageValue,
-            restingTimeValue,
-        );
+        updateSettings();
     }, [
         fastFeedSpeed,
         slowFeedSpeed,
@@ -163,58 +146,101 @@ export default function Settings({
                 }}
             />
 
-            <Dropdown
+
+            <DropdownInputNumber
                 name={i18n[language].fastFeedSpeed}
                 selectables={[
-                    ...Object.keys(fastFeedSpeedValues),
+                    ...fastFeedSpeedValues.map((value) => value + ' Hz'),
                 ]}
-                selected={fastFeedSpeed}
+                selected={fastFeedSpeed + ' Hz'}
                 atSelect={(selected) => {
-                    setFastFeedSpeed(selected as keyof typeof fastFeedSpeedValues);
+                    const value = Number(selected.replace(' Hz', '').replace(',', '.'));
+                    setFastFeedSpeed(value);
+                }}
+
+                value={fastFeedSpeed}
+                format="XX,XX"
+                unit="Hz"
+                max={50}
+                availableNumbers={{
+                    0: [0, 1, 2, 3, 4, 5],
                 }}
             />
 
-            <Dropdown
+            <DropdownInputNumber
                 name={i18n[language].slowFeedSpeed}
                 selectables={[
-                    ...Object.keys(slowFeedSpeedValues),
+                    ...slowFeedSpeedValues.map((value) => value + ' Hz'),
                 ]}
-                selected={slowFeedSpeed}
+                selected={slowFeedSpeed + ' Hz'}
                 atSelect={(selected) => {
-                    setSlowFeedSpeed(selected as keyof typeof slowFeedSpeedValues);
+                    const value = Number(selected.replace(' Hz', '').replace(',', '.'));
+                    setSlowFeedSpeed(value);
+                }}
+
+                value={slowFeedSpeed}
+                format="XX,XX"
+                unit="Hz"
+                max={50}
+                availableNumbers={{
+                    0: [0, 1, 2, 3, 4, 5],
                 }}
             />
 
-            <Dropdown
+            <DropdownInputNumber
                 name={i18n[language].fastSlowPercentage}
                 selectables={[
-                    ...Object.keys(fastSlowPercentageValues),
+                    ...fastSlowPercentageValues.map((value) => (value * 100) + ' %'),
                 ]}
-                selected={fastSlowPercentage}
+                selected={(fastSlowPercentage * 100) + ' %'}
                 atSelect={(selected) => {
-                    setFastSlowPercentage(selected as keyof typeof fastSlowPercentageValues);
+                    const value = Number(selected.replace(' %', '').replace(',', '.')) / 100;
+                    setFastSlowPercentage(value);
+                }}
+
+                value={fastSlowPercentage * 100}
+                format="XX,XX"
+                unit="%"
+                max={99.99}
+                availableNumbers={{
                 }}
             />
 
-            <Dropdown
+            <DropdownInputNumber
                 name={i18n[language].errorPercentage}
                 selectables={[
-                    ...Object.keys(errorPercentageValues),
+                    ...errorPercentageValues.map((value) => (value * 100) + ' %'),
                 ]}
-                selected={errorPercentage}
+                selected={(errorPercentage * 100) + ' %'}
                 atSelect={(selected) => {
-                    setErrorPercentage(selected as keyof typeof errorPercentageValues);
+                    const value = Number(selected.replace(' %', '').replace(',', '.')) / 100;
+                    setErrorPercentage(value);
+                }}
+
+                value={errorPercentage * 100}
+                format="XX,XX"
+                unit="%"
+                max={99.99}
+                availableNumbers={{
                 }}
             />
 
-            <Dropdown
+            <DropdownInputNumber
                 name={i18n[language].restingTime}
                 selectables={[
-                    ...Object.keys(restingTimeValues),
+                    ...restingTimeValues.map((value) => (value / 1000) + ' s'),
                 ]}
-                selected={restingTime}
+                selected={(restingTime / 1000) + ' s'}
                 atSelect={(selected) => {
-                    setRestingTime(selected as keyof typeof restingTimeValues);
+                    const value = Number(selected.replace(' s', '').replace(',', '.')) * 1000;
+                    setRestingTime(value);
+                }}
+
+                value={restingTime / 1000}
+                format="XX,X"
+                unit="s"
+                max={99.9}
+                availableNumbers={{
                 }}
             />
 

@@ -25,55 +25,48 @@ export const defaultTargetWeights = [
     50_000,
 ];
 
-export const fastFeedSpeedValues = {
-    '35 Hz': 35,
-    '40 Hz': 40,
-    '45 Hz': 45,
-    '50 Hz': 50,
-} as const;
+export const fastFeedSpeedValues = [
+    35,
+    40,
+    45,
+    50,
+] as const;
 
-export const slowFeedSpeedValues = {
-    '10 Hz': 10,
-    '15 Hz': 15,
-    '20 Hz': 20,
-    '25 Hz': 25,
-    '30 Hz': 30,
-    '35 Hz': 35,
-} as const;
+export const slowFeedSpeedValues = [
+    10,
+    15,
+    20,
+    25,
+    30,
+] as const;
 
-export const fastSlowPercentageValues = {
-    '85 %': 0.85,
-    '87 %': 0.87,
-    '90 %': 0.9,
-    '93 %': 0.93,
-    '95 %': 0.95,
-    '97 %': 0.97,
-} as const;
+export const fastSlowPercentageValues = [
+    0.87,
+    0.9,
+    0.93,
+    0.95,
+    0.97,
+] as const;
 
-export const errorPercentageValues = {
-    '0,1 %': 0.1,
-    '0,2 %': 0.2,
-    '0,3 %': 0.3,
-    '0,5 %': 0.5,
-    '1,0 %': 1.0,
-    '1,5 %': 1.5,
-    '2,0 %': 2.0,
-    '2,5 %': 2.5,
-    '3,0 %': 3.0,
-} as const;
+export const errorPercentageValues = [
+    0.001,
+    0.002,
+    0.005,
+    0.01,
+    0.015,
+    0.02,
+    0.025,
+] as const;
 
-export const restingTimeValues = {
-    '0,1 s': 0.1,
-    '0,2 s': 0.2,
-    '0,3 s': 0.3,
-    '0,5 s': 0.5,
-    '1 s': 1.0,
-    '1,5 s': 1.5,
-    '2 s': 2.0,
-    '2,5 s': 2.5,
-    '3 s': 3.0,
-    '5 s': 5.0,
-} as const;
+export const restingTimeValues = [
+    100,
+    200,
+    500,
+    1000,
+    1500,
+    2000,
+    5000,
+] as const;
 
 
 export type ViewType =
@@ -95,18 +88,10 @@ export interface ScaleSettings {
     restingTime: number;
 }
 
-export interface TextualScaleSettings {
-    fastFeedSpeed: keyof typeof fastFeedSpeedValues;
-    slowFeedSpeed: keyof typeof slowFeedSpeedValues;
-    fastSlowPercentage: keyof typeof fastSlowPercentageValues;
-    errorPercentage: keyof typeof errorPercentageValues;
-    restingTime: keyof typeof restingTimeValues;
-}
-
-export const defaultScaleSettings: TextualScaleSettings = {
-    fastFeedSpeed: '50 Hz',
-    slowFeedSpeed: '20 Hz',
-    fastSlowPercentage: '95 %',
-    errorPercentage: '1,0 %',
-    restingTime: '1 s',
+export const defaultScaleSettings: ScaleSettings = {
+    fastFeedSpeed: 50,
+    slowFeedSpeed: 20,
+    fastSlowPercentage: 0.95,
+    errorPercentage: 0.01,
+    restingTime: 1000,
 } as const;
