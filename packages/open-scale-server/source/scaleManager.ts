@@ -138,8 +138,8 @@ class ScaleManager {
     }
 
     private checkWeight() {
-        const lowerBound = this.targetWeight * (1 - this.errorPercentage / 100);
-        const upperBound = this.targetWeight * (1 + this.errorPercentage / 100);
+        const lowerBound = this.targetWeight * (1 - this.errorPercentage);
+        const upperBound = this.targetWeight * (1 + this.errorPercentage);
 
         if (this.currentWeight > upperBound) {
             this.errors.add(ERRORS.OVERSHOOT);

@@ -13,8 +13,8 @@ export const DEFAULT_FEED_SPEED = {
 }; // Hz
 export const DEFAULT_FAST_SLOW_PERCENTAGE = 0.95;
 export const DEFAULT_TARGET_WEIGHT = 25_000; // grams
-export const DEFAULT_ERROR_PERCENTAGE = 1;
-export const DEFAULT_RESTING_TIME = 1_000; // ms
+export const DEFAULT_ERROR_PERCENTAGE = 0.01; // 1%
+export const DEFAULT_RESTING_TIME = 2_000; // ms
 export const WEIGHT_INTERVAL = 100;
 export const FEED_INTERVAL = 95;
 export const ERRORS = {
