@@ -369,6 +369,7 @@ export default function Home() {
                     setLanguage={setLanguage}
                     theme={theme}
                     setTheme={setTheme}
+                    values={scaleSettings}
                 />
             )}
 

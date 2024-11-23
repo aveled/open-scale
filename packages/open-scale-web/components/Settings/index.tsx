@@ -4,6 +4,8 @@ import {
 } from 'react';
 
 import {
+    TextualScaleSettings,
+
     ENDPOINT,
     PATHS,
     fastFeedSpeedValues,
@@ -28,17 +30,19 @@ export default function Settings({
     setLanguage,
     theme,
     setTheme,
+    values,
 }: {
     language: Language;
     setLanguage: React.Dispatch<React.SetStateAction<Language>>;
     theme: string;
     setTheme: React.Dispatch<React.SetStateAction<string>>;
+    values: TextualScaleSettings;
 }) {
-    const [fastFeedSpeed, setFastFeedSpeed] = useState<keyof typeof fastFeedSpeedValues>('50 Hz');
-    const [slowFeedSpeed, setSlowFeedSpeed] = useState<keyof typeof slowFeedSpeedValues>('20 Hz');
-    const [fastSlowPercentage, setFastSlowPercentage] = useState<keyof typeof fastSlowPercentageValues>('95 %');
-    const [errorPercentage, setErrorPercentage] = useState<keyof typeof errorPercentageValues>('1,0 %');
-    const [restingTime, setRestingTime] = useState<keyof typeof restingTimeValues>('1 s');
+    const [fastFeedSpeed, setFastFeedSpeed] = useState<keyof typeof fastFeedSpeedValues>(values.fastFeedSpeed);
+    const [slowFeedSpeed, setSlowFeedSpeed] = useState<keyof typeof slowFeedSpeedValues>(values.slowFeedSpeed);
+    const [fastSlowPercentage, setFastSlowPercentage] = useState<keyof typeof fastSlowPercentageValues>(values.fastSlowPercentage);
+    const [errorPercentage, setErrorPercentage] = useState<keyof typeof errorPercentageValues>(values.errorPercentage);
+    const [restingTime, setRestingTime] = useState<keyof typeof restingTimeValues>(values.restingTime);
 
 
     useEffect(() => {
@@ -87,6 +91,20 @@ export default function Settings({
         fastSlowPercentage,
         errorPercentage,
         restingTime,
+    ]);
+
+    useEffect(() => {
+        setFastFeedSpeed(values.fastFeedSpeed);
+        setSlowFeedSpeed(values.slowFeedSpeed);
+        setFastSlowPercentage(values.fastSlowPercentage);
+        setErrorPercentage(values.errorPercentage);
+        setRestingTime(values.restingTime);
+    }, [
+        values.fastFeedSpeed,
+        values.slowFeedSpeed,
+        values.fastSlowPercentage,
+        values.errorPercentage,
+        values.restingTime,
     ]);
 
 

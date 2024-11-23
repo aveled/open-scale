@@ -95,11 +95,11 @@ export interface ScaleSettings {
 }
 
 export interface TextualScaleSettings {
-    fastFeedSpeed: string;
-    slowFeedSpeed: string;
-    fastSlowPercentage: string;
-    errorPercentage: string;
-    restingTime: string;
+    fastFeedSpeed: keyof typeof fastFeedSpeedValues;
+    slowFeedSpeed: keyof typeof slowFeedSpeedValues;
+    fastSlowPercentage: keyof typeof fastSlowPercentageValues;
+    errorPercentage: keyof typeof errorPercentageValues;
+    restingTime: keyof typeof restingTimeValues;
 }
 
 export const defaultScaleSettings: TextualScaleSettings = {
