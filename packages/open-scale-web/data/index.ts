@@ -11,6 +11,14 @@ export const PATHS = {
     RESTART_SERVER: '/restart-server',
 } as const;
 
+export const ERRORS = {
+    OVERSHOOT: 'OVERSHOOT',
+    NO_WEIGHT: 'NO_WEIGHT',
+    NO_FEED: 'NO_FEED',
+    NO_SERVER: 'NO_SERVER',
+} as const;
+export type ScaleErrors = typeof ERRORS[keyof typeof ERRORS];
+
 export const LOADING_INTERVAL = 5_000; // ms
 
 
@@ -77,7 +85,7 @@ export interface StatusData {
     currentWeight: number;
     targetWeight: number;
     settings: ScaleSettings;
-    errors: string[];
+    errors: ScaleErrors[];
 }
 
 export interface ScaleSettings {

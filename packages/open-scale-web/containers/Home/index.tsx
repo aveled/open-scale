@@ -10,6 +10,7 @@ import {
     ViewType,
     StatusData,
     ScaleSettings,
+    ScaleErrors,
 
     ENDPOINT,
     PATHS,
@@ -50,7 +51,7 @@ export default function Home() {
     const [currentWeight, setCurrentWeight] = useState(0);
     const [targetWeight, setTargetWeight] = useState(0);
     const [scaleSettings, setScaleSettings] = useState<ScaleSettings>(defaultScaleSettings);
-    const [errors, setErrors] = useState<string[]>([]);
+    const [errors, setErrors] = useState<ScaleErrors[]>([]);
 
 
     const start = async () => {
@@ -266,7 +267,7 @@ export default function Home() {
                             <div
                                 key={index}
                             >
-                                {error}
+                                {i18n[language].errors[error]}
                             </div>
                         );
                     })}
