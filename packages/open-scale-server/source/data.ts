@@ -22,6 +22,7 @@ export const ERRORS = {
     OVERSHOOT: 'OVERSHOOT',
     NO_WEIGHT: 'NO_WEIGHT',
     NO_FEED: 'NO_FEED',
+    NO_SERVER: 'NO_SERVER',
 } as const;
 
 
