@@ -5,6 +5,7 @@ import {
 
 import {
     ScaleSettings,
+    Analytics,
 
     ENDPOINT,
     PATHS,
@@ -34,12 +35,14 @@ export default function Settings({
     theme,
     setTheme,
     values,
+    analytics,
 }: {
     language: Language;
     setLanguage: (language: Language) => void;
     theme: string;
     setTheme: (theme: string) => void;
     values: ScaleSettings;
+    analytics: Analytics;
 }) {
     const [fastFeedSpeed, setFastFeedSpeed] = useState(values.fastFeedSpeed);
     const [slowFeedSpeed, setSlowFeedSpeed] = useState(values.slowFeedSpeed);

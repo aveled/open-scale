@@ -84,6 +84,7 @@ export interface StatusData {
     currentWeight: number;
     targetWeight: number;
     settings: ScaleSettings;
+    analytics: Analytics;
     errors: ScaleErrors[];
 }
 
@@ -102,3 +103,20 @@ export const defaultScaleSettings: ScaleSettings = {
     errorPercentage: 0.01,
     restingTime: 1000,
 } as const;
+
+
+export type Analytics = Record<number, Year>;
+export interface Year {
+    [month: number]: Month;
+}
+export interface Month {
+    [day: number]: Day;
+}
+export interface Day {
+    [hour: number]: Hour;
+}
+export interface Hour {
+    // targetWeight -> units measured
+    measurements: Record<number, number>;
+    averageError: number;
+}

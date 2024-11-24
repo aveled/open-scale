@@ -11,6 +11,7 @@ import {
     StatusData,
     ScaleSettings,
     ScaleErrors,
+    Analytics,
 
     ENDPOINT,
     PATHS,
@@ -55,6 +56,7 @@ export default function Home() {
     const [currentWeight, setCurrentWeight] = useState(0);
     const [targetWeight, setTargetWeight] = useState(0);
     const [scaleSettings, setScaleSettings] = useState<ScaleSettings>(defaultScaleSettings);
+    const [analytics, setAnalytics] = useState<Analytics>({});
     const [errors, setErrors] = useState<ScaleErrors[]>([]);
 
 
@@ -177,6 +179,7 @@ export default function Home() {
                     currentWeight,
                     targetWeight,
                     settings,
+                    analytics,
                     errors,
                 } = data as StatusData;
 
@@ -184,6 +187,7 @@ export default function Home() {
                 setCurrentWeight(currentWeight);
                 setTargetWeight(targetWeight);
                 setScaleSettings(settings);
+                setAnalytics(analytics);
                 setErrors(errors);
 
                 if (loading) {
@@ -408,6 +412,7 @@ export default function Home() {
                     theme={theme}
                     setTheme={setTheme}
                     values={scaleSettings}
+                    analytics={analytics}
                 />
             )}
 
