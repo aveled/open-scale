@@ -28,8 +28,8 @@ export const ERRORS = {
 
 export type RecordEvent = [
     number, // startFeedTime
-    number, // slowFeedTime difference
-    number, // currentTime difference
+    number, // fast/slowFeedTime difference
+    number, // feed duration,
     number, // targetWeight
     number, // currentWeight difference
     number, // fastSlowPercentage
