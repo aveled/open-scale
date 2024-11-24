@@ -68,12 +68,11 @@ export const errorPercentageValues = [
 
 export const restingTimeValues = [
     100,
-    200,
     500,
     1000,
-    1500,
     2000,
     5000,
+    10000,
 ] as const;
 
 
