@@ -39,7 +39,11 @@ export const calculateAverageError = (
     let totalError = 0;
 
     for (const event of events) {
-        totalError += event[6];
+        const target = event[3];
+        const difference = event[4];
+        const errorPercentage = Math.abs(difference / target) * 100;
+
+        totalError += errorPercentage;
     }
 
     return totalError / events.length;

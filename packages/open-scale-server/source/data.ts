@@ -27,16 +27,16 @@ export const ERRORS = {
 
 
 export type RecordEvent = [
-    number, // startFeedTime
-    number, // fast/slowFeedTime difference
-    number, // feed duration,
-    number, // targetWeight
-    number, // currentWeight difference
-    number, // fastSlowPercentage
-    number, // errorPercentage,
-    number, // restingTime,
-    number, // fastFeedSpeed
-    number, // slowFeedSpeed
+    number, // 0 - startFeedTime
+    number, // 1 - fast/slowFeedTime difference
+    number, // 2 - feed duration,
+    number, // 3 - targetWeight
+    number, // 4 - currentWeight difference
+    number, // 5 - fastSlowPercentage
+    number, // 6 - errorPercentage,
+    number, // 7 - restingTime,
+    number, // 8 - fastFeedSpeed
+    number, // 9 - slowFeedSpeed
 ];
 export interface Database {
     fastFeedSpeed: number;
