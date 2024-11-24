@@ -11,7 +11,7 @@ import database, {
 
 export const extractCurrentEvents = (
     events: RecordEvent[],
-) => {
+): [RecordEvent[], RecordEvent[]] => {
     const currentEvents: RecordEvent[] = [];
     const others: RecordEvent[] = [];
 
@@ -46,11 +46,11 @@ export const calculateAverageError = (
 }
 
 
-export const composeAnalytics = async (
+export const composeAnalytics = (
     events: RecordEvent[],
-): Promise<Analytics> => {
-    await database.read();
-    const analytics = database.data.analytics;
+    existingAnalytics: Analytics = {},
+): Analytics => {
+    const analytics = { ...existingAnalytics };
     const averageError = calculateAverageError(events);
 
     for (const event of events) {
@@ -86,7 +86,7 @@ export const composeAnalytics = async (
             analytics[year][month][day][hour].measurements[event[3]] = 0;
         }
 
-        analytics[year][month][day][hour].measurements[event[3]] += event[4];
+        analytics[year][month][day][hour].measurements[event[3]] += 1;
     }
 
     return analytics;
@@ -99,7 +99,9 @@ export const updateAnalytics = async () => {
 
     const events = database.data.events;
     const [currentEvents, others] = extractCurrentEvents(events);
-    const analytics = await composeAnalytics(currentEvents);
+
+    const existingAnalytics = database.data.analytics;
+    const analytics = composeAnalytics(currentEvents, existingAnalytics);
 
     await database.update(db => {
         db.events = others;
