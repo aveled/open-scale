@@ -218,7 +218,7 @@ export default function Settings({
                 }}
 
                 value={errorPercentage * 100}
-                format="XX,XX"
+                format="X,XX"
                 unit="%"
                 max={99.99}
                 availableNumbers={{
@@ -242,6 +242,7 @@ export default function Settings({
                 max={99.9}
                 availableNumbers={{
                 }}
+                defaultSelectedChar={1}
             />
 
             <div

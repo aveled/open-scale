@@ -19,6 +19,7 @@ export interface InputNumberProps {
     unit?: string;
     max?: number;
     availableNumbers?: Record<number, number[]>;
+    defaultSelectedChar?: number;
 }
 
 const InputNumber: React.FC<InputNumberProps> = ({
@@ -28,6 +29,7 @@ const InputNumber: React.FC<InputNumberProps> = ({
     unit,
     max,
     availableNumbers,
+    defaultSelectedChar,
 }) => {
     const fractionDigits = format.includes(',') ? format.slice(format.indexOf(',') + 1).length : 0;
     const formattedValue = (value).toLocaleString('de-DE', {
@@ -36,7 +38,7 @@ const InputNumber: React.FC<InputNumberProps> = ({
     }).padStart(format.length, '0').split('');
 
 
-    const [selectedChar, setSelectedChar] = useState(0);
+    const [selectedChar, setSelectedChar] = useState(defaultSelectedChar || 0);
 
 
     const handleArrowClick = (i: number, direction: 'up' | 'down') => {

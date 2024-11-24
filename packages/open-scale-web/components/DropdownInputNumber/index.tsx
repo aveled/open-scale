@@ -18,6 +18,7 @@ export interface DropdownInputNumberProps {
     unit: string;
     max: number;
     availableNumbers: Record<number, number[]>;
+    defaultSelectedChar?: number;
 }
 
 const DropdownInputNumber: React.FC<DropdownInputNumberProps> = ({
@@ -31,6 +32,7 @@ const DropdownInputNumber: React.FC<DropdownInputNumberProps> = ({
     unit,
     max,
     availableNumbers,
+    defaultSelectedChar,
 }) => {
     const [showInputNumber, setShowInputNumber] = useState(false);
 
@@ -57,6 +59,7 @@ const DropdownInputNumber: React.FC<DropdownInputNumberProps> = ({
                     unit={unit}
                     max={max}
                     availableNumbers={availableNumbers}
+                    defaultSelectedChar={defaultSelectedChar}
                 />
             )}
         </>
