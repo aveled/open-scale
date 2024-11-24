@@ -8,6 +8,7 @@
     "npm:eslint-config-next@15.0.3": "15.0.3_eslint@8.57.1_typescript@5.6.3_@typescript-eslint+parser@8.15.0__eslint@8.57.1__typescript@5.6.3_eslint-plugin-import@2.31.0__eslint@8.57.1",
     "npm:eslint@8": "8.57.1",
     "npm:flowbite-react@~0.10.2": "0.10.2_react@18.3.1_react-dom@18.3.1__react@18.3.1_tailwindcss@3.4.15__postcss@8.4.49",
+    "npm:immer@^10.1.1": "10.1.1",
     "npm:next@15.0.3": "15.0.3_react@19.0.0-rc-66855b96-20241106_react-dom@19.0.0-rc-66855b96-20241106__react@19.0.0-rc-66855b96-20241106",
     "npm:postcss@8": "8.4.49",
     "npm:react-dom@19.0.0-rc-66855b96-20241106": "19.0.0-rc-66855b96-20241106_react@19.0.0-rc-66855b96-20241106",
@@ -1368,6 +1369,9 @@
     "ignore@5.3.2": {
       "integrity": "sha512-hsBTNUqQTDwkWtcdYI2i06Y/nUBEsNEDJKjWdigLvegy8kDuJAS8uRlpkkcQpyEXL0Z/pjDy5HBmMjRCJ2gq+g=="
     },
+    "immer@10.1.1": {
+      "integrity": "sha512-s2MPrmjovJcoMaHtx6K11Ra7oD05NT97w1IC5zpMkT6Atjr7H8LjaDd81iIxUYpMKSRRNMJE703M1Fhr/TctHw=="
+    },
     "immutable@4.3.7": {
       "integrity": "sha512-1hqclzwYwjRDFLjcFxOM5AYkkG0rpFPpr1RLPMEuGczoS7YA8gLhy8SWXYRAA/XwfEHpfo3cw5JGioS32fnMRw=="
     },
@@ -2529,6 +2533,7 @@
         "npm:eslint-config-next@15.0.3",
         "npm:eslint@8",
         "npm:flowbite-react@~0.10.2",
+        "npm:immer@^10.1.1",
         "npm:next@15.0.3",
         "npm:postcss@8",
         "npm:react-dom@19.0.0-rc-66855b96-20241106",
