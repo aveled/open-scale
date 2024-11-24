@@ -36,9 +36,9 @@ export default function Settings({
     values,
 }: {
     language: Language;
-    setLanguage: React.Dispatch<React.SetStateAction<Language>>;
+    setLanguage: (language: Language) => void;
     theme: string;
-    setTheme: React.Dispatch<React.SetStateAction<string>>;
+    setTheme: (theme: string) => void;
     values: ScaleSettings;
 }) {
     const [fastFeedSpeed, setFastFeedSpeed] = useState(values.fastFeedSpeed);

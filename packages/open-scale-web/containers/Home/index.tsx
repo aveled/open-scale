@@ -36,13 +36,17 @@ import Button from '@/components/Button';
 import HomeButton from '@/components/HomeButton';
 import Settings from '@/components/Settings';
 
+import useStore from '@/store/index';
+
 
 
 export default function Home() {
     const [loading, setLoading] = useState(true);
 
-    const [language, setLanguage] = useState<Language>('en');
-    const [theme, setTheme] = useState('dark');
+    const {
+        language, setLanguage,
+        theme, setTheme,
+    } = useStore();
 
     const [view, setView] = useState<ViewType>('general');
     const [showCustomInput, setShowCustomInput] = useState(false);
