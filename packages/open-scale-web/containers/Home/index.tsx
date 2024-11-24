@@ -256,7 +256,7 @@ export default function Home() {
                 <h1
                     className="text-2xl"
                 >
-                    errors
+                    {i18n[language].error}
                 </h1>
 
                 <div

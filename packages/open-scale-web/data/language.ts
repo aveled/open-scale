@@ -14,6 +14,7 @@ export const i18n = {
         fastSlowPercentage: 'fast-slow percentage',
         errorPercentage: 'error percentage',
         restingTime: 'resting time',
+        error: 'error',
         errors: {
             'OVERSHOOT': 'overshoot weighing limit',
             'NO_WEIGHT': 'no weight',
@@ -31,6 +32,7 @@ export const i18n = {
         fastSlowPercentage: 'procentaj rapid-lent',
         errorPercentage: 'procentaj de eroare',
         restingTime: 'timp de așezare',
+        error: 'eroare',
         errors: {
             'OVERSHOOT': 'depășire limită cântărire',
             'NO_WEIGHT': 'fără greutate',
