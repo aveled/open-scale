@@ -13,6 +13,7 @@ import {
     DEFAULT_RESTING_TIME,
 
     Database,
+    ColdStorage,
 } from './data.ts';
 
 
@@ -28,6 +29,11 @@ const setupDatabase = async () => {
         OPEN_SCALE_DIR,
         '/db.json',
     );
+
+    const COLD_STORAGE_PATH = path.join(
+        OPEN_SCALE_DIR,
+        '/cold.json',
+    );
     const defaultData: Database = {
         fastFeedSpeed: DEFAULT_FEED_SPEED.FAST,
         slowFeedSpeed: DEFAULT_FEED_SPEED.SLOW,
@@ -35,6 +41,10 @@ const setupDatabase = async () => {
         targetWeight: DEFAULT_TARGET_WEIGHT,
         errorPercentage: DEFAULT_ERROR_PERCENTAGE,
         restingTime: DEFAULT_RESTING_TIME,
+        events: [],
+        analytics: {},
+    };
+    const defaultColdData: ColdStorage = {
         events: [],
     };
 
@@ -45,13 +55,23 @@ const setupDatabase = async () => {
     }
 
     return [
-        DATABASE_PATH,
         defaultData,
+        defaultColdData,
+        DATABASE_PATH,
+        COLD_STORAGE_PATH,
     ] as const;
 }
 
-const [DATABASE_PATH, defaultData] = await setupDatabase();
+const [
+    defaultData,
+    defaultColdData,
+    DATABASE_PATH,
+    COLD_STORAGE_PATH,
+] = await setupDatabase();
+
 const database = new Low<Database>(new JSONFile(DATABASE_PATH), defaultData);
+
+export const coldStorage = new Low<ColdStorage>(new JSONFile(COLD_STORAGE_PATH), defaultColdData);
 
 
 export default database;

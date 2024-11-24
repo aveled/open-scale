@@ -9,6 +9,7 @@ import {
     DEFAULT_RESTING_TIME,
     WEIGHT_INTERVAL,
     FEED_INTERVAL,
+    ANALYTICS_INTERVAL,
     ERRORS,
 
     RecordEvent,
@@ -17,6 +18,9 @@ import {
 } from './data.ts';
 import modbus from './modbus.ts';
 import database from './database.ts';
+import {
+    updateAnalytics,
+} from './analytics.ts';
 import {
     logger,
 } from './utilities.ts';
@@ -70,6 +74,7 @@ class ScaleManager {
     private startMonitoring() {
         this.weightMonitorLoop();
         this.feedControlLoop();
+        this.analyticsLoop();
     }
 
     private weightMonitorLoop() {
@@ -148,6 +153,14 @@ class ScaleManager {
                 }
             }
         }, FEED_INTERVAL);
+    }
+
+    private async analyticsLoop() {
+        await updateAnalytics();
+
+        setInterval(async () => {
+            await updateAnalytics();
+        }, ANALYTICS_INTERVAL);
     }
 
     private checkWeight() {

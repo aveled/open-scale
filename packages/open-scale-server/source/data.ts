@@ -17,6 +17,7 @@ export const DEFAULT_ERROR_PERCENTAGE = 0.01; // 1%
 export const DEFAULT_RESTING_TIME = 2_000; // ms
 export const WEIGHT_INTERVAL = 100;
 export const FEED_INTERVAL = 95;
+export const ANALYTICS_INTERVAL = 1000 * 60 * 60 * 12; // 12 hours
 export const ERRORS = {
     OVERSHOOT: 'OVERSHOOT',
     NO_WEIGHT: 'NO_WEIGHT',
@@ -44,6 +45,10 @@ export interface Database {
     errorPercentage: number;
     restingTime: number;
     events: RecordEvent[];
+    analytics: Analytics;
+}
+export interface ColdStorage {
+    events: RecordEvent[];
 }
 
 
@@ -61,4 +66,21 @@ export interface ScaleSettings {
     fastSlowPercentage: number;
     errorPercentage: number;
     restingTime: number;
+}
+
+
+export type Analytics = Record<number, Year>;
+export interface Year {
+    [month: number]: Month;
+}
+export interface Month {
+    [day: number]: Day;
+}
+export interface Day {
+    [hour: number]: Hour;
+}
+export interface Hour {
+    // targetWeight -> units measured
+    measurements: Record<number, number>;
+    averageError: number;
 }
