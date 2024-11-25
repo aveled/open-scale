@@ -21,6 +21,9 @@ export const i18n = {
             'NO_FEED': 'no feed',
             'NO_SERVER': 'no server found',
         },
+        analyticsYear: 'analytics year',
+        analyticsMonth: 'month',
+        analyticsDay: 'day',
     },
     ro: {
         home: 'acasă',
@@ -39,6 +42,9 @@ export const i18n = {
             'NO_FEED': 'fără alimentare',
             'NO_SERVER': 'server-ul nu a fost găsit',
         },
+        analyticsYear: 'anul de analiză',
+        analyticsMonth: 'luna',
+        analyticsDay: 'ziua',
     },
 } as const;
 

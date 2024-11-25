@@ -134,6 +134,7 @@ export default function Settings({
         >
             <AnalyticsDashboard
                 data={analytics}
+                language={language}
             />
 
             <Dropdown
