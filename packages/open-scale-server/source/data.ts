@@ -26,6 +26,27 @@ export const ERRORS = {
 } as const;
 
 
+export const PATHS = {
+    STATUS: '/status',
+    START: '/start',
+    STOP: '/stop',
+    TARGET_WEIGHT: '/target-weight',
+    TARE: '/tare',
+    SETTINGS: '/settings',
+    CLEAR_ERRORS: '/clear-errors',
+    RESTART_SERVER: '/restart-server',
+    EXPORT_DATA: '/export-data',
+    TEST_SET_WEIGHT: '/test-set-weight',
+} as const;
+
+export const corsHeaders = {
+    'Access-Control-Allow-Origin': '*',
+    'Access-Control-Allow-Methods': 'GET, POST, OPTIONS',
+    'Access-Control-Allow-Headers': 'Content-Type',
+};
+
+
+
 export type RecordEvent = [
     number, // 0 - startFeedTime
     number, // 1 - fast/slowFeedTime difference

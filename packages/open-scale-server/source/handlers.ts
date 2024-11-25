@@ -1,9 +1,17 @@
 // deno-lint-ignore-file require-await no-explicit-any
 
 import scaleManager from './scaleManager.ts';
+import { copyToUSB } from './usb.ts';
+import {
+    DATABASE_PATH,
+    COLD_STORAGE_PATH,
+} from './database.ts';
 
 import {
     ScaleStatus,
+
+    PATHS,
+    corsHeaders,
 } from './data.ts';
 
 
@@ -122,6 +130,15 @@ const handlerRestartServer = async (_req: Request) => {
     });
 }
 
+const handlerExportData = async (_req: Request) => {
+    await copyToUSB(DATABASE_PATH, 'database.json');
+    await copyToUSB(COLD_STORAGE_PATH, 'cold-storage.json');
+
+    return handlerResponse({
+        status: true,
+    });
+}
+
 const handlerNotFound = () => {
     return handlerResponse(
         { status: false },
@@ -146,14 +163,6 @@ const handlerTestSetWeight = async (req: Request) => {
     });
 }
 
-
-// disable cors for Deno server
-const corsHeaders = {
-    'Access-Control-Allow-Origin': '*',
-    'Access-Control-Allow-Methods': 'GET, POST, OPTIONS',
-    'Access-Control-Allow-Headers': 'Content-Type',
-};
-
 const handlerOptions = async (_req: Request) => {
     return new Response(null, {
         status: 204,
@@ -161,18 +170,6 @@ const handlerOptions = async (_req: Request) => {
     });
 };
 
-
-const PATHS = {
-    STATUS: '/status',
-    START: '/start',
-    STOP: '/stop',
-    TARGET_WEIGHT: '/target-weight',
-    TARE: '/tare',
-    SETTINGS: '/settings',
-    CLEAR_ERRORS: '/clear-errors',
-    RESTART_SERVER: '/restart-server',
-    TEST_SET_WEIGHT: '/test-set-weight',
-} as const;
 
 const handlers = {
     NOT_FOUND: handlerNotFound,
@@ -187,6 +184,7 @@ const handlers = {
         [PATHS.SETTINGS]: handlerSettings,
         [PATHS.CLEAR_ERRORS]: handlerClearErrors,
         [PATHS.RESTART_SERVER]: handlerRestartServer,
+        [PATHS.EXPORT_DATA]: handlerExportData,
         [PATHS.TEST_SET_WEIGHT]: handlerTestSetWeight,
     },
     OPTIONS: {
@@ -198,6 +196,7 @@ const handlers = {
         [PATHS.SETTINGS]: handlerOptions,
         [PATHS.CLEAR_ERRORS]: handlerOptions,
         [PATHS.RESTART_SERVER]: handlerOptions,
+        [PATHS.EXPORT_DATA]: handlerOptions,
     },
 } as const;
 

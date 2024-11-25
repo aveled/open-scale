@@ -62,7 +62,7 @@ const setupDatabase = async () => {
     ] as const;
 }
 
-const [
+export const [
     defaultData,
     defaultColdData,
     DATABASE_PATH,

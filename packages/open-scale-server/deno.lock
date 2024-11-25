@@ -8,7 +8,8 @@
     "npm:@types/node@*": "22.5.4",
     "npm:lowdb@^7.0.1": "7.0.1",
     "npm:modbus-serial@*": "8.0.17",
-    "npm:modbus-serial@^8.0.17": "8.0.17"
+    "npm:modbus-serial@^8.0.17": "8.0.17",
+    "npm:usb@^2.14.0": "2.14.0"
   },
   "jsr": {
     "@std/assert@1.0.8": {
@@ -35,7 +36,7 @@
         "@serialport/bindings-interface",
         "@serialport/parser-readline@11.0.0",
         "debug@4.3.4",
-        "node-addon-api",
+        "node-addon-api@7.0.0",
         "node-gyp-build"
       ]
     },
@@ -184,6 +185,9 @@
     "@types/seedrandom@2.4.34": {
       "integrity": "sha512-ytDiArvrn/3Xk6/vtylys5tlY6eo7Ane0hvcx++TKo6RxQXuVfW0AF/oeWqAj9dN29SyhtawuXstgmPlwNcv/A=="
     },
+    "@types/w3c-web-usb@1.0.10": {
+      "integrity": "sha512-CHgUI5kTc/QLMP8hODUHhge0D4vx+9UiAwIGiT0sTy/B2XpdX1U5rJt6JSISgr6ikRT7vxV9EVAFeYZqUnl1gQ=="
+    },
     "@webgpu/types@0.1.38": {
       "integrity": "sha512-7LrhVKz2PRh+DD7+S+PVaFd5HxaWQvoMqBbsV9fNJO1pjUs1P8bM2vQVNfk+3URTqbuTI7gkXi0rfsN0IadoBA=="
     },
@@ -310,6 +314,9 @@
     "node-addon-api@7.0.0": {
       "integrity": "sha512-vgbBJTS4m5/KkE16t5Ly0WW9hz46swAstv0hYYwMtbG7AznRhNyfLRe8HZAiWIpcHzoO7HxhLuBQj9rJ/Ho0ZA=="
     },
+    "node-addon-api@8.2.2": {
+      "integrity": "sha512-9emqXAKhVoNrQ792nLI/wpzPpJ/bj/YXxW0CvAau1+RdGBcCRF1Dmz7719zgVsQNrzHl9Tzn3ImZ4qWFarWL0A=="
+    },
     "node-fetch@2.6.13": {
       "integrity": "sha512-StxNAxh15zr77QvvkmveSQ8uCQ4+v5FkvNTj0OESmiHu+VRi/gXArXtkWMElOsOUNLtUEvI4yS+rdtOHZTwlQA==",
       "dependencies": [
@@ -388,6 +395,14 @@
     "undici-types@6.19.8": {
       "integrity": "sha512-ve2KP6f/JnbPBFyobGHuerC9g1FYGn/F8n1LWTwNxCEzd6IfqTwUQcNXgEtmmQ6DlRrC1hrSrBnCZPokRrDHjw=="
     },
+    "usb@2.14.0": {
+      "integrity": "sha512-I3lzVOH21BsO6qPYvx1C7Ji08lbuM0qmsEtNGAphqlhNME5cz/vExY+jIXZl+HQIRybI/sTxdyLab5tALsL69w==",
+      "dependencies": [
+        "@types/w3c-web-usb",
+        "node-addon-api@8.2.2",
+        "node-gyp-build"
+      ]
+    },
     "webidl-conversions@3.0.1": {
       "integrity": "sha512-2JAn3z8AR6rjK8Sm8orRC0h/bcl/DqL7tRPdGZ4I1CjdF+EaMLmYxBHyXuKL849eucPFhvBoxMsflfOb8kxaeQ=="
     },
@@ -430,7 +445,8 @@
       "jsr:@std/assert@^1.0.8",
       "npm:@tensorflow/tfjs@^4.22.0",
       "npm:lowdb@^7.0.1",
-      "npm:modbus-serial@^8.0.17"
+      "npm:modbus-serial@^8.0.17",
+      "npm:usb@^2.14.0"
     ]
   }
 }
