@@ -26,6 +26,7 @@ import {
 import Dropdown from '@/components/Dropdown';
 import Button from '@/components/Button';
 import DropdownInputNumber from '@/components/DropdownInputNumber';
+import AnalyticsDashboard from '@/components/Analytics';
 
 
 
@@ -64,6 +65,16 @@ export default function Settings({
     const restartServer = async () => {
         try {
             await fetch(ENDPOINT + PATHS.RESTART_SERVER, {
+                method: 'POST',
+            });
+        } catch (error) {
+            return;
+        }
+    }
+
+    const exportData = async () => {
+        try {
+            await fetch(ENDPOINT + PATHS.EXPORT_DATA, {
                 method: 'POST',
             });
         } catch (error) {
@@ -121,6 +132,10 @@ export default function Settings({
         <div
             className="select-none grid gap-6 min-w-[300px] lg:min-w-[400px] font-bold text-lg"
         >
+            <AnalyticsDashboard
+                data={analytics}
+            />
+
             <Dropdown
                 name={i18n[language].language}
                 selectables={[
@@ -263,6 +278,14 @@ export default function Settings({
                     text="RESTART"
                     onClick={() => {
                         restartServer();
+                    }}
+                    small={true}
+                />
+
+                <Button
+                    text="EXPORT DATA"
+                    onClick={() => {
+                        exportData();
                     }}
                     small={true}
                 />

@@ -9,6 +9,7 @@ export const PATHS = {
     SETTINGS: '/settings',
     CLEAR_ERRORS: '/clear-errors',
     RESTART_SERVER: '/restart-server',
+    EXPORT_DATA: '/export-data',
 } as const;
 
 export const ERRORS = {
