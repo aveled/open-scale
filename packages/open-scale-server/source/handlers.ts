@@ -8,8 +8,6 @@ import {
 } from './database.ts';
 
 import {
-    ScaleStatus,
-
     PATHS,
     corsHeaders,
 } from './data.ts';
@@ -36,14 +34,7 @@ const handlerResponse = <D = any>(
 
 // curl -X GET http://localhost:8485/status
 const handlerStatus = async (_req: Request) => {
-    const data = {
-        active: scaleManager.isActive(),
-        currentWeight: scaleManager.getCurrentWeight(),
-        targetWeight: scaleManager.getTargetWeight(),
-        settings: scaleManager.getSettings(),
-        analytics: scaleManager.getAnalytics(),
-        errors: scaleManager.getErrors(),
-    } satisfies ScaleStatus;
+    const data = scaleManager.getStatus();
 
     return handlerResponse({
         status: true,

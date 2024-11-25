@@ -256,7 +256,7 @@ class ScaleManager {
         this.messageSockets();
     }
 
-    public getStatus() {
+    public getStatus(): ScaleStatus {
         return {
             active: this.isActive(),
             currentWeight: this.getCurrentWeight(),
