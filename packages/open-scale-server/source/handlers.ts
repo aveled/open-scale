@@ -104,6 +104,15 @@ const handlerSettings = async (req: Request) => {
     });
 }
 
+const handlerAnalytics = async (_req: Request) => {
+    const data = await scaleManager.getAnalytics();
+
+    return handlerResponse({
+        status: true,
+        data,
+    });
+}
+
 // curl -X POST http://localhost:8485/clear-errors
 const handlerClearErrors = async (_req: Request) => {
     scaleManager.clearErrors();
@@ -166,6 +175,7 @@ const handlers = {
     NOT_FOUND: handlerNotFound,
     GET: {
         [PATHS.STATUS]: handlerStatus,
+        [PATHS.ANALYTICS]: handlerAnalytics,
     },
     POST: {
         [PATHS.START]: handlerStart,
@@ -180,6 +190,7 @@ const handlers = {
     },
     OPTIONS: {
         [PATHS.STATUS]: handlerOptions,
+        [PATHS.ANALYTICS]: handlerOptions,
         [PATHS.START]: handlerOptions,
         [PATHS.STOP]: handlerOptions,
         [PATHS.TARGET_WEIGHT]: handlerOptions,

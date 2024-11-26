@@ -262,7 +262,6 @@ class ScaleManager {
             currentWeight: this.getCurrentWeight(),
             targetWeight: this.getTargetWeight(),
             settings: this.getSettings(),
-            analytics: this.getAnalytics(),
             errors: this.getErrors(),
         } satisfies ScaleStatus;
     }
@@ -297,7 +296,9 @@ class ScaleManager {
         this.messageSockets();
     }
 
-    public getAnalytics() {
+    public async getAnalytics() {
+        await database.read();
+
         return database.data.analytics;
     }
 

@@ -33,6 +33,7 @@ export const PATHS = {
     TARGET_WEIGHT: '/target-weight',
     TARE: '/tare',
     SETTINGS: '/settings',
+    ANALYTICS: '/analytics',
     CLEAR_ERRORS: '/clear-errors',
     RESTART_SERVER: '/restart-server',
     EXPORT_DATA: '/export-data',
@@ -79,7 +80,6 @@ export interface ScaleStatus {
     currentWeight: number;
     targetWeight: number;
     settings: ScaleSettings;
-    analytics: Analytics;
     errors: string[];
 }
 
