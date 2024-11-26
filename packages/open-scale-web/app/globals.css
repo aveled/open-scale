@@ -9,6 +9,10 @@
     --foreground: #ededed;
 }
 
+html {
+    scrollbar-gutter: stable both-edges;
+}
+
 body {
     color: var(--foreground);
     background: var(--background);

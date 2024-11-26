@@ -24,12 +24,24 @@ import Dropdown from '@/components/Dropdown';
 
 
 
-const formatData = (data: Year, year: string) => {
+const formatData = (
+    data: Year,
+    selectedMonth: number,
+    selectedDay: number,
+) => {
     const labels = new Set<string>();
     const formattedData: any[] = [];
 
     for (const month in data) {
+        if (parseInt(month) !== selectedMonth) {
+            continue;
+        }
+
         for (const day in data[month]) {
+            if (parseInt(day) !== selectedDay) {
+                continue;
+            }
+
             for (const hour in data[month][day]) {
                 const measurements = data[month][day][hour].measurements;
                 const textualMeasurements: Record<string, number> = {};
@@ -41,7 +53,7 @@ const formatData = (data: Year, year: string) => {
                 });
 
                 formattedData.push({
-                    name: `${day}/${month}/${year} - ${hour}`,
+                    name: hour + ':00',
                     ...textualMeasurements,
                 });
             }
@@ -54,6 +66,13 @@ const formatData = (data: Year, year: string) => {
     };
 }
 
+const fills  = {
+    0: '#eab5b5',
+    1: '#c19191',
+    2: '#967272',
+    3: '#5b4646',
+    4: '#524141',
+};
 
 const AnalyticsDashboard = ({
     data,
@@ -83,31 +102,46 @@ const AnalyticsDashboard = ({
     ]);
 
     useEffect(() => {
+        const reset = () => {
+            setViewData([]);
+            setLabels([]);
+        }
+
         if (!data[selectedYear]) {
+            reset();
             return;
         }
+
+        const months = Object.keys(data[selectedYear]).toSorted();
+        setMonths(months);
+        let month = data[selectedYear][selectedMonth] ? selectedMonth : months[0];
+        month = typeof month === 'string' ? parseInt(month) : month;
+        if (!month) {
+            reset();
+            return;
+        }
+        setSelectedMonth(month);
+
+        const days = Object.keys(data[selectedYear][month as number]).toSorted();
+        setDays(days);
+        let day = data[selectedYear][month as number][selectedDay] ? selectedDay : days[0];
+        day = typeof day === 'string' ? parseInt(day) : day;
+        if (!day) {
+            reset();
+            return;
+        }
+        setSelectedDay(day);
 
         const {
             formattedData,
             labels,
-        } = formatData(data[selectedYear], selectedYear + '');
-
+        } = formatData(
+            data[selectedYear],
+            month,
+            day,
+        );
         setViewData(formattedData);
         setLabels(labels);
-
-        const months = Object.keys(data[selectedYear]).toSorted();
-        setMonths(months);
-
-        const month = data[selectedYear][selectedMonth] ? selectedMonth : months[0];
-        if (month) {
-            const days = Object.keys(data[selectedYear][month as number]).toSorted();
-            setDays(days);
-
-            const day = data[selectedYear][month as number][selectedDay] ? selectedDay : days[0];
-            if (day) {
-                setSelectedDay(day as number);
-            }
-        }
     }, [
         data,
         selectedYear,
@@ -156,7 +190,6 @@ const AnalyticsDashboard = ({
             <div
                 className="w-[300px] h-[300px] lg:w-[400px] lg:h-[400px] mb-8"
             >
-
                 <ResponsiveContainer
                     width="100%" height="100%"
                 >
@@ -186,12 +219,12 @@ const AnalyticsDashboard = ({
                             }}
                         />
                         <Legend />
-                        {labels.map((label) => (
+                        {labels.map((label, index) => (
                             <Bar
                                 key={Math.random() + label}
                                 dataKey={label}
-                                stackId="a"
-                                fill="#eab5b5"
+                                stackId={'a'}
+                                fill={(fills as any)[index % Object.keys(fills).length]}
                                 isAnimationActive={false}
                             />
                         ))}
