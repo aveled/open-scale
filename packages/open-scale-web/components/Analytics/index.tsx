@@ -206,6 +206,8 @@ const AnalyticsDashboard = ({
                     >
                         <XAxis
                             dataKey="name"
+                            angle={-90}
+                            textAnchor="end"
                         />
                         <YAxis
                             allowDecimals={false}
@@ -218,7 +220,13 @@ const AnalyticsDashboard = ({
                                 fill: 'transparent',
                             }}
                         />
-                        <Legend />
+                        <Legend
+                            height={80}
+                            wrapperStyle={{
+                                display: 'grid',
+                                placeContent: 'flex-end center',
+                            }}
+                        />
                         {labels.map((label, index) => (
                             <Bar
                                 key={Math.random() + label}
