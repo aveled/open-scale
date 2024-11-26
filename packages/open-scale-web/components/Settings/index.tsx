@@ -36,15 +36,15 @@ export default function Settings({
     theme,
     setTheme,
     values,
-    analytics,
 }: {
     language: Language;
     setLanguage: (language: Language) => void;
     theme: string;
     setTheme: (theme: string) => void;
     values: ScaleSettings;
-    analytics: Analytics;
 }) {
+    const [analytics, setAnalytics] = useState<Analytics>({});
+
     const [fastFeedSpeed, setFastFeedSpeed] = useState(values.fastFeedSpeed);
     const [slowFeedSpeed, setSlowFeedSpeed] = useState(values.slowFeedSpeed);
     const [fastSlowPercentage, setFastSlowPercentage] = useState(values.fastSlowPercentage);
@@ -83,6 +83,30 @@ export default function Settings({
     }
 
 
+    /** Get analytics */
+    useEffect(() => {
+        const load = async () => {
+            try {
+                const response = await fetch(ENDPOINT + PATHS.ANALYTICS);
+                const {
+                    status,
+                    data,
+                } = await response.json();
+
+                if (!status) {
+                    return;
+                }
+
+                setAnalytics(data);
+            } catch (_e: any) {
+                return;
+            }
+        }
+
+        load();
+    }, []);
+
+    /** Update settings */
     useEffect(() => {
         const updateSettings = async () => {
             try {
@@ -132,10 +156,12 @@ export default function Settings({
         <div
             className="select-none grid gap-6 min-w-[300px] lg:min-w-[400px] font-bold text-lg"
         >
-            <AnalyticsDashboard
-                data={analytics}
-                language={language}
-            />
+            {Object.keys(analytics).length >= 0 && (
+                <AnalyticsDashboard
+                    data={analytics}
+                    language={language}
+                />
+            )}
 
             <Dropdown
                 name={i18n[language].language}

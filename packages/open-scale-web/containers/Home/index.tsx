@@ -11,7 +11,6 @@ import {
     StatusData,
     ScaleSettings,
     ScaleErrors,
-    Analytics,
 
     ENDPOINT,
     PATHS,
@@ -26,7 +25,6 @@ import {
 
 import {
     i18n,
-    Language,
 } from '@/data/language';
 
 import OpenScaleImage from '@/components/OpenScaleImage';
@@ -56,7 +54,6 @@ export default function Home() {
     const [currentWeight, setCurrentWeight] = useState(0);
     const [targetWeight, setTargetWeight] = useState(0);
     const [scaleSettings, setScaleSettings] = useState<ScaleSettings>(defaultScaleSettings);
-    const [analytics, setAnalytics] = useState<Analytics>({});
     const [errors, setErrors] = useState<ScaleErrors[]>([]);
 
 
@@ -161,6 +158,7 @@ export default function Home() {
     }
 
 
+    /** Load status */
     useEffect(() => {
         const load = async () => {
             try {
@@ -179,7 +177,6 @@ export default function Home() {
                     currentWeight,
                     targetWeight,
                     settings,
-                    analytics,
                     errors,
                 } = data as StatusData;
 
@@ -187,7 +184,6 @@ export default function Home() {
                 setCurrentWeight(currentWeight);
                 setTargetWeight(targetWeight);
                 setScaleSettings(settings);
-                setAnalytics(analytics);
                 setErrors(errors);
 
                 if (loading) {
@@ -213,6 +209,7 @@ export default function Home() {
         loading,
     ]);
 
+    /** Theme */
     useEffect(() => {
         if (theme === 'light') {
             document.body.style.backgroundColor = '#f0fff0';
@@ -223,6 +220,7 @@ export default function Home() {
         theme,
     ]);
 
+    /** Socket */
     useEffect(() => {
         const handleSocket = () => {
             try {
@@ -412,7 +410,6 @@ export default function Home() {
                     theme={theme}
                     setTheme={setTheme}
                     values={scaleSettings}
-                    analytics={analytics}
                 />
             )}
 
