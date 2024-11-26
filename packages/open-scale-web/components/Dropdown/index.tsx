@@ -127,6 +127,7 @@ export default function CustomDropdown({
                 inline={true}
                 theme={theme}
                 placement="bottom-end"
+                className="overflow-auto max-h-[250px]"
             >
                 {selectables.map((selectable) => {
                     return (
