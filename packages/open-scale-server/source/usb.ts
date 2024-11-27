@@ -1,6 +1,6 @@
 // deno-lint-ignore-file
 
-// import drivelist from 'drivelist';
+import { platform } from 'node:os';
 
 
 
@@ -8,9 +8,14 @@ export const copyToUSB = async (
     filepath: string,
     name: string,
 ) => {
-    // const drives = await drivelist.list();
-
-    // for (const drive of drives) {
-    //     console.log(drive);
-    // }
+    switch (platform()) {
+        case 'win32':
+            break;
+        case 'linux':
+            break;
+        case 'darwin':
+            break;
+        default:
+            throw new Error('Unsupported platform');
+    }
 }
