@@ -60,7 +60,7 @@ export const composeAnalytics = (
     for (const event of events) {
         const date = new Date(event[0]);
         const year = date.getFullYear();
-        const month = date.getMonth();
+        const month = date.getMonth() + 1;
         const day = date.getDate();
         const hour = date.getHours();
 
