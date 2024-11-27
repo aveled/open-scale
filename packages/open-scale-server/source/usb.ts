@@ -1,6 +1,6 @@
 // deno-lint-ignore-file
 
-import usb from 'usb';
+// import drivelist from 'drivelist';
 
 
 
@@ -8,9 +8,9 @@ export const copyToUSB = async (
     filepath: string,
     name: string,
 ) => {
-    const devices = usb.getDeviceList();
+    // const drives = await drivelist.list();
 
-    for (const device of devices) {
-
-    }
+    // for (const drive of drives) {
+    //     console.log(drive);
+    // }
 }
