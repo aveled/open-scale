@@ -13,7 +13,7 @@ CMD ["deno", "task", "start"]
 
 
 ### Build Command
-# > docker buildx build -t open-scale-web — platform linux/arm64/v8 — push .
+# > docker buildx build --platform linux/arm64/v8 -t open-scale-web .
 
 ### Run Command
 # > docker run -d -p 8486:3000 -e NEXT_PUBLIC_ENDPOINT=http://localhost:8485 open-scale-web
