@@ -2,6 +2,9 @@ FROM denoland/deno:alpine-2.1.2 as builder
 
 WORKDIR /app
 
+ARG NEXT_PUBLIC_ENDPOINT
+ENV NEXT_PUBLIC_ENDPOINT=$NEXT_PUBLIC_ENDPOINT
+
 COPY . .
 RUN deno install
 RUN deno task build
@@ -25,7 +28,7 @@ CMD ["node", "server.js"]
 
 
 ### Build Command
-# > docker buildx build --platform linux/arm64/v8 -t open-scale-web .
+# > docker buildx build --platform linux/arm64/v8 --build-arg NEXT_PUBLIC_ENDPOINT=http://localhost:8485 -t open-scale-web .
 
 ### Run Command
-# > docker run -d -p 8486:8486 -e NEXT_PUBLIC_ENDPOINT=http://localhost:8485 open-scale-web
+# > docker run -d -p 8486:8486 open-scale-web
