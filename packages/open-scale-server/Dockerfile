@@ -1,4 +1,4 @@
-FROM denoland/deno:alpine-2.1.2
+FROM denoland/deno:debian-2.1.2
 
 WORKDIR /app
 
