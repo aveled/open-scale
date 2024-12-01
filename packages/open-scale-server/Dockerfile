@@ -4,7 +4,6 @@ WORKDIR /app
 
 COPY . .
 RUN deno install
-RUN deno task build
 
 USER deno
 EXPOSE 8485
