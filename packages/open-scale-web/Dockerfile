@@ -1,4 +1,4 @@
-FROM denoland/deno:alpine-2.1.2
+FROM denoland/deno:alpine-2.1.2 as builder
 
 WORKDIR /app
 
@@ -6,12 +6,23 @@ COPY . .
 RUN deno install
 RUN deno task build
 
-USER deno
-EXPOSE 8000
 
+FROM denoland/deno:alpine-2.1.2
+
+WORKDIR /app
+
+COPY package.json .
+COPY --from=builder /app/public ./public
+COPY --from=builder /app/.next/standalone ./
+COPY --from=builder /app/.next/static ./.next/static
+
+ENV NODE_ENV=production
 ENV PORT=8486
 
-CMD ["deno", "task", "start"]
+USER deno
+EXPOSE 8486
+
+CMD ["node", "server.js"]
 
 
 ### Build Command
