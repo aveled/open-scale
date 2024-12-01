@@ -7,7 +7,7 @@ RUN deno install
 RUN deno task build
 
 
-FROM denoland/deno:alpine-2.1.2
+FROM node:22-alpine
 
 WORKDIR /app
 
@@ -19,7 +19,6 @@ COPY --from=builder /app/.next/static ./.next/static
 ENV NODE_ENV=production
 ENV PORT=8486
 
-USER deno
 EXPOSE 8486
 
 CMD ["node", "server.js"]
