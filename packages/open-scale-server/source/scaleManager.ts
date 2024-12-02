@@ -80,8 +80,8 @@ class ScaleManager {
     private weightMonitorLoop() {
         setInterval(async () => {
             try {
-                const weightRegister = await this.client.readHoldingRegisters(REGISTERS.WEIGHT, 1);
-                const newWeight = weightRegister.data[0];
+                const weightRegister = await this.client.readHoldingRegisters(REGISTERS.WEIGHT, 2);
+                const newWeight = (weightRegister.data[0] << 16) | weightRegister.data[1];
                 if (this.currentWeight === newWeight) {
                     return;
                 }

@@ -1,11 +1,11 @@
 export const PORT = 8485;
 
 export const REGISTERS = {
-    WEIGHT: 5,
-    START_FEED: 6,
-    STOP_FEED: 7,
-    SPEED_FEED: 8,
-    TARE: 9,
+    WEIGHT: 7,
+    START_FEED: -1,
+    STOP_FEED: -1,
+    SPEED_FEED: -1,
+    TARE: -1,
 };
 export const DEFAULT_FEED_SPEED = {
     FAST: 50,
