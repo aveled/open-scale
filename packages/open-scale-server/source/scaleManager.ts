@@ -250,9 +250,11 @@ class ScaleManager {
         this.activeScale = false;
     }
 
-    public tare() {
+    public async tare() {
         this.currentWeight = 0;
-        this.client.writeRegisters(REGISTERS.TARE, [1]);
+        await this.client.writeRegisters(REGISTERS.TARE_LOW, [0]);
+        await this.client.writeRegisters(REGISTERS.TARE_HIGH, [0]);
+        await this.client.writeRegisters(REGISTERS.COMMAND, [130]);
         this.messageSockets();
     }
 

@@ -5,7 +5,9 @@ export const REGISTERS = {
     START_FEED: -1,
     STOP_FEED: -1,
     SPEED_FEED: -1,
-    TARE: -1,
+    TARE_LOW: 72,
+    TARE_HIGH: 73,
+    COMMAND: 5,
 };
 export const DEFAULT_FEED_SPEED = {
     FAST: 50,
