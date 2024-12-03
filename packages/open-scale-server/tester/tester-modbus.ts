@@ -1,6 +1,4 @@
-// deno-lint-ignore-file require-await no-explicit-any no-unused-vars ban-unused-ignore
-
-import ModbusRTU from 'npm:modbus-serial';
+import ModbusRTU from 'modbus-serial';
 
 
 

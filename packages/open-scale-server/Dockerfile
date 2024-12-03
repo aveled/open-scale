@@ -1,11 +1,11 @@
-FROM denoland/deno:debian-2.1.2
+FROM node:22.11-slim
 
 WORKDIR /app
 
 COPY . .
-RUN deno install
+RUN npm install
+RUN npm run build
 
-USER deno
 EXPOSE 8485
 
 # ENV ENVIRONMENT=production
@@ -13,7 +13,7 @@ EXPOSE 8485
 # ENV LOG_LEVEL=info
 ENV PORT=8485
 
-CMD ["deno", "task", "start"]
+CMD ["npm", "start"]
 
 
 ### Build Command

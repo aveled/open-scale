@@ -1,10 +1,8 @@
-// deno-lint-ignore-file
-
 import * as tf from '@tensorflow/tfjs';
 
 import {
     RecordEvent,
-} from './data.ts';
+} from './data';
 
 
 

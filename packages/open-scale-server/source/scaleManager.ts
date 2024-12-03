@@ -1,4 +1,8 @@
-import ModbusRTU from 'npm:modbus-serial';
+import ModbusRTU from 'modbus-serial';
+
+import {
+    WebSocket,
+} from 'ws';
 
 import {
     REGISTERS,
@@ -15,20 +19,20 @@ import {
     RecordEvent,
     ScaleSettings,
     ScaleStatus,
-} from './data.ts';
-import modbus from './modbus.ts';
-import database from './database.ts';
+} from './data';
+import modbus from './modbus';
+import database from './database';
 import {
     updateAnalytics,
-} from './analytics.ts';
+} from './analytics';
 import {
     logger,
-} from './utilities.ts';
+} from './utilities';
 
 
 
 class ScaleManager {
-    private client: ModbusRTU.default;
+    private client: ModbusRTU;
     private currentWeight: number = 0;
     private fastFeedSpeed: number = DEFAULT_FEED_SPEED.FAST;
     private slowFeedSpeed: number = DEFAULT_FEED_SPEED.SLOW;
@@ -48,7 +52,7 @@ class ScaleManager {
 
 
     constructor(
-        client: ModbusRTU.default,
+        client: ModbusRTU,
     ) {
         this.client = client;
         this.initialize();

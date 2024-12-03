@@ -1,5 +1,3 @@
-// deno-lint-ignore-file require-await no-explicit-any no-unused-vars ban-unused-ignore
-
 const ENDPOINT = 'http://localhost:8485';
 
 

@@ -1,43 +1,67 @@
-// deno-lint-ignore-file no-explicit-any
+import http from 'node:http';
+import {
+    WebSocketServer,
+} from 'ws';
 
 import {
     PORT,
-} from './source/data.ts';
+} from './source/data';
 
-import handlers from './source/handlers.ts';
-import scaleManager from './source/scaleManager.ts';
+import handlers from './source/handlers';
+import scaleManager from './source/scaleManager';
 
 
 
-Deno.serve({
-    port: PORT,
-    hostname: '0.0.0.0',
-}, async (req) => {
+const server = http.createServer(async (req, res) => {
     try {
-        if (req.headers.get('upgrade') !== 'websocket') {
-            const url = new URL(req.url);
-            const handler = (handlers as any)[req.method][url.pathname];
-            if (handler) {
-                return await handler(req);
-            }
-
-            return handlers.NOT_FOUND();
+        if (req.headers.upgrade === 'websocket') {
+            // Let the `upgrade` event handle WebSocket connections
+            res.writeHead(426, { 'Content-Type': 'text/plain' });
+            res.end('Upgrade Required');
+            return;
         }
 
-        const { socket, response } = Deno.upgradeWebSocket(req);
+        const url = new URL(req.url || '', `http://${req.headers.host}`);
+        const method = req.method || 'GET';
+        const methodHandlers = (handlers as any)[method] || {};
+        const handler = methodHandlers[url.pathname];
 
-        const socketID = Math.random().toString(36).slice(2);
-
-        socket.addEventListener('open', () => {
-            scaleManager.handleSocket(socketID, socket);
-        });
-
-        socket.addEventListener('close', () => {
-            scaleManager.closeSocket(socketID, socket);
-        });
-
-        return response;
-    } catch (_e) {
-        return handlers.NOT_FOUND();
+        if (handler) {
+            await handler(req, res);
+        } else {
+            handlers.NOT_FOUND();
+        }
+    } catch (error) {
+        console.error('Error handling request:', error);
+        handlers.NOT_FOUND();
     }
+});
+
+
+const wss = new WebSocketServer({ noServer: true });
+
+wss.on('connection', (socket) => {
+    const socketID = Math.random().toString(36).slice(2);
+
+    scaleManager.handleSocket(socketID, socket);
+
+    socket.on('close', () => {
+        scaleManager.closeSocket(socketID, socket);
+    });
+});
+
+server.on('upgrade', (req, socket, head) => {
+    if (req.headers['upgrade'] !== 'websocket') {
+        socket.destroy();
+        return;
+    }
+
+    wss.handleUpgrade(req, socket, head, (ws) => {
+        wss.emit('connection', ws, req);
+    });
+});
+
+
+server.listen(PORT, () => {
+    console.log(`Server running at http://0.0.0.0:${PORT}/`);
 });

@@ -1,11 +1,11 @@
 import {
     Analytics,
     RecordEvent,
-} from './data.ts';
+} from './data';
 
 import database, {
     coldStorage,
-} from './database.ts';
+} from './database';
 
 
 

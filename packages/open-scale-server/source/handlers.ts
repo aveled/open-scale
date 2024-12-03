@@ -1,16 +1,14 @@
-// deno-lint-ignore-file require-await no-explicit-any
-
-import scaleManager from './scaleManager.ts';
-import { copyToUSB } from './usb.ts';
+import scaleManager from './scaleManager';
+import { copyToUSB } from './usb';
 import {
     DATABASE_PATH,
     COLD_STORAGE_PATH,
-} from './database.ts';
+} from './database';
 
 import {
     PATHS,
     corsHeaders,
-} from './data.ts';
+} from './data';
 
 
 
@@ -148,7 +146,7 @@ const handlerNotFound = () => {
 
 // curl -X POST -H "Content-Type: application/json" -d '{"weight": 15000}' http://localhost:8485/test-set-weight
 const handlerTestSetWeight = async (req: Request) => {
-    if (Deno.env.get('ENVIRONMENT') !== 'development') {
+    if (process.env.ENVIRONMENT !== 'development') {
         return handlerNotFound();
     }
 

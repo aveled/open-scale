@@ -1,14 +1,12 @@
-// deno-lint-ignore-file no-explicit-any
-
 export const logger = (
     level: 'info' | 'warn' | 'error' = 'info',
     ...message: any[]
 ) => {
-    if (Deno.env.get('DEBUG') !== 'true') {
+    if (process.env.DEBUG !== 'true') {
         return;
     }
 
-    const logLevel = Deno.env.get('LOG_LEVEL');
+    const logLevel = process.env.LOG_LEVEL;
     if (
         (logLevel === 'error' && level !== 'error')
         || (logLevel === 'warn' && (level !== 'warn' && level !== 'error'))

@@ -1,5 +1,3 @@
-// deno-lint-ignore-file
-
 import { platform } from 'node:os';
 
 

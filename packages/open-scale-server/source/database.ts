@@ -1,5 +1,5 @@
-import { promises as fs } from 'node:fs';
 import { homedir } from 'node:os';
+import fs from 'node:fs';
 import path from 'node:path';
 
 import { Low } from 'lowdb';
@@ -14,16 +14,16 @@ import {
 
     Database,
     ColdStorage,
-} from './data.ts';
+} from './data';
 
 
 
-const setupDatabase = async () => {
+const setupDatabase = () => {
     const OPEN_SCALE_DIR = path.join(
         homedir(),
         '/.open-scale',
     );
-    await fs.mkdir(OPEN_SCALE_DIR, { recursive: true });
+    fs.mkdirSync(OPEN_SCALE_DIR, { recursive: true });
 
     const DATABASE_PATH = path.join(
         OPEN_SCALE_DIR,
@@ -49,9 +49,9 @@ const setupDatabase = async () => {
     };
 
     try {
-        await fs.access(DATABASE_PATH);
+        fs.accessSync(DATABASE_PATH);
     } catch (_error) {
-        await fs.writeFile(DATABASE_PATH, JSON.stringify(defaultData));
+        fs.writeFileSync(DATABASE_PATH, JSON.stringify(defaultData));
     }
 
     return [
@@ -67,7 +67,7 @@ export const [
     defaultColdData,
     DATABASE_PATH,
     COLD_STORAGE_PATH,
-] = await setupDatabase();
+] = setupDatabase();
 
 const database = new Low<Database>(new JSONFile(DATABASE_PATH), defaultData);
 
