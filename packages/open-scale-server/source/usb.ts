@@ -1,4 +1,6 @@
-import { platform } from 'node:os';
+import fs from 'node:fs';
+
+import drivelist from 'drivelist';
 
 
 
@@ -6,14 +8,16 @@ export const copyToUSB = async (
     filepath: string,
     name: string,
 ) => {
-    switch (platform()) {
-        case 'win32':
-            break;
-        case 'linux':
-            break;
-        case 'darwin':
-            break;
-        default:
-            throw new Error('Unsupported platform');
-    }
+    const drives = await drivelist.list();
+    const USBs = drives.filter(drive => drive.isUSB);
+
+    USBs.forEach(usb => {
+        if (usb.device === '/dev/ttyUSB0' || usb.device === '/dev/ttyUSB1') {
+            return;
+        }
+
+        usb.mountpoints.forEach(mountpoint => {
+            fs.copyFileSync(filepath, `${mountpoint.path}/${name}`);
+        });
+    });
 }
