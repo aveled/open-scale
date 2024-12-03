@@ -1,13 +1,13 @@
-// import { assertEquals } from 'jsr:@std/assert';
+import { assertEquals } from 'jsr:@std/assert';
 
 import {
     RecordEvent,
-} from './data.ts';
+} from '../source/data.ts';
 
 import {
     extractCurrentEvents,
     composeAnalytics,
-} from './analytics.ts';
+} from '../source/analytics.ts';
 
 
 
@@ -36,17 +36,17 @@ const events: RecordEvent[] = [
 ];
 
 
-// Deno.test('composeAnalytics', () => {
-//     const [currentEvents, _] = extractCurrentEvents(events);
-//     const analytics = composeAnalytics(currentEvents, {});
+Deno.test('composeAnalytics', () => {
+    const [currentEvents, _] = extractCurrentEvents(events);
+    const analytics = composeAnalytics(currentEvents, {});
 
-//     // Deno.writeFileSync(
-//     //     './test.md',
-//     //     new TextEncoder().encode(JSON.stringify(analytics, null, 4)),
-//     // );
+    // Deno.writeFileSync(
+    //     './test.md',
+    //     new TextEncoder().encode(JSON.stringify(analytics, null, 4)),
+    // );
 
-//     assertEquals(analytics['2024']['9']['28']['15'].measurements['25000'], 2);
-//     assertEquals(analytics['2024']['9']['28']['23'].measurements['25000'], 1);
-//     assertEquals(analytics['2024']['9']['30']['1'].measurements['25000'], 1);
-//     assertEquals(analytics['2024']['9']['31']['8'].measurements['25000'], 1);
-// });
+    assertEquals(analytics['2024']['9']['28']['15'].measurements['25000'], 2);
+    assertEquals(analytics['2024']['9']['28']['23'].measurements['25000'], 1);
+    assertEquals(analytics['2024']['9']['30']['1'].measurements['25000'], 1);
+    assertEquals(analytics['2024']['9']['31']['8'].measurements['25000'], 1);
+});

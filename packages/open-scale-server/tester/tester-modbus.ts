@@ -1,4 +1,4 @@
-import ModbusRTU from 'modbus-serial';
+import ModbusRTU from 'npm:modbus-serial';
 
 
 

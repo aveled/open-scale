@@ -1,3 +1,5 @@
+// deno-lint-ignore-file
+
 const ENDPOINT = 'http://localhost:8485';
 
 
@@ -110,3 +112,7 @@ for (const [name, scenario] of scenarios) {
     console.log(`Running scenario: ${name}`);
     await scenario();
 }
+
+
+
+export {};
