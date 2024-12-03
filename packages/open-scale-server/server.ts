@@ -27,13 +27,24 @@ const server = http.createServer(async (req, res) => {
         const handler = methodHandlers[url.pathname];
 
         if (handler) {
-            await handler(req, res);
+            const data = await handler(req) as {
+                body: string | null,
+                status: number,
+                headers: Record<string, string>,
+            };
+
+            res.writeHead(data.status, data.headers);
+            res.end(data.body);
         } else {
-            handlers.NOT_FOUND();
+            const data = handlers.NOT_FOUND();
+            res.writeHead(data.status, data.headers);
+            res.end(data.body);
         }
     } catch (error) {
         console.error('Error handling request:', error);
-        handlers.NOT_FOUND();
+        const data = handlers.NOT_FOUND();
+        res.writeHead(data.status, data.headers);
+        res.end(data.body);
     }
 });
 

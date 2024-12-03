@@ -21,13 +21,14 @@ const handlerResponse = <D = any>(
 ) => {
     const body = JSON.stringify(response);
 
-    return new Response(body, {
+    return {
+        body,
         status,
         headers: {
             'content-type': 'application/json; charset=utf-8',
             ...corsHeaders,
         },
-    });
+    };
 }
 
 // curl -X GET http://localhost:8485/status
@@ -162,10 +163,11 @@ const handlerTestSetWeight = async (req: Request) => {
 }
 
 const handlerOptions = async (_req: Request) => {
-    return new Response(null, {
+    return {
+        body: null,
         status: 204,
         headers: corsHeaders,
-    });
+    };
 };
 
 
