@@ -81,7 +81,7 @@ class ScaleManager {
         setInterval(async () => {
             try {
                 const weightRegister = await this.client.readHoldingRegisters(REGISTERS.WEIGHT, 2);
-                const newWeight = (weightRegister.data[0] << 16) | weightRegister.data[1];
+                const newWeight = (weightRegister.data[0] << 16) | weightRegister.data[1] * 10; // Convert to grams
                 if (this.currentWeight === newWeight) {
                     return;
                 }
