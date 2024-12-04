@@ -1,3 +1,5 @@
+import { exec } from 'node:child_process';
+
 import scaleManager from './scaleManager';
 import { copyToUSB } from './usb';
 import {
@@ -121,8 +123,20 @@ const handlerClearErrors = async (_req: Request) => {
     });
 }
 
+// curl -X POST http://localhost:8485/restart-server
 const handlerRestartServer = async (_req: Request) => {
-    // schedule restart
+    setTimeout(() => {
+        exec('kill -SIGHUP 1', (error, stdout, stderr) => {
+            if (error) {
+                console.error(`Error restarting container: ${error.message}`);
+            }
+            if (stderr) {
+                console.error(`Error output: ${stderr}`);
+            }
+
+            console.log(`Restart output: ${stdout}`);
+        });
+    }, 500);
 
     return handlerResponse({
         status: true,
