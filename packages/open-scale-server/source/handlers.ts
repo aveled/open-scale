@@ -1,5 +1,9 @@
 import { exec } from 'node:child_process';
 
+import {
+    Request,
+} from 'express';
+
 import scaleManager from './scaleManager';
 import { copyToUSB } from './usb';
 import {
@@ -65,7 +69,7 @@ const handlerStop = async (_req: Request) => {
 const handlerTargetWeight = async (req: Request) => {
     const {
         targetWeight,
-    } = await req.json();
+    } = req.body;
 
     scaleManager.setTargetWeight(targetWeight);
 
@@ -90,7 +94,7 @@ const handlerSettings = async (req: Request) => {
         fastSlowPercentage,
         errorPercentage,
         restingTime,
-    } = await req.json();
+    } = req.body;
 
     scaleManager.updateSettings({
         fastFeedSpeed,
@@ -167,7 +171,7 @@ const handlerTestSetWeight = async (req: Request) => {
 
     const {
         weight,
-    } = await req.json();
+    } = req.body;
 
     scaleManager.__testSetWeight__(weight);
 

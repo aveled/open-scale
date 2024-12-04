@@ -1,4 +1,5 @@
-import http from 'node:http';
+import express from 'express';
+
 import {
     WebSocketServer,
 } from 'ws';
@@ -12,12 +13,15 @@ import scaleManager from './source/scaleManager';
 
 
 
-const server = http.createServer(async (req, res) => {
+const app = express();
+app.use(express.json());
+
+const httpServer = app.listen(process.env.PORT);
+
+app.all('*', async (req, res, _next) => {
     try {
-        if (req.headers.upgrade === 'websocket') {
-            // Let the `upgrade` event handle WebSocket connections
-            res.writeHead(426, { 'Content-Type': 'text/plain' });
-            res.end('Upgrade Required');
+        if (req.headers.upgrade && req.headers.upgrade.toLowerCase() === 'websocket') {
+            res.status(426).send('Upgrade Required');
             return;
         }
 
@@ -48,7 +52,6 @@ const server = http.createServer(async (req, res) => {
     }
 });
 
-
 const wss = new WebSocketServer({ noServer: true });
 
 wss.on('connection', (socket) => {
@@ -61,7 +64,7 @@ wss.on('connection', (socket) => {
     });
 });
 
-server.on('upgrade', (req, socket, head) => {
+httpServer.on('upgrade', (req, socket, head) => {
     if (req.headers['upgrade'] !== 'websocket') {
         socket.destroy();
         return;
@@ -73,6 +76,6 @@ server.on('upgrade', (req, socket, head) => {
 });
 
 
-server.listen(PORT, () => {
+app.listen(PORT, () => {
     console.log(`Server running at http://0.0.0.0:${PORT}/`);
 });
