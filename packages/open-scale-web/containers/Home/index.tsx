@@ -295,7 +295,7 @@ export default function Home() {
 
     return (
         <div
-            className="grid place-content-center h-full gap-6 text-center"
+            className="grid place-content-center h-full gap-6 text-center my-12"
             style={{
                 filter: theme === 'light' ? 'invert(1)' : '',
             }}

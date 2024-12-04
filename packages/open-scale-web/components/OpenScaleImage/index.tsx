@@ -10,25 +10,21 @@ export default function OpenScaleImage({
     clickable: boolean;
 }) {
     return (
-        <div
-            className="my-8"
-        >
-            <Image
-                src="/open-scale.png"
-                alt="open scale"
-                width={150}
-                height={150}
-                style={{
-                    margin: '0 auto',
-                    userSelect: 'none',
-                    cursor: clickable === false ? '' : 'pointer',
-                }}
-                priority={true}
-                draggable={false}
-                onClick={() => {
-                    setView();
-                }}
-            />
-        </div>
+        <Image
+            src="/open-scale.png"
+            alt="open scale"
+            width={150}
+            height={150}
+            style={{
+                margin: '0 auto',
+                userSelect: 'none',
+                cursor: clickable === false ? '' : 'pointer',
+            }}
+            priority={true}
+            draggable={false}
+            onClick={() => {
+                setView();
+            }}
+        />
     );
 }
