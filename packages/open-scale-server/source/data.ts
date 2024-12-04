@@ -109,3 +109,10 @@ export interface Hour {
     measurements: Record<number, number>;
     averageError: number;
 }
+
+
+
+export interface WeightIndicatorDriver {
+    getWeight(): Promise<number>;
+    tare(): Promise<boolean>;
+}

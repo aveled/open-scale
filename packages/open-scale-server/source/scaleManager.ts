@@ -19,12 +19,14 @@ import {
     RecordEvent,
     ScaleSettings,
     ScaleStatus,
+    WeightIndicatorDriver,
 } from './data';
-import modbus from './modbus';
-import database from './database';
 import {
     updateAnalytics,
 } from './analytics';
+import modbus from './modbus';
+import database from './database';
+import Drivers from './drivers';
 import {
     logger,
 } from './utilities';
@@ -32,6 +34,7 @@ import {
 
 
 class ScaleManager {
+    private weightIndicatorDriver: WeightIndicatorDriver;
     private client: ModbusRTU;
     private currentWeight: number = 0;
     private fastFeedSpeed: number = DEFAULT_FEED_SPEED.FAST;
@@ -56,6 +59,8 @@ class ScaleManager {
     ) {
         this.client = client;
         this.initialize();
+
+        this.weightIndicatorDriver = new Drivers['laumas-w100']();
     }
 
 
@@ -84,8 +89,8 @@ class ScaleManager {
     private weightMonitorLoop() {
         setInterval(async () => {
             try {
-                const weightRegister = await this.client.readHoldingRegisters(REGISTERS.WEIGHT, 2);
-                const newWeight = (weightRegister.data[0] << 16) | weightRegister.data[1] * 10; // Convert to grams
+                const newWeight = await this.weightIndicatorDriver.getWeight();
+
                 if (this.currentWeight === newWeight) {
                     return;
                 }
@@ -256,9 +261,9 @@ class ScaleManager {
 
     public async tare() {
         this.currentWeight = 0;
-        await this.client.writeRegisters(REGISTERS.TARE_LOW, [0]);
-        await this.client.writeRegisters(REGISTERS.TARE_HIGH, [0]);
-        await this.client.writeRegisters(REGISTERS.COMMAND, [130]);
+
+        await this.weightIndicatorDriver.tare();
+
         this.messageSockets();
     }
 
