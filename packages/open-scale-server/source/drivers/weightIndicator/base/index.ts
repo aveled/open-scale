@@ -28,12 +28,12 @@ class WeightIndicatorBase {
     private async loadClient() {
         const MODBUS_ID = parseInt(process.env.MODBUS_ID || '') || 1;
 
-        if (process.env.MODBUS_RTU === 'true') {
-            const MODBUS_RTU = process.env.MODBUS_RTU || '/dev/ttyUSB0';
+        if (process.env.USE_MODBUS_RTU === 'true') {
+            const MODBUS_DEVICE = process.env.MODBUS_DEVICE || '/dev/ttyUSB0';
             const MODBUS_BAUD = parseInt(process.env.MODBUS_BAUD || '') || 9600;
             const MODBUS_PARITY = (process.env.MODBUS_PARITY || 'none') as 'none' | 'even' | 'odd';
             const MODBUS_STOP = parseInt(process.env.MODBUS_STOP || '') || 1;
-            await this.client.connectRTUBuffered(MODBUS_RTU, {
+            await this.client.connectRTUBuffered(MODBUS_DEVICE, {
                 baudRate: MODBUS_BAUD,
                 parity: MODBUS_PARITY,
                 stopBits: MODBUS_STOP,
