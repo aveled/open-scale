@@ -23,7 +23,9 @@ import {
     updateAnalytics,
 } from './analytics';
 import database from './database';
-import Drivers from './drivers';
+import {
+    WeightIndicatorDrivers,
+} from './drivers';
 import {
     logger,
 } from './utilities';
@@ -31,7 +33,7 @@ import {
 
 
 class ScaleManager {
-    private weightIndicatorDriver: WeightIndicatorDriver;
+    private weightIndicatorDriver: WeightIndicatorDriver | null;
     private currentWeight: number = 0;
     private fastFeedSpeed: number = DEFAULT_FEED_SPEED.FAST;
     private slowFeedSpeed: number = DEFAULT_FEED_SPEED.SLOW;
@@ -53,13 +55,26 @@ class ScaleManager {
     constructor() {
         this.initialize();
 
-        this.weightIndicatorDriver = new Drivers[WEIGHT_INDICATOR]();
+        this.weightIndicatorDriver = null;
     }
 
 
     private async initialize() {
         await this.loadDatabase();
         this.startMonitoring();
+
+        try {
+            this.weightIndicatorDriver = new WeightIndicatorDrivers[WEIGHT_INDICATOR]();
+        } catch (_e) {
+            const interval = setInterval(() => {
+                try {
+                    this.weightIndicatorDriver = new WeightIndicatorDrivers[WEIGHT_INDICATOR]();
+                    clearInterval(interval);
+                } catch (_e) {
+                    logger('error', 'Could not initialize weight indicator driver');
+                }
+            }, 1_000);
+        }
     }
 
     private async loadDatabase() {
@@ -81,6 +96,10 @@ class ScaleManager {
 
     private weightMonitorLoop() {
         setInterval(async () => {
+            if (!this.weightIndicatorDriver) {
+                return;
+            }
+
             try {
                 const newWeight = await this.weightIndicatorDriver.getWeight();
 
@@ -253,6 +272,10 @@ class ScaleManager {
     }
 
     public async tare() {
+        if (!this.weightIndicatorDriver) {
+            return;
+        }
+
         this.currentWeight = 0;
 
         await this.weightIndicatorDriver.tare();
@@ -321,6 +344,10 @@ class ScaleManager {
     }
 
     public async __testSetWeight__(targetWeight: number) {
+        if (!this.weightIndicatorDriver) {
+            return;
+        }
+
         await this.weightIndicatorDriver.__testSetWeight__(targetWeight);
     }
 }
