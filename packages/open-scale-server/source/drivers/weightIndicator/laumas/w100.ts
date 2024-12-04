@@ -1,10 +1,16 @@
 import {
     WeightIndicatorDriver,
-
-    REGISTERS,
 } from '../../../data';
 import WeightIndicatorBase from '../base';
 
+
+
+const REGISTERS = {
+    WEIGHT: 7,
+    TARE_LOW: 72,
+    TARE_HIGH: 73,
+    COMMAND: 5,
+};
 
 
 class LaumasW100 extends WeightIndicatorBase implements WeightIndicatorDriver {

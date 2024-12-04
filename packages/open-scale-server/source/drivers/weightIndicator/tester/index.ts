@@ -1,10 +1,13 @@
 import {
     WeightIndicatorDriver,
-
-    REGISTERS,
 } from '../../../data';
 import WeightIndicatorBase from '../base';
 
+
+
+const REGISTERS = {
+    WEIGHT: 1,
+};
 
 
 class Tester extends WeightIndicatorBase implements WeightIndicatorDriver {
