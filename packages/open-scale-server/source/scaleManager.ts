@@ -70,8 +70,8 @@ class ScaleManager {
                 try {
                     this.weightIndicatorDriver = new WeightIndicatorDrivers[WEIGHT_INDICATOR]();
                     clearInterval(interval);
-                } catch (_e) {
-                    logger('error', 'Could not initialize weight indicator driver');
+                } catch (error) {
+                    logger('error', 'Could not initialize weight indicator driver', error);
                 }
             }, 1_000);
         }

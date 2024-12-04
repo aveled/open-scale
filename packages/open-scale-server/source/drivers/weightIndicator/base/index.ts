@@ -18,8 +18,8 @@ class WeightIndicatorBase {
                     logger('info', 'Trying to load weight indicator driver');
                     await this.loadClient();
                     clearInterval(interval);
-                } catch (_e) {
-                    logger('error', 'Could not load weight indicator driver');
+                } catch (error) {
+                    logger('error', 'Could not load weight indicator driver', error);
                 }
             }, 3_000);
         });
