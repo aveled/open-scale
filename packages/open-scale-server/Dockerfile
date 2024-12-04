@@ -1,8 +1,11 @@
-FROM node:22.11-slim
+FROM node:22.12.0-alpine
+
+RUN apk add --no-cache python3 py3-pip make g++
 
 WORKDIR /app
 
 COPY . .
+
 RUN npm install
 RUN npm run build
 
