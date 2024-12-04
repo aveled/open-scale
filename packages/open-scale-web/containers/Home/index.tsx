@@ -125,6 +125,9 @@ export default function Home() {
 
             const response = await fetch(ENDPOINT + PATHS.TARGET_WEIGHT, {
                 method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
                 body: JSON.stringify({
                     targetWeight: weight,
                 }),
