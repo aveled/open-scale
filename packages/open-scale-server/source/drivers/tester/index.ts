@@ -42,8 +42,12 @@ class Tester implements WeightIndicatorDriver {
     }
 
     public async tare(): Promise<boolean> {
-
         return true;
+    }
+
+    public async __testSetWeight__(targetWeight: number) {
+        await this.client.writeRegisters(REGISTERS.WEIGHT, [targetWeight]);
+        return;
     }
 }
 

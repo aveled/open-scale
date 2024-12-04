@@ -27,6 +27,11 @@ export const ERRORS = {
     NO_SERVER: 'NO_SERVER',
 } as const;
 
+export type WeightIndicatorType = 'tester' | 'laumas-w100';
+export const WEIGHT_INDICATOR = (process.env.WEIGHT_INDICATOR || 'tester') as WeightIndicatorType;
+export type VFDType = 'tester' | 'vfd';
+export const VFD = (process.env.VFD || 'tester') as VFDType;
+
 
 export const PATHS = {
     STATUS: '/status',
@@ -115,4 +120,5 @@ export interface Hour {
 export interface WeightIndicatorDriver {
     getWeight(): Promise<number>;
     tare(): Promise<boolean>;
+    __testSetWeight__(_weight: number): Promise<void>;
 }

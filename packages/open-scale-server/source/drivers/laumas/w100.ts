@@ -8,7 +8,7 @@ import {
 
 
 
-class W100 implements WeightIndicatorDriver {
+class LaumasW100 implements WeightIndicatorDriver {
     private client: ModbusRTU;
 
     constructor() {
@@ -51,7 +51,11 @@ class W100 implements WeightIndicatorDriver {
 
         return true;
     }
+
+    public async __testSetWeight__(_weight: number) {
+        return;
+    }
 }
 
 
-export default W100;
+export default LaumasW100;

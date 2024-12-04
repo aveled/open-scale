@@ -1,11 +1,9 @@
-import ModbusRTU from 'modbus-serial';
-
 import {
     WebSocket,
 } from 'ws';
 
 import {
-    REGISTERS,
+    WEIGHT_INDICATOR,
     DEFAULT_FEED_SPEED,
     DEFAULT_FAST_SLOW_PERCENTAGE,
     DEFAULT_TARGET_WEIGHT,
@@ -24,7 +22,6 @@ import {
 import {
     updateAnalytics,
 } from './analytics';
-import modbus from './modbus';
 import database from './database';
 import Drivers from './drivers';
 import {
@@ -35,7 +32,6 @@ import {
 
 class ScaleManager {
     private weightIndicatorDriver: WeightIndicatorDriver;
-    private client: ModbusRTU;
     private currentWeight: number = 0;
     private fastFeedSpeed: number = DEFAULT_FEED_SPEED.FAST;
     private slowFeedSpeed: number = DEFAULT_FEED_SPEED.SLOW;
@@ -54,13 +50,10 @@ class ScaleManager {
     private sockets = new Map<string, WebSocket>();
 
 
-    constructor(
-        client: ModbusRTU,
-    ) {
-        this.client = client;
+    constructor() {
         this.initialize();
 
-        this.weightIndicatorDriver = new Drivers['laumas-w100']();
+        this.weightIndicatorDriver = new Drivers[WEIGHT_INDICATOR]();
     }
 
 
@@ -111,7 +104,7 @@ class ScaleManager {
                     this.feedFastSet = false;
                     this.feedSlowSet = false;
 
-                    await this.client.writeRegisters(REGISTERS.STOP_FEED, [1]);
+                    // await this.client.writeRegisters(REGISTERS.STOP_FEED, [1]);
                     this.messageSockets();
                 }
                 return;
@@ -124,7 +117,7 @@ class ScaleManager {
                     if (!this.feedFastSet) {
                         logger('info', 'Set feed to fast', this.currentWeight, this.targetWeight);
                         this.feedFastSet = true;
-                        await this.client.writeRegisters(REGISTERS.SPEED_FEED, [this.fastFeedSpeed]);
+                        // await this.client.writeRegisters(REGISTERS.SPEED_FEED, [this.fastFeedSpeed]);
                         this.messageSockets();
                     }
                 } else {
@@ -132,7 +125,7 @@ class ScaleManager {
                         logger('info', 'Set feed to slow', this.currentWeight, this.targetWeight);
                         this.feedSlowSet = true;
                         this.slowFeedTime = Date.now();
-                        await this.client.writeRegisters(REGISTERS.SPEED_FEED, [this.slowFeedSpeed]);
+                        // await this.client.writeRegisters(REGISTERS.SPEED_FEED, [this.slowFeedSpeed]);
                         this.messageSockets();
                     }
                 }
@@ -143,7 +136,7 @@ class ScaleManager {
                     this.feedSlowSet = false;
 
                     this.startFeedTime = Date.now();
-                    await this.client.writeRegisters(REGISTERS.START_FEED, [1]);
+                    // await this.client.writeRegisters(REGISTERS.START_FEED, [1]);
                     this.messageSockets();
                 }
             } else {
@@ -153,7 +146,7 @@ class ScaleManager {
 
                 if (!this.feedStopped) {
                     this.feedStopped = true;
-                    await this.client.writeRegisters(REGISTERS.STOP_FEED, [1]);
+                    // await this.client.writeRegisters(REGISTERS.STOP_FEED, [1]);
 
                     this.activeScale = false;
 
@@ -328,12 +321,12 @@ class ScaleManager {
     }
 
     public async __testSetWeight__(targetWeight: number) {
-        await this.client.writeRegisters(REGISTERS.WEIGHT, [targetWeight]);
+        await this.weightIndicatorDriver.__testSetWeight__(targetWeight);
     }
 }
 
 
-const scaleManager = new ScaleManager(modbus);
+const scaleManager = new ScaleManager();
 
 
 export default scaleManager;
