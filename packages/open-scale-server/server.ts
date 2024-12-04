@@ -15,6 +15,7 @@ import scaleManager from './source/scaleManager';
 
 const app = express();
 app.use(express.json());
+app.use(cors());
 
 const httpServer = app.listen(process.env.PORT);
 
