@@ -316,6 +316,14 @@ export default function Settings({
                     }}
                     small={true}
                 />
+
+                <Button
+                    text="EXIT"
+                    onClick={() => {
+                        window.close();
+                    }}
+                    small={true}
+                />
             </div>
         </div>
     );
