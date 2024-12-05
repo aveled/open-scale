@@ -13,9 +13,7 @@ export default function HomeButton({
     language: Language,
 }) {
     return (
-        <div
-            className="my-8"
-        >
+        <div>
             <button
                 className="text-lg font-bold p-4 rounded-full select-none text-[#eab5b5]"
                 onClick={() => {

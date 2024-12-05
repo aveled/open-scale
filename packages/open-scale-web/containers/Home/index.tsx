@@ -302,7 +302,7 @@ export default function Home() {
     return (
         <div
             className={
-                `grid place-content-center h-full gap-6 text-center my-4 ${KIOSK_MODE ? 'cursor-none' : ''}`
+                `grid place-content-center h-full gap-6 text-center my-8 ${KIOSK_MODE ? 'cursor-none' : ''}`
             }
             style={{
                 filter: theme === 'light' ? 'invert(1)' : '',

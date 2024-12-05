@@ -13,8 +13,8 @@ export default function OpenScaleImage({
         <Image
             src="/open-scale.png"
             alt="open scale"
-            width={75}
-            height={75}
+            width={100}
+            height={100}
             style={{
                 margin: '0 auto',
                 userSelect: 'none',
