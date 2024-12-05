@@ -187,58 +187,64 @@ const AnalyticsDashboard = ({
                 />
             </div>
 
-            <div
-                className="w-[300px] h-[300px] lg:w-[400px] lg:h-[400px] mb-8"
-            >
-                <ResponsiveContainer
-                    width="100%" height="100%"
+            {labels.length === 0 ? (
+                <div>
+                    {i18n[language].noData}
+                </div>
+            ) : (
+                <div
+                    className="w-[300px] h-[300px] lg:w-[400px] lg:h-[400px] mb-8"
                 >
-                    <BarChart
-                        width={500}
-                        height={300}
-                        data={viewData}
-                        margin={{
-                            top: 20,
-                            right: 30,
-                            left: 20,
-                            bottom: 5,
-                        }}
+                    <ResponsiveContainer
+                        width="100%" height="100%"
                     >
-                        <XAxis
-                            dataKey="name"
-                            angle={-90}
-                            textAnchor="end"
-                        />
-                        <YAxis
-                            allowDecimals={false}
-                        />
-                        <Tooltip
-                            contentStyle={{
-                                background: 'black',
+                        <BarChart
+                            width={500}
+                            height={300}
+                            data={viewData}
+                            margin={{
+                                top: 20,
+                                right: 30,
+                                left: 20,
+                                bottom: 5,
                             }}
-                            cursor={{
-                                fill: 'transparent',
-                            }}
-                        />
-                        <Legend
-                            height={80}
-                            wrapperStyle={{
-                                display: 'grid',
-                                placeContent: 'flex-end center',
-                            }}
-                        />
-                        {labels.map((label, index) => (
-                            <Bar
-                                key={Math.random() + label}
-                                dataKey={label}
-                                stackId={'a'}
-                                fill={(fills as any)[index % Object.keys(fills).length]}
-                                isAnimationActive={false}
+                        >
+                            <XAxis
+                                dataKey="name"
+                                angle={-90}
+                                textAnchor="end"
                             />
-                        ))}
-                    </BarChart>
-                </ResponsiveContainer>
-            </div>
+                            <YAxis
+                                allowDecimals={false}
+                            />
+                            <Tooltip
+                                contentStyle={{
+                                    background: 'black',
+                                }}
+                                cursor={{
+                                    fill: 'transparent',
+                                }}
+                            />
+                            <Legend
+                                height={80}
+                                wrapperStyle={{
+                                    display: 'grid',
+                                    placeContent: 'flex-end center',
+                                }}
+                            />
+                            {labels.map((label, index) => (
+                                <Bar
+                                    key={Math.random() + label}
+                                    dataKey={label}
+                                    stackId={'a'}
+                                    fill={(fills as any)[index % Object.keys(fills).length]}
+                                    isAnimationActive={false}
+                                />
+                            ))}
+                        </BarChart>
+                    </ResponsiveContainer>
+                </div>
+            )}
         </>
     );
 };

@@ -24,6 +24,7 @@ export const i18n = {
         analyticsYear: 'analytics year',
         analyticsMonth: 'month',
         analyticsDay: 'day',
+        noData: 'no data',
     },
     ro: {
         home: 'acasă',
@@ -45,6 +46,7 @@ export const i18n = {
         analyticsYear: 'anul de analiză',
         analyticsMonth: 'luna',
         analyticsDay: 'ziua',
+        noData: 'fără date',
     },
 } as const;
 

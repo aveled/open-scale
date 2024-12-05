@@ -302,7 +302,7 @@ export default function Home() {
     return (
         <div
             className={
-                `grid place-content-center h-full gap-6 text-center my-12 ${KIOSK_MODE ? 'cursor-none' : ''}`
+                `grid place-content-center h-full gap-6 text-center my-4 ${KIOSK_MODE ? 'cursor-none' : ''}`
             }
             style={{
                 filter: theme === 'light' ? 'invert(1)' : '',
@@ -324,92 +324,98 @@ export default function Home() {
                 clickable={!activeScale}
             />
 
-            {(view === 'general' || view === 'current') && (
-                <WeightDisplay
-                    // icon={(<>current</>)}
-                    icon={currentLevelIcon}
-                    weight={currentWeight}
-                    setView={() => {
-                        setView('current');
-                    }}
-                    clickable={view === 'general' && !activeScale}
-                />
-            )}
-
-            {view === 'general' && (
-                <hr
-                    style={{
-                        width: '100%',
-                        border: '1px solid #eab5b5',
-                    }}
-                />
-            )}
-
-            {(view === 'general' || (view === 'target' && !showCustomInput))
-            && (
-                <WeightDisplay
-                    // icon={(<>target</>)}
-                    icon={currentTargetIcon}
-                    weight={targetWeight}
-                    setView={() => {
-                        setView('target');
-                    }}
-                    clickable={view === 'general' && !activeScale}
-                />
-            )}
-
-            {view === 'target'
-            && showCustomInput
-            && (
-                <WeightDisplayInput
-                    icon={currentTargetIcon}
-                    weight={targetWeight}
-                    update={(value) => {
-                        newTargetWeight(value);
-                    }}
-                />
-            )}
-
             <div
-                className="grid gap-6 mt-8"
+                className="grid grid-cols-2 gap-6"
             >
-                {view === 'general' && (
-                    <>
-                        <Button
-                            text="START"
-                            onClick={() => {
-                                start();
+                <div>
+                    {(view === 'general' || view === 'current') && (
+                        <WeightDisplay
+                            icon={currentLevelIcon}
+                            weight={currentWeight}
+                            setView={() => {
+                                setView('current');
                             }}
-                            disabled={activeScale}
+                            clickable={view === 'general' && !activeScale}
                         />
+                    )}
 
-                        {activeScale && (
+                    {view === 'general' && (
+                        <hr
+                            style={{
+                                width: '100%',
+                                border: '1px solid #eab5b5',
+                            }}
+                        />
+                    )}
+
+                    {(view === 'general' || (view === 'target' && !showCustomInput))
+                    && (
+                        <WeightDisplay
+                            icon={currentTargetIcon}
+                            weight={targetWeight}
+                            setView={() => {
+                                setView('target');
+                            }}
+                            clickable={view === 'general' && !activeScale}
+                        />
+                    )}
+
+                    {view === 'target'
+                    && showCustomInput
+                    && (
+                        <WeightDisplayInput
+                            icon={currentTargetIcon}
+                            weight={targetWeight}
+                            update={(value) => {
+                                newTargetWeight(value);
+                            }}
+                        />
+                    )}
+                </div>
+
+                <div>
+                    <div
+                        className="grid gap-8 mt-4"
+                    >
+                        {view === 'general' && (
+                            <>
+                                <Button
+                                    text="START"
+                                    onClick={() => {
+                                        start();
+                                    }}
+                                    disabled={activeScale}
+                                />
+
+                                {activeScale && (
+                                    <Button
+                                        text="STOP"
+                                        onClick={() => {
+                                            stop();
+                                        }}
+                                    />
+                                )}
+                            </>
+                        )}
+
+                        {view === 'current' && (
                             <Button
-                                text="STOP"
+                                text={i18n[language].tare.toUpperCase()}
                                 onClick={() => {
-                                    stop();
+                                    tare();
                                 }}
                             />
                         )}
-                    </>
-                )}
+                    </div>
 
-                {view === 'current' && (
-                    <Button
-                        text={i18n[language].tare.toUpperCase()}
-                        onClick={() => {
-                            tare();
-                        }}
-                    />
-                )}
+                    {view === 'target' && (
+                        <WeightSelector
+                            newTargetWeight={newTargetWeight}
+                            setShowCustomInput={setShowCustomInput}
+                        />
+                    )}
+                </div>
             </div>
-
-            {view === 'target' && (
-                <WeightSelector
-                    newTargetWeight={newTargetWeight}
-                    setShowCustomInput={setShowCustomInput}
-                />
-            )}
 
             {view === 'settings' && (
                 <Settings

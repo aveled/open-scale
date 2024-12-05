@@ -14,7 +14,7 @@ export default function WeightSelector({
     return (
         <>
             <div
-                className="grid grid-cols-3 lg:grid-cols-4 gap-4 justify-center items-center text-xl"
+                className="grid grid-cols-3 lg:grid-cols-4 justify-center items-center text-xl"
             >
                 {defaultTargetWeights.map((weight, index) => (
                     <button
@@ -34,8 +34,8 @@ export default function WeightSelector({
                             newTargetWeight(weight);
                         }}
                         style={{
-                            width: '80px',
-                            height: '80px',
+                            width: '60px',
+                            height: '60px',
                             margin: '10px',
                         }}
                     >
@@ -64,8 +64,8 @@ export default function WeightSelector({
                         setShowCustomInput(show => !show);
                     }}
                     style={{
-                        width: '80px',
-                        height: '80px',
+                        width: '60px',
+                        height: '60px',
                         margin: '10px',
                         fontSize: '2.8rem',
                     }}

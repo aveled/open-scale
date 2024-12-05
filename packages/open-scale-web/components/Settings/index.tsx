@@ -154,7 +154,7 @@ export default function Settings({
 
     return (
         <div
-            className="select-none grid gap-6 min-w-[300px] lg:min-w-[400px] font-bold text-lg"
+            className="select-none grid gap-6 min-w-[400px] lg:min-w-[500px] font-bold text-lg"
         >
             {Object.keys(analytics).length >= 0 && (
                 <AnalyticsDashboard
