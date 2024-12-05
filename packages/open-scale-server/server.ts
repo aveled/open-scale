@@ -17,8 +17,6 @@ const app = express();
 app.use(express.json());
 app.use(cors());
 
-const httpServer = app.listen(process.env.PORT);
-
 app.all('*', async (req, res, _next) => {
     try {
         if (req.headers.upgrade && req.headers.upgrade.toLowerCase() === 'websocket') {
@@ -53,6 +51,7 @@ app.all('*', async (req, res, _next) => {
     }
 });
 
+
 const wss = new WebSocketServer({ noServer: true });
 
 wss.on('connection', (socket) => {
@@ -65,6 +64,14 @@ wss.on('connection', (socket) => {
     });
 });
 
+
+const httpServer = app.listen(
+    process.env.PORT,
+    () => {
+        console.log(`Server running at http://0.0.0.0:${PORT}/`);
+    },
+);
+
 httpServer.on('upgrade', (req, socket, head) => {
     if (req.headers['upgrade'] !== 'websocket') {
         socket.destroy();
@@ -74,9 +81,4 @@ httpServer.on('upgrade', (req, socket, head) => {
     wss.handleUpgrade(req, socket, head, (ws) => {
         wss.emit('connection', ws, req);
     });
-});
-
-
-app.listen(PORT, () => {
-    console.log(`Server running at http://0.0.0.0:${PORT}/`);
 });
