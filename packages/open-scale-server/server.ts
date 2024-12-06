@@ -66,7 +66,7 @@ wss.on('connection', (socket) => {
 
 
 const httpServer = app.listen(
-    process.env.PORT,
+    PORT,
     () => {
         console.log(`Server running at http://0.0.0.0:${PORT}/`);
     },
