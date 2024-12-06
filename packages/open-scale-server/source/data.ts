@@ -1,4 +1,5 @@
-export const PORT = 8485;
+export const PORT = parseInt(process.env.PORT || '') || 8485;
+export const ENVIRONMENT = process.env.NODE_ENV || 'development';
 
 export const DEFAULT_FEED_SPEED = {
     FAST: 50,
