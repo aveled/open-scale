@@ -14,11 +14,13 @@
     },
     "dependencies": {
         "@tensorflow/tfjs": "^4.22.0",
+        "@types/rpi-gpio": "^2.1.4",
         "cors": "^2.8.5",
         "drivelist": "^12.0.2",
         "express": "^4.21.1",
         "lowdb": "^7.0.1",
         "modbus-serial": "^8.0.17",
+        "rpi-gpio": "^2.1.7",
         "tsc-module-loader": "^0.0.1",
         "ws": "^8.18.0"
     },
