@@ -6,14 +6,14 @@ import {
 
 
 
-const SENSOR_GPIO = 7;
+const SENSOR_GPIO = parseInt(process.env.SENSOR_GPIO || '') || 7;
+
 
 class Sensor {
     private toggled = false;
 
     constructor() {
         this.setup();
-        this.readState();
     }
 
     private setup() {
@@ -34,7 +34,9 @@ class Sensor {
         return this.toggled;
     }
 
-    public onUpdate(updater: (value: boolean) => void) {
+    public onUpdate(
+        updater: (value: boolean) => void,
+    ) {
         if (ENVIRONMENT !== 'production') {
             return;
         }
@@ -44,7 +46,7 @@ class Sensor {
                 return;
             }
 
-            updater(value);
+            updater(value === 1);
         });
     }
 }
