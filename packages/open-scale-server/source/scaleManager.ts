@@ -25,6 +25,7 @@ import {
 import database from './database';
 import {
     WeightIndicatorDrivers,
+    Sensor,
 } from './drivers';
 import {
     logger,
@@ -34,6 +35,7 @@ import {
 
 class ScaleManager {
     private weightIndicatorDriver: WeightIndicatorDriver | null;
+    private sensorDriver: Sensor | null;
     private currentWeight: number = 0;
     private fastFeedSpeed: number = DEFAULT_FEED_SPEED.FAST;
     private slowFeedSpeed: number = DEFAULT_FEED_SPEED.SLOW;
@@ -56,6 +58,7 @@ class ScaleManager {
         this.initialize();
 
         this.weightIndicatorDriver = null;
+        this.sensorDriver = null;
     }
 
 
@@ -74,6 +77,12 @@ class ScaleManager {
                     logger('error', 'Could not initialize weight indicator driver', error);
                 }
             }, 1_000);
+        }
+
+        try {
+            this.sensorDriver = new Sensor();
+        } catch (error) {
+            logger('error', 'Could not initialize sensor', error);
         }
     }
 
