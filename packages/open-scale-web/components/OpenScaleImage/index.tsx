@@ -17,6 +17,7 @@ export default function OpenScaleImage({
             height={100}
             style={{
                 margin: '0 auto',
+                marginBottom: '2rem',
                 userSelect: 'none',
                 cursor: clickable === false ? '' : 'pointer',
             }}
