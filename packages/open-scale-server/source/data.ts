@@ -1,5 +1,6 @@
 export const PORT = parseInt(process.env.PORT || '') || 8485;
 export const ENVIRONMENT = process.env.NODE_ENV || 'development';
+export const EXTERNAL_USB = process.env.EXTERNAL_USB || '/dev/ttyUSB2';
 
 export const DEFAULT_FEED_SPEED = {
     FAST: 50,
