@@ -6,6 +6,7 @@ export const PATHS = {
     START: '/start',
     STOP: '/stop',
     TARGET_WEIGHT: '/target-weight',
+    TOGGLE_AUTOMATIC_MODE: '/toggle-automatic-mode',
     TARE: '/tare',
     SETTINGS: '/settings',
     ANALYTICS: '/analytics',

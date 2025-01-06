@@ -33,6 +33,7 @@ import WeightDisplay from '@/components/WeightDisplay';
 import WeightDisplayInput from '@/components/WeightDisplayInput';
 import WeightSelector from '@/components/WeightSelector';
 import Button from '@/components/Button';
+import Toggle from '@/components/Toggle';
 import HomeButton from '@/components/HomeButton';
 import Settings from '@/components/Settings';
 
@@ -52,6 +53,7 @@ export default function Home() {
     const [showCustomInput, setShowCustomInput] = useState(false);
 
     const [activeScale, setActiveScale] = useState(false);
+    const [automaticMode, setAutomaticMode] = useState(false);
     const [currentWeight, setCurrentWeight] = useState(0);
     const [targetWeight, setTargetWeight] = useState(0);
     const [scaleSettings, setScaleSettings] = useState<ScaleSettings>(defaultScaleSettings);
@@ -91,6 +93,30 @@ export default function Home() {
 
             if (!status) {
                 setActiveScale(true);
+                return;
+            }
+        } catch (error: any) {
+            return;
+        }
+    }
+
+    const toggleAutomaticMode = async () => {
+        try {
+            const oldMode = automaticMode;
+            setAutomaticMode(!automaticMode);
+
+            const response = await fetch(ENDPOINT + PATHS.TOGGLE_AUTOMATIC_MODE, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+            });
+            const {
+                status,
+            } = await response.json();
+
+            if (!status) {
+                setAutomaticMode(oldMode);
                 return;
             }
         } catch (error: any) {
@@ -388,12 +414,22 @@ export default function Home() {
                                 />
 
                                 {activeScale && (
-                                    <Button
-                                        text="STOP"
-                                        onClick={() => {
-                                            stop();
-                                        }}
-                                    />
+                                    <>
+                                        <Button
+                                            text="STOP"
+                                            onClick={() => {
+                                                stop();
+                                            }}
+                                        />
+
+                                        <Toggle
+                                            text={i18n[language].automaticMode}
+                                            value={automaticMode}
+                                            toggle={() => {
+                                                toggleAutomaticMode();
+                                            }}
+                                        />
+                                    </>
                                 )}
                             </>
                         )}

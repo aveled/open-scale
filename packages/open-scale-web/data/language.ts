@@ -6,6 +6,7 @@ export const languages = {
 export const i18n = {
     en: {
         home: 'home',
+        automaticMode: 'automatic mode',
         tare: 'tare',
         language: 'language',
         theme: 'theme',
@@ -28,6 +29,7 @@ export const i18n = {
     },
     ro: {
         home: 'acasă',
+        automaticMode: 'mod automat',
         tare: 'tarare',
         language: 'limbă',
         theme: 'temă',
@@ -39,7 +41,7 @@ export const i18n = {
         error: 'eroare',
         errors: {
             'OVERSHOOT': 'depășire limită cântărire',
-            'NO_WEIGHT': 'fără greutate',
+            'NO_WEIGHT': 'fără masă',
             'NO_FEED': 'fără alimentare',
             'NO_SERVER': 'server-ul nu a fost găsit',
         },
