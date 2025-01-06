@@ -31,6 +31,7 @@ export const PATHS = {
     START: '/start',
     STOP: '/stop',
     TARGET_WEIGHT: '/target-weight',
+    TOGGLE_AUTOMATIC_MODE: '/toggle-automatic-mode',
     TARE: '/tare',
     SETTINGS: '/settings',
     ANALYTICS: '/analytics',
@@ -38,6 +39,7 @@ export const PATHS = {
     RESTART_SERVER: '/restart-server',
     EXPORT_DATA: '/export-data',
     TEST_SET_WEIGHT: '/test-set-weight',
+    TEST_TOGGLE_SENSOR: '/test-toggle-sensor',
 } as const;
 
 export const corsHeaders = {
@@ -76,9 +78,11 @@ export interface ColdStorage {
 
 
 export interface ScaleStatus {
+    automaticMode: boolean;
     active: boolean;
     currentWeight: number;
     targetWeight: number;
+    sensor: boolean;
     settings: ScaleSettings;
     errors: string[];
 }

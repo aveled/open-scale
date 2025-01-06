@@ -78,6 +78,15 @@ const handlerTargetWeight = async (req: Request) => {
     });
 }
 
+// curl -X POST http://localhost:8485/toggle-automatic-mode
+const handlerToggleAutomaticMode = async (_req: Request) => {
+    scaleManager.toggleAutomaticMode();
+
+    return handlerResponse({
+        status: true,
+    });
+}
+
 // curl -X POST http://localhost:8485/tare
 const handlerTare = async (_req: Request) => {
     scaleManager.tare();
@@ -180,6 +189,19 @@ const handlerTestSetWeight = async (req: Request) => {
     });
 }
 
+// curl -X POST http://localhost:8485/test-toggle-sensor
+const handlerTestToggleSensor = async (_req: Request) => {
+    if (process.env.ENVIRONMENT !== 'development') {
+        return handlerNotFound();
+    }
+
+    scaleManager.__testToggleSensor__();
+
+    return handlerResponse({
+        status: true,
+    });
+}
+
 const handlerOptions = async (_req: Request) => {
     return {
         body: null,
@@ -199,12 +221,14 @@ const handlers = {
         [PATHS.START]: handlerStart,
         [PATHS.STOP]: handlerStop,
         [PATHS.TARGET_WEIGHT]: handlerTargetWeight,
+        [PATHS.TOGGLE_AUTOMATIC_MODE]: handlerToggleAutomaticMode,
         [PATHS.TARE]: handlerTare,
         [PATHS.SETTINGS]: handlerSettings,
         [PATHS.CLEAR_ERRORS]: handlerClearErrors,
         [PATHS.RESTART_SERVER]: handlerRestartServer,
         [PATHS.EXPORT_DATA]: handlerExportData,
         [PATHS.TEST_SET_WEIGHT]: handlerTestSetWeight,
+        [PATHS.TEST_TOGGLE_SENSOR]: handlerTestToggleSensor,
     },
     OPTIONS: {
         [PATHS.STATUS]: handlerOptions,
@@ -212,11 +236,13 @@ const handlers = {
         [PATHS.START]: handlerOptions,
         [PATHS.STOP]: handlerOptions,
         [PATHS.TARGET_WEIGHT]: handlerOptions,
+        [PATHS.TOGGLE_AUTOMATIC_MODE]: handlerOptions,
         [PATHS.TARE]: handlerOptions,
         [PATHS.SETTINGS]: handlerOptions,
         [PATHS.CLEAR_ERRORS]: handlerOptions,
         [PATHS.RESTART_SERVER]: handlerOptions,
         [PATHS.EXPORT_DATA]: handlerOptions,
+        [PATHS.TEST_SET_WEIGHT]: handlerOptions,
     },
 } as const;
 

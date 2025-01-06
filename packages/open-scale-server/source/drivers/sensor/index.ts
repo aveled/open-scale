@@ -6,7 +6,7 @@ import {
 
 
 
-const SENSOR_GPIO = parseInt(process.env.SENSOR_GPIO || '') || 7;
+const SENSOR_GPIO = parseInt(process.env.SENSOR_GPIO || '') || 12;
 
 
 class Sensor {
@@ -46,8 +46,14 @@ class Sensor {
                 return;
             }
 
+            this.toggled = value === 1;
             updater(value === 1);
         });
+    }
+
+    public async __testToggle__() {
+        this.toggled = !this.toggled;
+        return;
     }
 }
 

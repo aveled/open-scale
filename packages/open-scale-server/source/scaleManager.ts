@@ -43,6 +43,7 @@ class ScaleManager {
     private targetWeight: number = DEFAULT_TARGET_WEIGHT;
     private errorPercentage: number = DEFAULT_ERROR_PERCENTAGE;
     private restingTime: number = DEFAULT_RESTING_TIME;
+    private automaticMode: boolean = false;
     private activeScale: boolean = false;
     private feedStarted: boolean = false;
     private feedStopped: boolean = false;
@@ -292,11 +293,18 @@ class ScaleManager {
         this.messageSockets();
     }
 
+    public async toggleAutomaticMode() {
+        this.automaticMode = !this.automaticMode;
+        this.messageSockets();
+    }
+
     public getStatus(): ScaleStatus {
         return {
+            automaticMode: this.automaticMode,
             active: this.isActive(),
             currentWeight: this.getCurrentWeight(),
             targetWeight: this.getTargetWeight(),
+            sensor: this.sensorDriver ? this.sensorDriver.readState() : false,
             settings: this.getSettings(),
             errors: this.getErrors(),
         } satisfies ScaleStatus;
@@ -358,6 +366,14 @@ class ScaleManager {
         }
 
         await this.weightIndicatorDriver.__testSetWeight__(targetWeight);
+    }
+
+    public async __testToggleSensor__() {
+        if (!this.sensorDriver) {
+            return;
+        }
+
+        await this.sensorDriver.__testToggle__();
     }
 }
 
