@@ -25,9 +25,11 @@ const Toggle = ({
             style={style}
         >
             <div
-                className="flex items-center gap-2 font-bold text-2xl"
+                className="flex items-center gap-2 font-bold text-xl"
             >
-                <span>
+                <span
+                    className="text-[#eab5b5] select-none uppercase"
+                >
                     {text}
                 </span>
 

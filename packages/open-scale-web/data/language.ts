@@ -6,7 +6,7 @@ export const languages = {
 export const i18n = {
     en: {
         home: 'home',
-        automaticMode: 'automatic mode',
+        automaticMode: 'automatic',
         tare: 'tare',
         language: 'language',
         theme: 'theme',
@@ -29,7 +29,7 @@ export const i18n = {
     },
     ro: {
         home: 'acasă',
-        automaticMode: 'mod automat',
+        automaticMode: 'automat',
         tare: 'tarare',
         language: 'limbă',
         theme: 'temă',
