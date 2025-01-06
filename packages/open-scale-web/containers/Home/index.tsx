@@ -13,7 +13,6 @@ import {
     ScaleErrors,
 
     ENDPOINT,
-    KIOSK_MODE,
     PATHS,
     LOADING_INTERVAL,
     defaultScaleSettings,
@@ -288,7 +287,7 @@ export default function Home() {
         return (
             <div
                 className={
-                    `grid place-content-center h-screen gap-6 text-center ${KIOSK_MODE ? 'cursor-none' : ''}`
+                    `grid place-content-center h-screen gap-6 text-center`
                 }
             >
                 <h1
@@ -328,7 +327,7 @@ export default function Home() {
     return (
         <div
             className={
-                `grid place-content-center h-full gap-6 text-center my-8 ${KIOSK_MODE ? 'cursor-none' : ''}`
+                `grid place-content-center h-full gap-6 text-center my-8`
             }
             style={{
                 filter: theme === 'light' ? 'invert(1)' : '',

@@ -1,3 +1,7 @@
+import {
+    KIOSK_MODE,
+} from '@/data/index';
+
 import Tooltip from '@/components/Tooltip';
 
 
@@ -49,7 +53,7 @@ const Toggle = ({
             <div
                 className="flex items-center"
             >
-                <label className="relative inline-flex items-center cursor-pointer">
+                <label className={`relative inline-flex items-center ${KIOSK_MODE ? 'cursor-none' : 'cursor-pointer'}`}>
                     <input
                         type="checkbox"
                         name={text}

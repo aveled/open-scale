@@ -1,3 +1,7 @@
+import {
+    KIOSK_MODE,
+} from '@/data/index';
+
 import Image from 'next/image';
 
 
@@ -19,7 +23,9 @@ export default function OpenScaleImage({
                 margin: '0 auto',
                 marginBottom: '2rem',
                 userSelect: 'none',
-                cursor: clickable === false ? '' : 'pointer',
+                cursor: KIOSK_MODE
+                    ? ''
+                    : clickable === false ? '' : 'pointer',
             }}
             priority={true}
             draggable={false}

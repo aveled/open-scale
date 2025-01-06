@@ -6,6 +6,10 @@ import {
 } from 'flowbite-react';
 
 import {
+    KIOSK_MODE,
+} from '@/data/index';
+
+import {
     focusStyle,
 } from '@/data/styles';
 
@@ -114,6 +118,7 @@ export default function CustomDropdown({
                     <button
                         className={styleTrim(`
                             ${focusStyle} p-1 flex gap-2 items-center
+                            ${KIOSK_MODE ? 'cursor-none' : 'cursor-pointer'}
                         `)}
                     >
                         {selected}

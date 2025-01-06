@@ -1,3 +1,9 @@
+import {
+    KIOSK_MODE,
+} from '@/data/index';
+
+
+
 export interface ButtonProps {
     text: string;
     onClick: () => void;
@@ -24,7 +30,10 @@ const Button: React.FC<ButtonProps> = ({
                 e.currentTarget.style.backgroundColor = '#5a5a5a';
             }}
             className={
-                `${small ? 'text-lg p-2 w-[200px]' : 'text-2xl p-4 w-[300px]'} font-bold mx-auto my-0 rounded-full select-none bg-[#5a5a5a] text-[#eab5b5]`
+                `${small ? 'text-lg p-2 w-[200px]' : 'text-2xl p-4 w-[300px]'}
+                font-bold mx-auto my-0 rounded-full select-none bg-[#5a5a5a] text-[#eab5b5]
+                ${KIOSK_MODE ? 'cursor-none' : ''}
+                `
             }
             disabled={disabled}
             style={{

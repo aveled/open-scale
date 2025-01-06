@@ -2,6 +2,10 @@ import type { Metadata } from "next";
 import localFont from "next/font/local";
 import "./globals.css";
 
+import {
+    KIOSK_MODE,
+} from '@/data/index';
+
 
 
 const geistSans = localFont({
@@ -28,6 +32,7 @@ export default function RootLayout({
     return (
         <html
             lang="en"
+            className={`${KIOSK_MODE ? 'cursor-none' : ''}`}
         >
             <body
                 className={`${geistSans.variable} ${geistMono.variable} antialiased`}
