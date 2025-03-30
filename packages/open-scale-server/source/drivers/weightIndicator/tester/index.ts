@@ -30,12 +30,14 @@ class Tester extends WeightIndicatorBase implements WeightIndicatorDriver {
     public async tare(): Promise<boolean> {
         await this.client.writeRegister(REGISTERS.COMMAND, COMMANDS.TARE);
         console.log(`Tester: Sent TARE command (${COMMANDS.TARE}) to Register ${REGISTERS.COMMAND}`);
+        this.__testSetWeight__(0);
         return true;
     }
 
     public async zero(): Promise<boolean> {
         await this.client.writeRegister(REGISTERS.COMMAND, COMMANDS.SEMI_AUTO_ZERO);
         console.log(`Tester: Sent ZERO command (${COMMANDS.SEMI_AUTO_ZERO}) to Register ${REGISTERS.COMMAND}`);
+        this.__testSetWeight__(0);
         return true;
     }
 
