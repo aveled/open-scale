@@ -1,7 +1,7 @@
 {
     "tasks": {
         "test": "deno test --allow-sys --allow-write",
-        "modbus": "deno run -A tester-modbus.ts",
+        "modbus": "deno run --unstable-detect-cjs -A tester-modbus.ts",
         "tester": "deno run -A tester-weight.ts"
     },
     "imports": {

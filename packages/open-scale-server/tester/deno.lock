@@ -3,6 +3,7 @@
   "specifiers": {
     "jsr:@std/assert@1": "1.0.8",
     "jsr:@std/internal@^1.0.5": "1.0.5",
+    "npm:modbus-serial@*": "8.0.20",
     "npm:modbus-serial@^8.0.17": "8.0.20",
     "npm:rpi-gpio@^2.1.7": "2.1.7"
   },

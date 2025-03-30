@@ -30,6 +30,7 @@ const vector = {
         // Asynchronous handling supported also here
         console.log("set register", addr, value, unitID);
         registers[addr] = value;
+        console.log("current registers", registers);
         return;
     },
     setCoil: function(addr: any, value: any, unitID: any) {
