@@ -77,6 +77,16 @@ export default function Settings({
             await fetch(ENDPOINT + PATHS.EXPORT_DATA, {
                 method: 'POST',
             });
+
+            const analyticsBlob = new Blob([JSON.stringify(analytics, null, 2)], { type: 'application/json' });
+            const analyticsUrl = URL.createObjectURL(analyticsBlob);
+            const analyticsLink = document.createElement('a');
+            analyticsLink.href = analyticsUrl;
+            analyticsLink.download = 'analytics.json';
+            document.body.appendChild(analyticsLink);
+            analyticsLink.click();
+            document.body.removeChild(analyticsLink);
+            URL.revokeObjectURL(analyticsUrl);
         } catch (error) {
             return;
         }
