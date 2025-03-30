@@ -5,6 +5,25 @@ import ModbusRTU from 'npm:modbus-serial';
 const registers: Record<number, number> = Array.from({ length: 100 }, (_, i) => i)
     .reduce((acc, cur) => ({ ...acc, [cur]: 0 }), {});
 
+function printRegisters(registers: Record<number, number>, columns = 10): void {
+    const keys = Object.keys(registers).map(Number).sort((a, b) => a - b);
+    const rows = Math.ceil(keys.length / columns);
+
+    for (let row = 0; row < rows; row++) {
+        let line = "";
+        for (let col = 0; col < columns; col++) {
+            const index = row * columns + col;
+            const key = keys[index];
+            if (key !== undefined) {
+                const value = registers[key];
+                // Format: Rxx: [value], right-padded to 6 characters
+                const formatted = `R${key.toString().padStart(2, '0')}: ${value.toString().padStart(6, ' ')}`;
+                line += formatted + '  ';
+            }
+        }
+        console.log(line.trimEnd());
+    }
+}
 
 const vector = {
     getInputRegister: function(addr: any, unitID: any) {
@@ -30,7 +49,8 @@ const vector = {
         // Asynchronous handling supported also here
         console.log("set register", addr, value, unitID);
         registers[addr] = value;
-        console.log("current registers", registers);
+        console.log("current registers");
+        printRegisters(registers);
         return;
     },
     setCoil: function(addr: any, value: any, unitID: any) {

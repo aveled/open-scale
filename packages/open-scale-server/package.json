@@ -16,6 +16,7 @@
         "@tensorflow/tfjs": "^4.22.0",
         "@types/rpi-gpio": "^2.1.4",
         "cors": "^2.8.5",
+        "dotenv": "^16.4.7",
         "drivelist": "^12.0.2",
         "express": "^4.21.1",
         "lowdb": "^7.0.1",

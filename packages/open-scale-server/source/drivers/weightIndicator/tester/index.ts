@@ -16,7 +16,8 @@ class Tester extends WeightIndicatorBase implements WeightIndicatorDriver {
     }
 
     public async getWeight(): Promise<number> {
-        return 0;
+        const request = await this.client.readHoldingRegisters(REGISTERS.WEIGHT, 1);
+        return request.data[0];
     }
 
     public async tare(): Promise<boolean> {
