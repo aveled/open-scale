@@ -315,7 +315,7 @@ class ScaleManager {
 
         this.currentWeight = 0;
 
-        await this.weightIndicatorDriver.tare();
+        await this.weightIndicatorDriver.zero();
 
         this.messageSockets();
     }
