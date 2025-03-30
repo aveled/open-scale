@@ -69,10 +69,18 @@ class ScaleManager {
 
         try {
             this.weightIndicatorDriver = new WeightIndicatorDrivers[WEIGHT_INDICATOR]();
+            this.weightIndicatorDriver.onReconnect(() => {
+                logger('info', 'Weight indicator reconnected, clearing errors');
+                this.clearErrors();
+            });
         } catch (_e) {
             const interval = setInterval(() => {
                 try {
                     this.weightIndicatorDriver = new WeightIndicatorDrivers[WEIGHT_INDICATOR]();
+                    this.weightIndicatorDriver.onReconnect(() => {
+                        logger('info', 'Weight indicator reconnected, clearing errors');
+                        this.clearErrors();
+                    });
                     clearInterval(interval);
                 } catch (error) {
                     logger('error', 'Could not initialize weight indicator driver', error);

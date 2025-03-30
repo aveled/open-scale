@@ -122,4 +122,5 @@ export interface WeightIndicatorDriver {
     setOutputFine(): Promise<boolean>;
     resetOutputs(): Promise<boolean>;
     __testSetWeight__(_weight: number): Promise<void>;
+    onReconnect(callback: () => void): void;
 }

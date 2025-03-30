@@ -11,6 +11,7 @@ class WeightIndicatorBase {
     private reconnectInterval: NodeJS.Timeout | null = null;
     private connectionMonitorInterval: NodeJS.Timeout | null = null;
     private isConnecting: boolean = false;
+    private reconnectCallback: (() => void) | null = null;
     private connectionParams: {
         isRTU: boolean;
         device?: string;
@@ -127,10 +128,16 @@ class WeightIndicatorBase {
     }
 
     /**
+     * Register a callback function to be called on successful reconnection
+     */
+    public onReconnect(callback: () => void): void {
+        this.reconnectCallback = callback;
+    }
+
+    /**
      * Start the reconnection process
      */
     private startReconnection() {
-        // Only start a new interval if one doesn't exist
         if (!this.reconnectInterval) {
             logger('info', 'Starting Modbus reconnection attempts');
             this.reconnectInterval = setInterval(async () => {
@@ -138,6 +145,10 @@ class WeightIndicatorBase {
                     logger('info', 'Attempting to reconnect to Modbus device');
                     await this.loadClient();
                     logger('info', 'Reconnected to Modbus device');
+
+                    if (this.reconnectCallback) {
+                        this.reconnectCallback();
+                    }
                 } catch (error) {
                     logger('error', 'Failed to reconnect to Modbus device', error);
                 }
