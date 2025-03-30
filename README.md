@@ -45,6 +45,19 @@ Open Scale provides infrastructure for weight measurement.
 </p>
 
 
+## Development
+
+``` bash
+# in open-scale-server/tester
+deno task modbus
+
+# in open-scale-server
+npm run start
+
+# in open-scale-web
+deno task dev
+```
+
 
 ## Packages
 
