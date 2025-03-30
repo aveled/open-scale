@@ -125,6 +125,34 @@ class ScaleManager {
         }, WEIGHT_INTERVAL);
     }
 
+    private feedStart() {
+        this.feedCoarse();
+    }
+
+    private feedStop() {
+        if (!this.weightIndicatorDriver) {
+            return;
+        }
+
+        this.weightIndicatorDriver.resetOutputs();
+    }
+
+    private feedCoarse() {
+        if (!this.weightIndicatorDriver) {
+            return;
+        }
+
+        this.weightIndicatorDriver.setOutputCoarse();
+    }
+
+    private feedFine() {
+        if (!this.weightIndicatorDriver) {
+            return;
+        }
+
+        this.weightIndicatorDriver.setOutputFine();
+    }
+
     private feedControlLoop() {
         setInterval(async () => {
             if (!this.activeScale) {
@@ -132,8 +160,7 @@ class ScaleManager {
                     this.feedStarted = false;
                     this.feedFastSet = false;
                     this.feedSlowSet = false;
-
-                    // await this.client.writeRegisters(REGISTERS.STOP_FEED, [1]);
+                    this.feedStop();
                     this.messageSockets();
                 }
                 return;
@@ -146,7 +173,7 @@ class ScaleManager {
                     if (!this.feedFastSet) {
                         logger('info', 'Set feed to fast', this.currentWeight, this.targetWeight);
                         this.feedFastSet = true;
-                        // await this.client.writeRegisters(REGISTERS.SPEED_FEED, [this.fastFeedSpeed]);
+                        this.feedCoarse();
                         this.messageSockets();
                     }
                 } else {
@@ -154,7 +181,7 @@ class ScaleManager {
                         logger('info', 'Set feed to slow', this.currentWeight, this.targetWeight);
                         this.feedSlowSet = true;
                         this.slowFeedTime = Date.now();
-                        // await this.client.writeRegisters(REGISTERS.SPEED_FEED, [this.slowFeedSpeed]);
+                        this.feedFine();
                         this.messageSockets();
                     }
                 }
@@ -165,7 +192,7 @@ class ScaleManager {
                     this.feedSlowSet = false;
 
                     this.startFeedTime = Date.now();
-                    // await this.client.writeRegisters(REGISTERS.START_FEED, [1]);
+                    this.feedStart();
                     this.messageSockets();
                 }
             } else {
@@ -175,7 +202,7 @@ class ScaleManager {
 
                 if (!this.feedStopped) {
                     this.feedStopped = true;
-                    // await this.client.writeRegisters(REGISTERS.STOP_FEED, [1]);
+                    this.feedStop();
 
                     this.activeScale = false;
 

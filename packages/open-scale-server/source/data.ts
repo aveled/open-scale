@@ -117,5 +117,9 @@ export interface Hour {
 export interface WeightIndicatorDriver {
     getWeight(): Promise<number>;
     tare(): Promise<boolean>;
+    zero(): Promise<boolean>;
+    setOutputCoarse(): Promise<boolean>;
+    setOutputFine(): Promise<boolean>;
+    resetOutputs(): Promise<boolean>;
     __testSetWeight__(_weight: number): Promise<void>;
 }
