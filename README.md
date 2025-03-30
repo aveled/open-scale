@@ -52,7 +52,7 @@ Open Scale provides infrastructure for weight measurement.
 deno task modbus
 
 # in open-scale-server
-npm run start
+npm run dev
 
 # in open-scale-web
 deno task dev
