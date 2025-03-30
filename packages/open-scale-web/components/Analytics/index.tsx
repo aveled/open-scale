@@ -46,7 +46,7 @@ const formatData = (
                 const measurements = data[month][day][hour].measurements;
                 const textualMeasurements: Record<string, number> = {};
                 Object.entries(measurements).forEach(([key, value]) => {
-                    const label = parseFloat(key) / 1000 + ' kg';
+                    const label = Math.trunc(parseFloat(key) / 1000) + ' kg';
                     labels.add(label);
 
                     textualMeasurements[label] = value;
