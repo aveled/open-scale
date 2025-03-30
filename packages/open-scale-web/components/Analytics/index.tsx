@@ -74,6 +74,11 @@ const fills  = {
     4: '#524141',
 };
 
+const sortedDates = (arr: string[]): string[] => {
+    return arr.toSorted((a, b) => Number(a) - Number(b));
+}
+
+
 const AnalyticsDashboard = ({
     data,
     language,
@@ -149,14 +154,13 @@ const AnalyticsDashboard = ({
         selectedDay,
     ]);
 
-
     return (
         <>
             <div>
                 <Dropdown
                     name={i18n[language].analyticsYear}
                     selected={selectedYear + ''}
-                    selectables={years}
+                    selectables={sortedDates(years)}
                     atSelect={(year) => {
                         setSelectedYear(
                             parseInt(year),
@@ -167,7 +171,7 @@ const AnalyticsDashboard = ({
                 <Dropdown
                     name={i18n[language].analyticsMonth}
                     selected={selectedMonth + ''}
-                    selectables={months}
+                    selectables={sortedDates(months)}
                     atSelect={(month) => {
                         setSelectedMonth(
                             parseInt(month),
@@ -178,7 +182,7 @@ const AnalyticsDashboard = ({
                 <Dropdown
                     name={i18n[language].analyticsDay}
                     selected={selectedDay + ''}
-                    selectables={days}
+                    selectables={sortedDates(days)}
                     atSelect={(day) => {
                         setSelectedDay(
                             parseInt(day),
@@ -193,7 +197,7 @@ const AnalyticsDashboard = ({
                 </div>
             ) : (
                 <div
-                    className="w-[300px] h-[300px] lg:w-[400px] lg:h-[400px] mb-8"
+                    className="w-[300px] h-[300px] lg:w-[400px] lg:h-[400px] mb-8 mx-auto"
                 >
                     <ResponsiveContainer
                         width="100%" height="100%"
