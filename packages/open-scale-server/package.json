@@ -7,7 +7,8 @@
     "type": "module",
     "scripts": {
         "build": "tsc",
-        "start": "node --experimental-loader tsc-module-loader build/server.js"
+        "start": "node --experimental-loader tsc-module-loader build/server.js",
+        "dev": "nodemon --watch source --watch server.ts --ext ts,js --exec \"npm run build && npm start\""
     },
     "engines": {
         "node": ">=20"
@@ -30,6 +31,7 @@
         "@types/express": "^5.0.0",
         "@types/node": "^22.10.1",
         "@types/ws": "^8.5.13",
+        "nodemon": "^3.0.3",
         "ts-node": "^10.9.2",
         "typescript": "^5.7.2"
     }
