@@ -6,6 +6,22 @@
     },
     "imports": {
         "@std/assert": "jsr:@std/assert@1",
-        "modbus-serial": "npm:modbus-serial@^8.0.17"
-    }
+        "modbus-serial": "npm:modbus-serial@^8.0.17",
+        "rpi-gpio": "npm:rpi-gpio@^2.1.7"
+    },
+    "nodeModulesDir": "auto",
+    "lint": {
+        "rules": {
+            "exclude": [
+                "no-explicit-any",
+                "no-unused-vars"
+            ]
+        }
+    },
+    "compilerOptions": {
+        "noImplicitAny": false
+    },
+    "unstable": [
+        "sloppy-imports"
+    ]
 }

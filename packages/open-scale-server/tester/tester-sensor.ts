@@ -2,7 +2,7 @@ import gpio from 'rpi-gpio';
 
 
 
-const SENSOR_GPIO = parseInt(process.env.SENSOR_GPIO || '') || 12;
+const SENSOR_GPIO = 12;
 
 class Sensor {
     private toggled = false;
