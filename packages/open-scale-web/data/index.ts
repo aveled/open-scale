@@ -1,4 +1,4 @@
-// proxy endpoint to backend server
+// Proxy endpoint to backend server or to the IP of the server (e.g. http://localhost:8485).
 export const ENDPOINT = process.env.NEXT_PUBLIC_ENDPOINT || '/api';
 export const KIOSK_MODE = process.env.NEXT_PUBLIC_KIOSK_MODE === 'true';
 
