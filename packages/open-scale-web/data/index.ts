@@ -1,4 +1,5 @@
-export const ENDPOINT = process.env.NEXT_PUBLIC_ENDPOINT || 'http://localhost:8485';
+// proxy endpoint to backend server
+export const ENDPOINT = process.env.NEXT_PUBLIC_ENDPOINT || '/api';
 export const KIOSK_MODE = process.env.NEXT_PUBLIC_KIOSK_MODE === 'true';
 
 export const PATHS = {
