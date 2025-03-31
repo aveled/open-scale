@@ -1,4 +1,4 @@
-FROM denoland/deno:alpine-2.1.2 as builder
+FROM denoland/deno:alpine-2.1.2 AS builder
 
 WORKDIR /app
 
