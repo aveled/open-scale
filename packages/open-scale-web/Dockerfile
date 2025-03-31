@@ -11,26 +11,16 @@ ENV NEXT_SERVER_ENDPOINT=$NEXT_SERVER_ENDPOINT
 ARG NEXT_PUBLIC_KIOSK_MODE
 ENV NEXT_PUBLIC_KIOSK_MODE=$NEXT_PUBLIC_KIOSK_MODE
 
+ENV NODE_ENV=production
+ENV PORT=8486
+
 COPY . .
 RUN deno install
 RUN deno task build
 
-
-FROM node:22-alpine
-
-WORKDIR /app
-
-COPY package.json .
-COPY --from=builder /app/public ./public
-COPY --from=builder /app/.next/standalone ./
-COPY --from=builder /app/.next/static ./.next/static
-
-ENV NODE_ENV=production
-ENV PORT=8486
-
 EXPOSE 8486
 
-CMD ["node", "server.js"]
+CMD ["deno", "task", "start"]
 
 
 ### Build Command
