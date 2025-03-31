@@ -13,6 +13,7 @@ import {
     ScaleErrors,
 
     PROXY_ENDPOINT,
+    SERVER_ENDPOINT,
     PATHS,
     LOADING_INTERVAL,
     defaultScaleSettings,
@@ -253,7 +254,11 @@ export default function Home() {
     useEffect(() => {
         const handleSocket = () => {
             try {
-                const socket = new WebSocket(PROXY_ENDPOINT.replace('http', 'ws'));
+                if (!SERVER_ENDPOINT) {
+                    return;
+                }
+
+                const socket = new WebSocket(SERVER_ENDPOINT.replace('http', 'ws'));
 
                 socket.addEventListener('message', (event) => {
                     try {
