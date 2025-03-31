@@ -12,7 +12,7 @@ import {
     ScaleSettings,
     ScaleErrors,
 
-    ENDPOINT,
+    PROXY_ENDPOINT,
     PATHS,
     LOADING_INTERVAL,
     defaultScaleSettings,
@@ -63,7 +63,7 @@ export default function Home() {
         try {
             setActiveScale(true);
 
-            const response = await fetch(ENDPOINT + PATHS.START, {
+            const response = await fetch(PROXY_ENDPOINT + PATHS.START, {
                 method: 'POST',
             });
             const {
@@ -83,7 +83,7 @@ export default function Home() {
         try {
             setActiveScale(false);
 
-            const response = await fetch(ENDPOINT + PATHS.STOP, {
+            const response = await fetch(PROXY_ENDPOINT + PATHS.STOP, {
                 method: 'POST',
             });
             const {
@@ -104,7 +104,7 @@ export default function Home() {
             const oldMode = automaticMode;
             setAutomaticMode(!automaticMode);
 
-            const response = await fetch(ENDPOINT + PATHS.TOGGLE_AUTOMATIC_MODE, {
+            const response = await fetch(PROXY_ENDPOINT + PATHS.TOGGLE_AUTOMATIC_MODE, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -128,7 +128,7 @@ export default function Home() {
             const oldWeight = currentWeight;
             setCurrentWeight(0);
 
-            const response = await fetch(ENDPOINT + PATHS.TARE, {
+            const response = await fetch(PROXY_ENDPOINT + PATHS.TARE, {
                 method: 'POST',
             });
             const {
@@ -149,7 +149,7 @@ export default function Home() {
             const oldWeight = targetWeight;
             setTargetWeight(weight);
 
-            const response = await fetch(ENDPOINT + PATHS.TARGET_WEIGHT, {
+            const response = await fetch(PROXY_ENDPOINT + PATHS.TARGET_WEIGHT, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -177,7 +177,7 @@ export default function Home() {
         try {
             setErrors([]);
 
-            fetch(ENDPOINT + PATHS.CLEAR_ERRORS, {
+            fetch(PROXY_ENDPOINT + PATHS.CLEAR_ERRORS, {
                 method: 'POST',
             });
         } catch (error) {
@@ -191,7 +191,7 @@ export default function Home() {
     useEffect(() => {
         const load = async () => {
             try {
-                const response = await fetch(ENDPOINT + PATHS.STATUS);
+                const response = await fetch(PROXY_ENDPOINT + PATHS.STATUS);
                 const {
                     status,
                     data,
@@ -253,7 +253,7 @@ export default function Home() {
     useEffect(() => {
         const handleSocket = () => {
             try {
-                const socket = new WebSocket(ENDPOINT.replace('http', 'ws'));
+                const socket = new WebSocket(PROXY_ENDPOINT.replace('http', 'ws'));
 
                 socket.addEventListener('message', (event) => {
                     try {

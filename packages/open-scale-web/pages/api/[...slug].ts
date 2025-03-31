@@ -1,6 +1,10 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
 import httpProxy from 'http-proxy';
 
+import {
+    SERVER_ENDPOINT,
+} from '@/data/index';
+
 
 
 // Disable Next.js's default body parsing for this route
@@ -25,7 +29,7 @@ export default function handler(req: NextApiRequest, res: NextApiResponse) {
         req.url = req.url?.replace(/^\/api/, '') || '/';
 
         proxy.web(req, res, {
-            target: process.env.SERVER_ENDPOINT || 'http://localhost:8485',
+            target: SERVER_ENDPOINT,
             changeOrigin: true,
         });
 

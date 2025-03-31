@@ -7,7 +7,7 @@ import {
     ScaleSettings,
     Analytics,
 
-    ENDPOINT,
+    PROXY_ENDPOINT,
     PATHS,
     fastFeedSpeedValues,
     slowFeedSpeedValues,
@@ -64,7 +64,7 @@ export default function Settings({
 
     const restartServer = async () => {
         try {
-            await fetch(ENDPOINT + PATHS.RESTART_SERVER, {
+            await fetch(PROXY_ENDPOINT + PATHS.RESTART_SERVER, {
                 method: 'POST',
             });
         } catch (error) {
@@ -74,7 +74,7 @@ export default function Settings({
 
     const exportData = async () => {
         try {
-            await fetch(ENDPOINT + PATHS.EXPORT_DATA, {
+            await fetch(PROXY_ENDPOINT + PATHS.EXPORT_DATA, {
                 method: 'POST',
             });
 
@@ -97,7 +97,7 @@ export default function Settings({
     useEffect(() => {
         const load = async () => {
             try {
-                const response = await fetch(ENDPOINT + PATHS.ANALYTICS);
+                const response = await fetch(PROXY_ENDPOINT + PATHS.ANALYTICS);
                 const {
                     status,
                     data,
@@ -120,7 +120,7 @@ export default function Settings({
     useEffect(() => {
         const updateSettings = async () => {
             try {
-                await fetch(ENDPOINT + PATHS.SETTINGS, {
+                await fetch(PROXY_ENDPOINT + PATHS.SETTINGS, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
