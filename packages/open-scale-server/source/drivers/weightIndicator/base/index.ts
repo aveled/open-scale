@@ -123,6 +123,8 @@ class WeightIndicatorBase {
             await this.client.readHoldingRegisters(0, 1);
             return true;
         } catch (error) {
+            logger('error', 'Failed isConnected', error);
+
             return false;
         }
     }
