@@ -409,6 +409,14 @@ export default function Home() {
                     >
                         {view === 'general' && (
                             <>
+                                <Toggle
+                                    text={i18n[language].automaticMode}
+                                    value={automaticMode}
+                                    toggle={() => {
+                                        toggleAutomaticMode();
+                                    }}
+                                />
+
                                 <Button
                                     text="START"
                                     onClick={() => {
@@ -423,14 +431,6 @@ export default function Home() {
                                             text="STOP"
                                             onClick={() => {
                                                 stop();
-                                            }}
-                                        />
-
-                                        <Toggle
-                                            text={i18n[language].automaticMode}
-                                            value={automaticMode}
-                                            toggle={() => {
-                                                toggleAutomaticMode();
                                             }}
                                         />
                                     </>
