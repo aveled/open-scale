@@ -15,8 +15,12 @@ const SENSOR_GPIO = parseInt(process.env.SENSOR_GPIO || '') || 12;
 
 class Sensor {
     private toggled = false;
+    private updater: (value: boolean) => void = () => {};
 
-    constructor() {
+    constructor(
+        updater?: (value: boolean) => void,
+    ) {
+        this.updater = updater || (() => {});
         this.setup();
     }
 
@@ -25,6 +29,8 @@ class Sensor {
             return;
         }
 
+        gpio.setMode(gpio.MODE_BCM);
+
         gpio.setup(SENSOR_GPIO, gpio.DIR_IN, gpio.EDGE_BOTH, (error, value) => {
             if (error || value === undefined) {
                 logger('error', 'Sensor setup error', error, value);
@@ -32,6 +38,15 @@ class Sensor {
             }
 
             this.toggled = value;
+        });
+
+        gpio.on('change', (channel, value) =>  {
+            if (channel !== SENSOR_GPIO) {
+                return;
+            }
+
+            this.toggled = value === 1;
+            this.updater(value === 1);
         });
     }
 
@@ -42,21 +57,7 @@ class Sensor {
     public onUpdate(
         updater: (value: boolean) => void,
     ) {
-        if (ENVIRONMENT !== 'production') {
-            return;
-        }
-
-        gpio.on('change', (channel, value) =>  {
-            console.log({
-                channel, value
-            });
-            if (channel !== SENSOR_GPIO) {
-                return;
-            }
-
-            this.toggled = value === 1;
-            updater(value === 1);
-        });
+        this.updater = updater;
     }
 
     public async __testToggle__() {
