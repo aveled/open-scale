@@ -89,11 +89,22 @@ class ScaleManager {
         }
 
         try {
-            this.sensorDriver = new Sensor();
-            this.sensorDriver.onUpdate((
-                _value,
-            ) => {
-            });
+            this.sensorDriver = new Sensor(
+                (value) => {
+                    if (!this.automaticMode) {
+                        return;
+                    }
+
+                    if (value) {
+                        this.activeScale = true;
+                        this.feedFastSet = false;
+                        this.feedSlowSet = false;
+
+                        logger('info', 'Sensor triggered, starting feed');
+                        this.messageSockets();
+                    }
+                }
+            );
         } catch (error) {
             logger('error', 'Could not initialize sensor', error);
         }
