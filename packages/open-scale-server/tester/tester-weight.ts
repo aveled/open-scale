@@ -309,43 +309,44 @@ async function assertSettings(expectedSettings: Partial<ScaleSettings>): Promise
 const reset = async (): Promise<void> => {
     console.log("--- Resetting State ---");
     try {
-        // Attempt to stop regardless of current state
-        try { await stop(); } catch (e) {/* Ignore stop errors during reset */ }
+        try { await stop(); } catch (e) {/* Ignore */}
         await delay(0.1);
+        // Ensure sensor is clear (false) after reset for predictability
+        let initialStatus = await getStatus();
+        if (initialStatus.sensor) {
+             console.log("Sensor is true after stop, toggling to false for reset.");
+             try { await toggleSensor(); } catch (e) { console.warn(`${YELLOW}[Warning]${RESET} Could not toggle sensor during reset. Ensure dev environment.`); }
+             await delay(0.1);
+        }
 
-        // Set weight to 0 (dev environment)
         try {
-            await setWeight(0);
-            await delay(0.1);
-            await setWeight(0); // Double tap for stability
+            await setWeight(0); await delay(0.1); await setWeight(0);
         } catch (e) {
-            console.warn("Could not set weight to 0 via test endpoint. Ensure dev environment.");
+             console.warn(`${YELLOW}[Warning]${RESET} Could not set weight to 0 via test endpoint. Ensure dev environment.`);
         }
         await delay(0.1);
-
-        // Clear errors
         await clearErrors();
         await delay(0.1);
-
-        // Ensure manual mode
-        let currentStatus = await getStatus(); // Get status *after* potential stop/clear
-        if (currentStatus.automaticMode) {
-            await toggleAutomaticMode();
-            await delay(0.1); // Give mode toggle time
+        let currentStatus = await getStatus();
+        if(currentStatus.automaticMode){
+            await toggleAutomaticMode(); await delay(0.1);
         }
 
-        // Final assertions for reset state
         await assertStopped();
-        await assertWeight(0); // Assert weight is 0 (or close)
+        await assertWeight(0);
         await assertAutomaticMode(false);
-        await assertErrors(null); // Expect no errors
-
-        // Note: Sensor state isn't explicitly reset here, depends on default/hardware
-        // Note: Settings are not reset unless server logic does it on stop/start
+        await assertErrors(null);
+        await assertSensorState(false); // Assert sensor is clear after reset
 
         console.log("--- Reset Complete ---");
     } catch (error) {
-        console.error("FATAL: Reset failed. Aborting tests.", error);
+        console.error(`${RED}--- CRITICAL: Reset failed. Aborting tests. ---${RESET}`);
+        if (error instanceof Error) {
+            console.error(`${RED}Reason: ${error.message}${RESET}`);
+             console.error(error.stack);
+        } else {
+            console.error(error);
+        }
         throw new Error("Reset failed, cannot continue tests.");
     }
 };
@@ -393,18 +394,6 @@ const scenarioTare = async (): Promise<void> => {
     await assertWeight(0, 2); // Assert weight is near 0 after tare (allow tolerance)
     await delay(0.1);
     await reset(); // Resets tare as well by stopping/setting absolute weight
-};
-
-const scenarioAutomaticMode = async (): Promise<void> => {
-    await reset();
-    await assertAutomaticMode(false); // Should be false after reset
-    await toggleAutomaticMode();
-    await delay(0.1);
-    await assertAutomaticMode(true);
-    await toggleAutomaticMode();
-    await delay(0.1);
-    await assertAutomaticMode(false);
-    await reset();
 };
 
 const scenarioSettings = async (): Promise<void> => {
@@ -552,13 +541,129 @@ const scenarioBasicWeighting = async (): Promise<void> => {
     await reset();
 }
 
+const scenarioComprehensiveAutomaticMode = async (): Promise<void> => {
+    const testTargetWeight = 5000; // Use a specific target for this test
+    // Use slightly longer delays for automatic actions/reactions
+    const reactionDelay = 0.5; // Time for scale logic to react to sensor/weight
+    const fillDelay = 0.3; // Time between weight increments simulation
+
+    console.log(`Setting up for comprehensive automatic test (Target: ${testTargetWeight}g)`);
+    await reset(); // Ensures manual mode, weight 0, stopped, sensor false
+
+    // Configure for the test
+    await setTargetWeight(testTargetWeight);
+    await delay(0.1);
+    await assertTargetWeight(testTargetWeight);
+
+    // Enable Automatic Mode
+    console.log("Enabling automatic mode...");
+    await toggleAutomaticMode();
+    await delay(0.1);
+    await assertAutomaticMode(true);
+    await assertStopped(); // Should still be stopped
+    await assertSensorState(false); // Sensor should still be clear
+
+    // --- Cycle 1 ---
+    console.log("\n--- Auto Cycle 1: Starting ---");
+    console.log("Simulating sack placed (Sensor -> true)");
+    await toggleSensor();
+    await delay(reactionDelay); // Give time for scaleManager to detect sensor=true and start
+    await assertSensorState(true);
+    await assertRunning(); // Core check: Should auto-start!
+
+    console.log("Simulating filling process...");
+    await setWeight(1000); await delay(fillDelay); await assertWeight(1000);
+    await setWeight(testTargetWeight * 0.8); await delay(fillDelay); await assertWeight(testTargetWeight * 0.8); // 4000g
+    await setWeight(testTargetWeight - 50); await delay(fillDelay); await assertWeight(testTargetWeight - 50); // 4950g
+    // Simulate reaching/slightly exceeding target - scale should stop automatically
+    await setWeight(testTargetWeight + 5); // 5005g (within default 1% error margin)
+    await delay(reactionDelay); // Give time for scaleManager to detect target reached and stop
+    await assertWeight(testTargetWeight + 5); // Verify final weight
+    await assertStopped(); // Core check: Should auto-stop!
+    await assertErrors(null); // Assuming 5005 is not an overshoot error with default 1%
+
+    console.log("Simulating sack removed (Sensor -> false)");
+    await toggleSensor();
+    await delay(reactionDelay);
+    await assertSensorState(false);
+    await assertStopped(); // Should remain stopped
+
+    // --- Cycle 2 ---
+    console.log("\n--- Auto Cycle 2: Starting ---");
+    console.log("Simulating new sack placed (Sensor -> true)");
+    await toggleSensor();
+    await delay(reactionDelay);
+    await assertSensorState(true);
+    await assertRunning(); // Core check: Should auto-start again!
+
+    console.log("Simulating filling process (different weights)...");
+    // NOTE: Assuming scale internally tares/resets before auto-start.
+    // Our setWeight calls mock the *absolute* weight reported *during* the fill.
+    await setWeight(500); await delay(fillDelay); await assertWeight(500);
+    await setWeight(testTargetWeight - 200); await delay(fillDelay); await assertWeight(testTargetWeight - 200); // 4800g
+    // Simulate exact target weight
+    await setWeight(testTargetWeight); // 5000g
+    await delay(reactionDelay); // Give time to stop
+    await assertWeight(testTargetWeight);
+    await assertStopped(); // Should auto-stop!
+
+    console.log("Simulating sack removed (Sensor -> false)");
+    await toggleSensor();
+    await delay(reactionDelay);
+    await assertSensorState(false);
+    await assertStopped();
+
+    // --- Cycle 3 ---
+    console.log("\n--- Auto Cycle 3: Starting ---");
+    console.log("Simulating another new sack (Sensor -> true)");
+    await toggleSensor();
+    await delay(reactionDelay);
+    await assertSensorState(true);
+    await assertRunning(); // Should auto-start!
+
+    console.log("Simulating filling process (slight overshoot)...");
+    await setWeight(2500); await delay(fillDelay); await assertWeight(2500);
+    // Simulate overshoot that might trigger error depending on exact settings/logic
+    const overshootWeight = testTargetWeight * 1.02; // e.g., 5100g (potentially > 1% error)
+    await setWeight(overshootWeight);
+    await delay(reactionDelay); // Give time to stop and potentially register error
+    await assertWeight(overshootWeight);
+    await assertStopped(); // Should still stop even on overshoot (usually)
+
+    // Check for overshoot error (depends on server logic and error % setting)
+    const status = await getStatus();
+    if (status.errors.includes(ERRORS.OVERSHOOT)) {
+         console.log(` -> ${GREEN}[Assertion Passed]${RESET} Overshoot error detected as expected.`);
+         await clearErrors(); // Clear the error for the next step
+         await delay(0.1);
+         await assertErrors(null);
+    } else {
+        // Allow test to pass if overshoot isn't triggered (e.g., if error % is higher)
+         console.log(` -> ${YELLOW}[Info]${RESET} Overshoot error was not triggered for ${overshootWeight}g (Target: ${testTargetWeight}g). This might be expected.`);
+         await assertErrors(null); // Still expect no *other* errors
+    }
+
+    console.log("Simulating sack removed (Sensor -> false)");
+    await toggleSensor();
+    await delay(reactionDelay);
+    await assertSensorState(false);
+    await assertStopped();
+
+    // --- Teardown ---
+    console.log("\nDisabling automatic mode...");
+    await toggleAutomaticMode();
+    await delay(0.1);
+    await assertAutomaticMode(false);
+
+    // Final reset to clean up state
+    await reset();
+};
 // --- Scenario Runner ---
 
 const scenarios = [
     ['Start/Stop Cycle', scenarioStartStop],
     ['Set Target Weight', scenarioTargetWeight],
     ['Tare Functionality', scenarioTare],
-    ['Toggle Automatic Mode', scenarioAutomaticMode],
     ['Set/Verify Settings', scenarioSettings],
     ['Clear Errors', scenarioClearErrors], // Effectiveness depends on triggering errors
     ['Export Data Placeholder', scenarioExportData], // Manual verification needed
@@ -566,6 +671,7 @@ const scenarios = [
     ['Basic Weighting Simulation', scenarioBasicWeighting],
     // --- Development Only ---
     ['DEV: Toggle Sensor State', scenarioTestSensorToggle],
+    ['DEV: Comprehensive Automatic Mode', scenarioComprehensiveAutomaticMode],
     // --- Use Cautiously ---
     // ['Server Restart', scenarioRestart], // Uncomment carefully
 ] as const;
