@@ -120,7 +120,7 @@ class WeightIndicatorBase {
             // Attempt a simple read to test connection
             // Note: This assumes there's at least one valid register to read at address 0
             // You may need to adjust this based on your specific device
-            await this.client.readHoldingRegisters(0, 1);
+            // await this.client.readHoldingRegisters(7, 1);
             return true;
         } catch (error) {
             logger('error', 'Failed isConnected', error);
@@ -154,7 +154,7 @@ class WeightIndicatorBase {
                 } catch (error) {
                     logger('error', 'Failed to reconnect to Modbus device', error);
                 }
-            }, 3000);
+            }, 30_000);
         }
     }
 
@@ -187,7 +187,7 @@ class WeightIndicatorBase {
                 // Start reconnection process
                 this.startReconnection();
             }
-        }, 5000);
+        }, 50_000);
     }
 
     /**
@@ -205,6 +205,7 @@ class WeightIndicatorBase {
             this.client.close(() => {});
         } catch (error) {
             // Ignore errors on close
+            logger('error', 'Failed to close client', error);
         }
     }
 }

@@ -4,6 +4,10 @@ import {
     ENVIRONMENT,
 } from '../../data';
 
+import {
+    logger,
+} from '../../utilities';
+
 
 
 const SENSOR_GPIO = parseInt(process.env.SENSOR_GPIO || '') || 12;
@@ -23,6 +27,7 @@ class Sensor {
 
         gpio.setup(SENSOR_GPIO, gpio.DIR_IN, gpio.EDGE_BOTH, (error, value) => {
             if (error || value === undefined) {
+                logger('error', 'Sensor setup error', error, value);
                 return;
             }
 
@@ -42,6 +47,9 @@ class Sensor {
         }
 
         gpio.on('change', (channel, value) =>  {
+            console.log({
+                channel, value
+            });
             if (channel !== SENSOR_GPIO) {
                 return;
             }

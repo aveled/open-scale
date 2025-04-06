@@ -90,6 +90,10 @@ class ScaleManager {
 
         try {
             this.sensorDriver = new Sensor();
+            this.sensorDriver.onUpdate((
+                _value,
+            ) => {
+            });
         } catch (error) {
             logger('error', 'Could not initialize sensor', error);
         }
