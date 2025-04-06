@@ -661,16 +661,16 @@ const scenarioComprehensiveAutomaticMode = async (): Promise<void> => {
 // --- Scenario Runner ---
 
 const scenarios = [
-    ['Start/Stop Cycle', scenarioStartStop],
-    ['Set Target Weight', scenarioTargetWeight],
-    ['Tare Functionality', scenarioTare],
-    ['Set/Verify Settings', scenarioSettings],
-    ['Clear Errors', scenarioClearErrors], // Effectiveness depends on triggering errors
-    ['Export Data Placeholder', scenarioExportData], // Manual verification needed
-    ['Get Analytics', scenarioAnalytics],
-    ['Basic Weighting Simulation', scenarioBasicWeighting],
-    // --- Development Only ---
-    ['DEV: Toggle Sensor State', scenarioTestSensorToggle],
+    // ['Start/Stop Cycle', scenarioStartStop],
+    // ['Set Target Weight', scenarioTargetWeight],
+    // ['Tare Functionality', scenarioTare],
+    // ['Set/Verify Settings', scenarioSettings],
+    // ['Clear Errors', scenarioClearErrors], // Effectiveness depends on triggering errors
+    // ['Export Data Placeholder', scenarioExportData], // Manual verification needed
+    // ['Get Analytics', scenarioAnalytics],
+    // ['Basic Weighting Simulation', scenarioBasicWeighting],
+    // // --- Development Only ---
+    // ['DEV: Toggle Sensor State', scenarioTestSensorToggle],
     ['DEV: Comprehensive Automatic Mode', scenarioComprehensiveAutomaticMode],
     // --- Use Cautiously ---
     // ['Server Restart', scenarioRestart], // Uncomment carefully

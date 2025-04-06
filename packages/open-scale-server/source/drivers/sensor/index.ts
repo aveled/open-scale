@@ -62,6 +62,8 @@ class Sensor {
 
     public async __testToggle__() {
         this.toggled = !this.toggled;
+
+        this.updater(this.toggled);
         return;
     }
 }
