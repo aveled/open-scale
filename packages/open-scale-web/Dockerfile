@@ -1,4 +1,3 @@
-# ---- Stage 1: Build ----
 FROM denoland/deno:alpine-2.1.9 AS builder
 
 WORKDIR /app
@@ -12,6 +11,7 @@ ENV NEXT_PROXY_ENDPOINT=$NEXT_PROXY_ENDPOINT
 ENV NEXT_SERVER_ENDPOINT=$NEXT_SERVER_ENDPOINT
 ENV NEXT_PUBLIC_KIOSK_MODE=$NEXT_PUBLIC_KIOSK_MODE
 ENV NODE_ENV=$NODE_ENV
+ENV PORT=8486
 
 COPY package.json deno.lock* ./
 
@@ -21,27 +21,7 @@ COPY . .
 
 RUN deno task build
 
-
-# ---- Stage 2: Runtime ----
-FROM denoland/deno:alpine-2.1.9
-
-WORKDIR /app
-
-ARG NEXT_PROXY_ENDPOINT
-ARG NEXT_SERVER_ENDPOINT
-ARG NEXT_PUBLIC_KIOSK_MODE
-ARG NODE_ENV=production
-ARG PORT=8486
-
-ENV NEXT_PROXY_ENDPOINT=$NEXT_PROXY_ENDPOINT
-ENV NEXT_SERVER_ENDPOINT=$NEXT_SERVER_ENDPOINT
-ENV NEXT_PUBLIC_KIOSK_MODE=$NEXT_PUBLIC_KIOSK_MODE
-
-COPY --from=builder /app/.next ./.next
-COPY --from=builder /app/public ./public
-COPY --from=builder /app/package.json ./package.json
-
-EXPOSE ${PORT}
+EXPOSE 8486
 
 CMD ["deno", "task", "start"]
 
