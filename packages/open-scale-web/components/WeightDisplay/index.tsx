@@ -4,7 +4,7 @@ import './style.css';
 
 
 export interface WeightDisplayProps {
-    icon: JSX.Element;
+    icon: React.JSX.Element;
     weight: number;
     setView: () => void;
     clickable?: boolean;

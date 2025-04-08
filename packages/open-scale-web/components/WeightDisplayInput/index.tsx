@@ -17,7 +17,7 @@ export const availableNumbers = {
 };
 
 interface WeightDisplayInputProps {
-    icon: JSX.Element;
+    icon: React.JSX.Element;
     weight: number;
     update: (newWeight: number) => void;
 }

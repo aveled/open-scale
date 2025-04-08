@@ -2,8 +2,8 @@
 
 import {
     Dropdown,
-    FlowbiteDropdownTheme,
-} from 'flowbite-react';
+    DropdownItem,
+} from "flowbite-react";
 
 import {
     KIOSK_MODE,
@@ -25,7 +25,7 @@ import Tooltip from '@/components/Tooltip';
 
 
 
-const theme: FlowbiteDropdownTheme = {
+const theme = {
     "arrowIcon": "ml-2 h-4 w-4",
     "content": "bg-black focus:outline-none",
     "floating": {
@@ -136,7 +136,7 @@ export default function CustomDropdown({
             >
                 {selectables.map((selectable) => {
                     return (
-                        <Dropdown.Item
+                        <DropdownItem
                             key={selectable}
                             className={`
                                 text-lg ${selectable === selected && 'bg-[#5a5a5a] text-white cursor-default'}
@@ -146,7 +146,7 @@ export default function CustomDropdown({
                             }}
                         >
                             {selectable}
-                        </Dropdown.Item>
+                        </DropdownItem>
                     );
                 })}
             </Dropdown>
