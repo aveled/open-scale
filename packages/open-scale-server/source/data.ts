@@ -121,6 +121,12 @@ export interface WeightIndicatorDriver {
     setOutputCoarse(): Promise<boolean>;
     setOutputFine(): Promise<boolean>;
     resetOutputs(): Promise<boolean>;
+    getInputState(): Promise<boolean>;
+    pollInputChange(
+        inputFunction: () => Promise<boolean>,
+        callback: (newState: boolean) => void,
+        intervalMs?: number,
+    ): number;
     __testSetWeight__(_weight: number): Promise<void>;
     onReconnect(callback: () => void): void;
 }

@@ -67,37 +67,21 @@ class ScaleManager {
         await this.loadDatabase();
         this.startMonitoring();
 
-        try {
+        const setup = () => {
             this.weightIndicatorDriver = new WeightIndicatorDrivers[WEIGHT_INDICATOR]();
             this.weightIndicatorDriver.onReconnect(() => {
                 logger('info', 'Weight indicator reconnected, clearing errors');
                 this.clearErrors();
             });
-        } catch (error) {
-            logger('error', 'Could not initialize weight indicator driver', error);
-
-            const interval = setInterval(() => {
-                try {
-                    this.weightIndicatorDriver = new WeightIndicatorDrivers[WEIGHT_INDICATOR]();
-                    this.weightIndicatorDriver.onReconnect(() => {
-                        logger('info', 'Weight indicator reconnected, clearing errors');
-                        this.clearErrors();
-                    });
-                    clearInterval(interval);
-                } catch (error) {
-                    logger('error', 'Could not initialize weight indicator driver', error);
-                }
-            }, 1_000);
-        }
-
-        try {
-            this.sensorDriver = new Sensor(
-                (value) => {
+            this.weightIndicatorDriver.pollInputChange(
+                this.weightIndicatorDriver.getInputState.bind(this.weightIndicatorDriver),
+                (newState) => {
+                    logger('info', `Input 1 changed to: ${newState}`);
                     if (!this.automaticMode) {
                         return;
                     }
 
-                    if (value) {
+                    if (newState) {
                         this.activeScale = true;
                         this.feedFastSet = false;
                         this.feedSlowSet = false;
@@ -105,11 +89,46 @@ class ScaleManager {
                         logger('info', 'Sensor triggered, starting feed');
                         this.messageSockets();
                     }
-                }
+                },
+                500,
             );
-        } catch (error) {
-            logger('error', 'Could not initialize sensor', error);
         }
+
+        try {
+            setup();
+        } catch (error) {
+            logger('error', 'Could not initialize weight indicator driver', error);
+
+            const interval = setInterval(() => {
+                try {
+                    setup();
+                    clearInterval(interval);
+                } catch (error) {
+                    logger('error', 'Could not initialize weight indicator driver', error);
+                }
+            }, 1_000);
+        }
+
+        // try {
+        //     this.sensorDriver = new Sensor(
+        //         (value) => {
+        //             if (!this.automaticMode) {
+        //                 return;
+        //             }
+
+        //             if (value) {
+        //                 this.activeScale = true;
+        //                 this.feedFastSet = false;
+        //                 this.feedSlowSet = false;
+
+        //                 logger('info', 'Sensor triggered, starting feed');
+        //                 this.messageSockets();
+        //             }
+        //         }
+        //     );
+        // } catch (error) {
+        //     logger('error', 'Could not initialize sensor', error);
+        // }
     }
 
     private async loadDatabase() {

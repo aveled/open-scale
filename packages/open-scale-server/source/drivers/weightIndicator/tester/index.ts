@@ -79,7 +79,7 @@ class Tester extends WeightIndicatorBase implements WeightIndicatorDriver {
      * @returns {Promise<boolean>} True if the command was sent successfully.
      */
     public async setOutputFine(): Promise<boolean> {
-         // Output 1 = false, Output 2 = true
+        // Output 1 = false, Output 2 = true
         return this.setOutputs(false, true);
     }
 
@@ -89,8 +89,25 @@ class Tester extends WeightIndicatorBase implements WeightIndicatorDriver {
      * @returns {Promise<boolean>} True if the command was sent successfully.
      */
     public async resetOutputs(): Promise<boolean> {
-         // Output 1 = false, Output 2 = false
+        // Output 1 = false, Output 2 = false
         return this.setOutputs(false, false);
+    }
+
+    public async getInputState(): Promise<boolean> {
+        return false;
+    }
+
+    public pollInputChange(
+        inputFunction: () => Promise<boolean>,
+        callback: (newState: boolean) => void,
+        intervalMs: number = 200
+    ): number {
+        return 0;
+    }
+
+    public stopPolling(pollingId: number): boolean {
+        // Stop polling logic here if needed
+        return true;
     }
 
     public async __testSetWeight__(targetWeight: number): Promise<void> {

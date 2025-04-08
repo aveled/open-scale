@@ -1,13 +1,19 @@
+import WeightIndicatorBase from '../base';
+
 import {
     WeightIndicatorDriver,
 } from '../../../data';
-import WeightIndicatorBase from '../base';
+
+import {
+    logger,
+} from '../../../utilities';
 
 
 
 const REGISTERS = {
     COMMAND: 5, // 40006
     WEIGHT: 7, // 40008
+    INPUTS: 16, // 40017
     OUTPUTS: 17, // 40018
     TARE_LOW: 72,
     TARE_HIGH: 73,
@@ -19,6 +25,10 @@ const COMMANDS = {
 
 
 class LaumasW100 extends WeightIndicatorBase implements WeightIndicatorDriver {
+    private pollingIntervals: Map<number, NodeJS.Timeout> = new Map();
+    private nextPollingId = 0;
+
+
     constructor() {
         super();
     }
@@ -95,7 +105,7 @@ class LaumasW100 extends WeightIndicatorBase implements WeightIndicatorDriver {
      * @returns {Promise<boolean>} True if the command was sent successfully.
      */
     public async setOutputFine(): Promise<boolean> {
-         // Output 1 = false (Open), Output 2 = true (Closed)
+        // Output 1 = false (Open), Output 2 = true (Closed)
         return this.setOutputs(false, true);
     }
 
@@ -104,8 +114,104 @@ class LaumasW100 extends WeightIndicatorBase implements WeightIndicatorDriver {
      * @returns {Promise<boolean>} True if the command was sent successfully.
      */
     public async resetOutputs(): Promise<boolean> {
-         // Output 1 = false (Open), Output 2 = false (Open)
+        // Output 1 = false (Open), Output 2 = false (Open)
         return this.setOutputs(false, false);
+    }
+
+    /**
+     * Reads the state of Digital Input 1.
+     * Input 1 corresponds to Bit 0 of the INPUTS register (40017).
+     * @returns {Promise<boolean>} True if Input 1 is HIGH/CLOSED, false if LOW/OPEN.
+     * @see Protocols_for_series_W_CE-M_approved_manual_EN.pdf,
+     */
+    public async getInputState(): Promise<boolean> {
+        // Read INPUTS Register 40017 (index 16)
+        const inputRegister = await this.client.readHoldingRegisters(REGISTERS.INPUTS, 1);
+
+        // Ensure data was received
+        if (!inputRegister || !inputRegister.data || inputRegister.data.length === 0) {
+            logger('error', 'Failed to read input register or no data received.');
+            return false;
+        }
+
+        const inputValue = inputRegister.data[0];
+
+        // Check Bit 0 for Input 1 status
+        // (inputValue & (1 << 0)) will be non-zero (true) if Bit 0 is 1
+        return (inputValue & (1 << 0)) !== 0;
+    }
+
+    /**
+     * Polls a specific input function and calls a callback when the input state changes.
+     *
+     * @param inputFunction An async function that returns the current boolean state of an input (e.g., this.getInput1State.bind(this)).
+     * @param callback The function to call when the input state changes. It receives the new state (boolean).
+     * @param intervalMs The polling interval in milliseconds. Defaults to 200ms.
+     * @returns {number} An ID that can be used to stop polling with stopPolling.
+     *
+     * @example
+     * const laumas = new LaumasW100();
+     * // ... initialize client ...
+     * const pollingId = laumas.pollInputChange(
+     * laumas.getInput1State.bind(laumas), // Pass the bound function
+     * (newState) => {
+     * console.log(`Input 1 changed to: ${newState}`);
+     * },
+     * 500 // Poll every 500ms
+     * );
+     * // To stop later: laumas.stopPolling(pollingId);
+     */
+    public pollInputChange(
+        inputFunction: () => Promise<boolean>,
+        callback: (newState: boolean) => void,
+        intervalMs: number = 200
+    ): number {
+        let previousState: boolean | null = null;
+        // Assign a unique ID for this polling operation
+        const pollingId = this.nextPollingId++;
+
+        const intervalTimer = setInterval(async () => {
+            try {
+                const currentState = await inputFunction();
+
+                // Initialize previousState on the first successful read
+                if (previousState === null) {
+                    previousState = currentState;
+                }
+
+                // Check for change compared to the last known state
+                if (currentState !== previousState) {
+                    callback(currentState); // Execute the callback with the new state
+                    previousState = currentState; // Update the state
+                }
+
+                // If no change, do nothing until the next interval
+            } catch (error) {
+                logger('error', `Error polling input for ID ${pollingId}:`, error);
+                this.stopPolling(pollingId);
+            }
+        }, intervalMs);
+
+        this.pollingIntervals.set(pollingId, intervalTimer);
+        return pollingId;
+    }
+
+    /**
+     * Stops an input change polling operation started with pollInputChange.
+     * @param pollingId The ID returned by pollInputChange.
+     * @returns {boolean} True if polling was stopped, false if the ID was not found or already stopped.
+     */
+    public stopPolling(pollingId: number): boolean {
+        const intervalTimer = this.pollingIntervals.get(pollingId);
+        if (intervalTimer) {
+            clearInterval(intervalTimer)
+            this.pollingIntervals.delete(pollingId);
+            logger('info', `Stopped polling for ID ${pollingId}`);
+            return true;
+        }
+
+        logger('warn', `Polling ID ${pollingId} not found or already stopped.`);
+        return false;
     }
 
     public async __testSetWeight__(_weight: number) {
