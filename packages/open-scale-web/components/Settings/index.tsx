@@ -172,13 +172,6 @@ export default function Settings({
         <div
             className="select-none grid gap-6 min-w-[400px] lg:min-w-[500px] font-bold text-lg"
         >
-            {Object.keys(analytics).length >= 0 && (
-                <AnalyticsDashboard
-                    data={analytics}
-                    language={language}
-                />
-            )}
-
             <Dropdown
                 name={i18n[language].language}
                 selectables={[
@@ -208,7 +201,7 @@ export default function Settings({
             />
 
 
-            <DropdownInputNumber
+            {/* <DropdownInputNumber
                 name={i18n[language].fastFeedSpeed}
                 selectables={[
                     ...fastFeedSpeedValues.map((value) => value + ' Hz'),
@@ -226,9 +219,9 @@ export default function Settings({
                 availableNumbers={{
                     0: [0, 1, 2, 3, 4, 5],
                 }}
-            />
+            /> */}
 
-            <DropdownInputNumber
+            {/* <DropdownInputNumber
                 name={i18n[language].slowFeedSpeed}
                 selectables={[
                     ...slowFeedSpeedValues.map((value) => value + ' Hz'),
@@ -246,7 +239,7 @@ export default function Settings({
                 availableNumbers={{
                     0: [0, 1, 2, 3, 4, 5],
                 }}
-            />
+            /> */}
 
             <DropdownInputNumber
                 name={i18n[language].fastSlowPercentage}
@@ -305,6 +298,13 @@ export default function Settings({
                 }}
                 defaultSelectedChar={1}
             />
+
+            {Object.keys(analytics).length >= 0 && (
+                <AnalyticsDashboard
+                    data={analytics}
+                    language={language}
+                />
+            )}
 
             <div
                 className="mt-12 grid gap-12"

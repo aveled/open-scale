@@ -198,15 +198,28 @@ export default function Home() {
     /** Load status */
     useEffect(() => {
         const load = async () => {
+            const reject = (error?: any) => {
+                if (loading) {
+                    setLoading(false);
+                }
+                logger('error', 'Could not load status', error);
+                setErrors([
+                    'NO_SERVER',
+                ]);
+            }
+
             try {
                 const response = await fetch(PROXY_ENDPOINT + PATHS.STATUS);
+                if (!response || response.status !== 200) {
+                    return reject(response);
+                }
                 const {
                     status,
                     data,
                 } = await response.json();
 
                 if (!status) {
-                    return;
+                    return reject();
                 }
 
                 const {
@@ -227,11 +240,7 @@ export default function Home() {
                     setLoading(false);
                 }
             } catch (error) {
-                logger('error', 'Could not load status', error);
-                setErrors([
-                    'NO_SERVER',
-                ]);
-                return;
+                return reject(error);
             }
         }
 
