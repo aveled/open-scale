@@ -17,12 +17,21 @@ export const config = {
 };
 
 
-const proxy = httpProxy.createProxyServer({});
+let proxy: httpProxy | null;
+try {
+    proxy = httpProxy.createProxyServer({});
+} catch (error) {
+    logger('error', 'createProxyServer error', error);
+}
 
 
 export default function handler(req: NextApiRequest, res: NextApiResponse) {
     return new Promise<void>((resolve, reject) => {
         try {
+            if (!proxy) {
+                return;
+            }
+
             proxy.once('error', (error) => {
                 logger('error', 'Proxy error', error);
                 res.status(500).json({ error: 'Proxy request failed' });
