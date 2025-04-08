@@ -15,6 +15,9 @@ import {
     Database,
     ColdStorage,
 } from './data';
+import {
+    logger,
+} from './utilities';
 
 
 
@@ -50,7 +53,9 @@ const setupDatabase = () => {
 
     try {
         fs.accessSync(DATABASE_PATH);
-    } catch (_error) {
+    } catch (error) {
+        logger('error', 'Database file not found, creating a new one');
+
         fs.writeFileSync(DATABASE_PATH, JSON.stringify(defaultData));
     }
 

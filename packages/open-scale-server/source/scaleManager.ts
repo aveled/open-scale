@@ -73,7 +73,9 @@ class ScaleManager {
                 logger('info', 'Weight indicator reconnected, clearing errors');
                 this.clearErrors();
             });
-        } catch (_e) {
+        } catch (error) {
+            logger('error', 'Could not initialize weight indicator driver', error);
+
             const interval = setInterval(() => {
                 try {
                     this.weightIndicatorDriver = new WeightIndicatorDrivers[WEIGHT_INDICATOR]();
@@ -130,6 +132,7 @@ class ScaleManager {
     private weightMonitorLoop() {
         setInterval(async () => {
             if (!this.weightIndicatorDriver) {
+                logger('error', 'Weight indicator driver not initialized');
                 return;
             }
 
@@ -142,7 +145,8 @@ class ScaleManager {
 
                 this.currentWeight = newWeight;
                 this.messageSockets();
-            } catch (_e) {
+            } catch (error) {
+                logger('error', 'Error getting weight', error);
                 this.errors.add(ERRORS.NO_WEIGHT);
             }
         }, WEIGHT_INTERVAL);
