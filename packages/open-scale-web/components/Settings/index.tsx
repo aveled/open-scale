@@ -28,6 +28,8 @@ import Button from '@/components/Button';
 import DropdownInputNumber from '@/components/DropdownInputNumber';
 import AnalyticsDashboard from '@/components/Analytics';
 
+import { logger } from '@/logic/utilities';
+
 
 
 export default function Settings({
@@ -68,6 +70,7 @@ export default function Settings({
                 method: 'POST',
             });
         } catch (error) {
+            logger('error', 'Error restarting server', error);
             return;
         }
     }
@@ -88,6 +91,7 @@ export default function Settings({
             document.body.removeChild(analyticsLink);
             URL.revokeObjectURL(analyticsUrl);
         } catch (error) {
+            logger('error', 'Error exporting data', error);
             return;
         }
     }
@@ -108,7 +112,8 @@ export default function Settings({
                 }
 
                 setAnalytics(data);
-            } catch (_e: any) {
+            } catch (error) {
+                logger('error', 'Error loading analytics', error);
                 return;
             }
         }
@@ -134,6 +139,7 @@ export default function Settings({
                     }),
                 });
             } catch (error) {
+                logger('error', 'Error updating settings', error);
                 return;
             }
         }

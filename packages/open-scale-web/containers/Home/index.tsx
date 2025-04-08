@@ -39,6 +39,8 @@ import Settings from '@/components/Settings';
 
 import useStore from '@/store/index';
 
+import { logger } from '@/logic/utilities';
+
 
 
 export default function Home() {
@@ -75,7 +77,8 @@ export default function Home() {
                 setActiveScale(false);
                 return;
             }
-        } catch (error: any) {
+        } catch (error) {
+            logger('error', 'Could not start scale', error);
             return;
         }
     }
@@ -95,7 +98,8 @@ export default function Home() {
                 setActiveScale(true);
                 return;
             }
-        } catch (error: any) {
+        } catch (error) {
+            logger('error', 'Could not stop scale', error);
             return;
         }
     }
@@ -119,7 +123,8 @@ export default function Home() {
                 setAutomaticMode(oldMode);
                 return;
             }
-        } catch (error: any) {
+        } catch (error) {
+            logger('error', 'Could not toggle automatic mode', error);
             return;
         }
     }
@@ -140,7 +145,8 @@ export default function Home() {
                 setCurrentWeight(oldWeight);
                 return;
             }
-        } catch (error: any) {
+        } catch (error) {
+            logger('error', 'Could not tare scale', error);
             return;
         }
     }
@@ -167,7 +173,8 @@ export default function Home() {
                 setTargetWeight(oldWeight);
                 return;
             }
-        } catch (error: any) {
+        } catch (error) {
+            logger('error', 'Could not set target weight', error);
             return;
         }
     }, [
@@ -182,7 +189,7 @@ export default function Home() {
                 method: 'POST',
             });
         } catch (error) {
-            console.log('Could not clear errors', error);
+            logger('error', 'Could not clear errors', error);
             return;
         }
     }
@@ -219,7 +226,8 @@ export default function Home() {
                 if (loading) {
                     setLoading(false);
                 }
-            } catch (_e: any) {
+            } catch (error) {
+                logger('error', 'Could not load status', error);
                 setErrors([
                     'NO_SERVER',
                 ]);
@@ -255,6 +263,7 @@ export default function Home() {
         const handleSocket = () => {
             try {
                 if (!SERVER_ENDPOINT) {
+                    logger('error', 'No server endpoint');
                     return;
                 }
 
@@ -276,10 +285,12 @@ export default function Home() {
                         setScaleSettings(settings);
                         setErrors(errors);
                     } catch (error) {
+                        logger('error', 'Could not parse socket message', error);
                         return;
                     }
                 });
             } catch (error) {
+                logger('error', 'Could not connect to socket', error);
                 return;
             }
         }
