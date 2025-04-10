@@ -83,7 +83,7 @@ const Toggle = ({
                         after:h-10 after:w-10
                         after:transition-all
                         dark:border-gray-600
-                        peer-checked:bg-gray-900
+                        peer-checked:bg-black
                     `}/>
                 </label>
             </div>
