@@ -24,4 +24,23 @@ export const logger = (
     }
 
     console.log(`[${level.toUpperCase()}]`, ...message);
+
+    try {
+        if (typeof window === 'undefined') {
+            return;
+        }
+
+        fetch('/api/logger', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                level,
+                message,
+            }),
+        });
+    } catch (error) {
+        console.error('Logger error', error);
+    }
 }
