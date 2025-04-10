@@ -55,9 +55,8 @@ export const slowFeedSpeedValues = [
 ] as const;
 
 export const fastSlowPercentageValues = [
-    0.87,
+    0.8,
     0.9,
-    0.93,
     0.95,
     0.97,
 ] as const;
@@ -73,12 +72,10 @@ export const errorPercentageValues = [
 ] as const;
 
 export const restingTimeValues = [
-    100,
     500,
     1000,
     2000,
     5000,
-    10000,
 ] as const;
 
 

@@ -170,37 +170,8 @@ export default function Settings({
 
     return (
         <div
-            className="select-none grid gap-6 min-w-[400px] lg:min-w-[500px] font-bold text-lg"
+            className="select-none grid gap-6 min-w-[400px] lg:min-w-[500px] p-6 font-bold text-lg"
         >
-            <Dropdown
-                name={i18n[language].language}
-                selectables={[
-                    ...Object.values(languages),
-                ]}
-                selected={(languages as any)[language]}
-                atSelect={(selected) => {
-                    for (const [key, value] of Object.entries(languages)) {
-                        if (value === selected) {
-                            setLanguage(key as Language);
-                            return;
-                        }
-                    }
-                }}
-            />
-
-            <Dropdown
-                name={i18n[language].theme}
-                selectables={[
-                    'light',
-                    'dark',
-                ]}
-                selected={theme}
-                atSelect={(selected) => {
-                    setTheme(selected);
-                }}
-            />
-
-
             {/* <DropdownInputNumber
                 name={i18n[language].fastFeedSpeed}
                 selectables={[
@@ -297,6 +268,34 @@ export default function Settings({
                 availableNumbers={{
                 }}
                 defaultSelectedChar={1}
+            />
+
+            <Dropdown
+                name={i18n[language].language}
+                selectables={[
+                    ...Object.values(languages),
+                ]}
+                selected={(languages as any)[language]}
+                atSelect={(selected) => {
+                    for (const [key, value] of Object.entries(languages)) {
+                        if (value === selected) {
+                            setLanguage(key as Language);
+                            return;
+                        }
+                    }
+                }}
+            />
+
+            <Dropdown
+                name={i18n[language].theme}
+                selectables={[
+                    'light',
+                    'dark',
+                ]}
+                selected={theme}
+                atSelect={(selected) => {
+                    setTheme(selected);
+                }}
             />
 
             {Object.keys(analytics).length >= 0 && (

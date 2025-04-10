@@ -25,6 +25,20 @@ samp {
 }
 
 
+::-webkit-scrollbar {
+    width: 25px;
+}
+::-webkit-scrollbar-track {
+    background: #2e2e2e;
+}
+::-webkit-scrollbar-thumb {
+    background: #5f5f5f;
+}
+::-webkit-scrollbar-thumb:hover {
+    background: #c3c2c2;
+}
+
+
 .editable {
     position: relative;
     cursor: pointer;
@@ -33,7 +47,8 @@ samp {
 .editable::before {
     content: '✎';
     position: absolute;
-    top: 0;
+    top: -3px;
     left: -30px;
     width: 30px;
+    font-size: 25px;
 }

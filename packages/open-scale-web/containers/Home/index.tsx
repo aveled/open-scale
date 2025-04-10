@@ -375,7 +375,7 @@ export default function Home() {
             />
 
             <div
-                className="grid grid-cols-2 gap-6"
+                className="grid grid-cols-1 md:grid-cols-2 gap-6"
             >
                 <div>
                     {(view === 'general' || view === 'current') && (
@@ -423,9 +423,11 @@ export default function Home() {
                     )}
                 </div>
 
-                <div>
+                <div
+                    className="grid place-content-center"
+                >
                     <div
-                        className="grid gap-8 mt-4"
+                        className="grid gap-8 place-content-center"
                     >
                         {view === 'general' && (
                             <>
@@ -445,15 +447,19 @@ export default function Home() {
                                     disabled={activeScale}
                                 />
 
-                                {activeScale && (
-                                    <>
-                                        <Button
-                                            text="STOP"
-                                            onClick={() => {
-                                                stop();
-                                            }}
-                                        />
-                                    </>
+                                {activeScale ? (
+                                    <Button
+                                        text="STOP"
+                                        onClick={() => {
+                                            stop();
+                                        }}
+                                    />
+                                ) : (
+                                    <div
+                                        style={{
+                                            height: '64px',
+                                        }}
+                                    />
                                 )}
                             </>
                         )}
