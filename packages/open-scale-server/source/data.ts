@@ -6,7 +6,7 @@ export const DEFAULT_FEED_SPEED = {
     FAST: 50,
     SLOW: 20,
 }; // Hz
-export const DEFAULT_FAST_SLOW_PERCENTAGE = 0.95;
+export const DEFAULT_FAST_SLOW_PERCENTAGE = 0.8; // 80%
 export const DEFAULT_TARGET_WEIGHT = 25_000; // grams
 export const DEFAULT_ERROR_PERCENTAGE = 0.01; // 1%
 export const DEFAULT_RESTING_TIME = 2_000; // ms
