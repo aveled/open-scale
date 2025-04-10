@@ -66,7 +66,7 @@ const Toggle = ({
                         }}
                     />
                     <div className={`
-                        w-22 h-12 bg-gray-500
+                        w-22 h-12 bg-[#5a5a5a]
                         peer-focus:outline-none
                         ring-2
                         ring-white
@@ -74,7 +74,7 @@ const Toggle = ({
                         peer-focus:ring-white
                         dark:peer-focus:ring-white
                         peer
-                        dark:bg-gray-500
+                        dark:bg-[#5a5a5a]
                         peer-checked:after:translate-x-full
                         rtl:peer-checked:after:-translate-x-full
                         peer-checked:after:border-white
