@@ -177,6 +177,7 @@ class ScaleManager {
 
     private feedStop() {
         if (!this.weightIndicatorDriver) {
+            logger('error', 'Weight indicator driver not initialized (scaleManager.feedStop)');
             return;
         }
 
@@ -185,6 +186,7 @@ class ScaleManager {
 
     private feedCoarse() {
         if (!this.weightIndicatorDriver) {
+            logger('error', 'Weight indicator driver not initialized (scaleManager.feedCoarse)');
             return;
         }
 
@@ -193,6 +195,7 @@ class ScaleManager {
 
     private feedFine() {
         if (!this.weightIndicatorDriver) {
+            logger('error', 'Weight indicator driver not initialized (scaleManager.feedFine)');
             return;
         }
 
@@ -272,6 +275,7 @@ class ScaleManager {
         const upperBound = this.targetWeight * (1 + this.errorPercentage);
 
         if (this.currentWeight > upperBound) {
+            logger('warn', 'Weight overshoot', this.currentWeight, lowerBound, upperBound);
             this.errors.add(ERRORS.OVERSHOOT);
             this.activeScale = false;
             return true;
@@ -352,6 +356,9 @@ class ScaleManager {
 
     public stop() {
         this.activeScale = false;
+        this.automaticMode = false;
+
+        this.feedStop();
     }
 
     public async tare() {
