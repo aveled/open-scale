@@ -1,4 +1,4 @@
-FROM node:22.12.0-alpine
+FROM node:23.11.0-alpine
 
 RUN apk add --no-cache python3 py3-pip make g++
 
@@ -11,9 +11,6 @@ RUN npm run build
 
 EXPOSE 8485
 
-# ENV ENVIRONMENT=production
-# ENV DEBUG=false
-# ENV LOG_LEVEL=info
 ENV PORT=8485
 
 CMD ["npm", "start"]
