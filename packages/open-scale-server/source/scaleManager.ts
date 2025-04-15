@@ -18,6 +18,7 @@ import {
     ScaleSettings,
     ScaleStatus,
     WeightIndicatorDriver,
+    WeightIndicatorState,
 } from './data';
 import {
     updateAnalytics,
@@ -51,6 +52,7 @@ class ScaleManager {
     private feedSlowSet: boolean = false;
     private startFeedTime: number = 0;
     private slowFeedTime: number = 0;
+    private sensorState: boolean | null = null;
     private errors: Set<string> = new Set();
     private sockets = new Map<string, WebSocket>();
 
@@ -73,24 +75,40 @@ class ScaleManager {
                 logger('info', 'Weight indicator reconnected, clearing errors');
                 this.clearErrors();
             });
-            this.weightIndicatorDriver.pollInputChange(
-                this.weightIndicatorDriver.getInputState.bind(this.weightIndicatorDriver),
-                (newState) => {
-                    logger('info', `Input 1 changed to: ${newState}`);
-                    if (!this.automaticMode) {
+            this.weightIndicatorDriver.startContinuousStateReading(
+                // Callback function receives the full WeightIndicatorState
+                (state: WeightIndicatorState) => {
+                    this.currentWeight = state.weight;
+
+                    const sensorState = state.inputs.input1;
+
+                    if (this.sensorState === null) {
+                        this.sensorState = sensorState;
+                        logger('info', `Sensor initial state read: ${sensorState}`);
                         return;
                     }
 
-                    if (newState) {
-                        this.activeScale = true;
-                        this.feedFastSet = false;
-                        this.feedSlowSet = false;
+                    if (sensorState !== this.sensorState) {
+                        logger('info', `Sensor state changed from ${this.sensorState} to ${sensorState}`);
+                        this.sensorState = sensorState;
 
-                        logger('info', 'Sensor triggered, starting feed');
-                        this.messageSockets();
+                        if (sensorState) {
+                            this.activeScale = true;
+                            this.feedFastSet = false;
+                            this.feedSlowSet = false;
+
+                            logger('info', 'Sensor triggered, starting feed');
+                            this.messageSockets();
+                        } else {
+                            logger('info', 'Sensor released');
+                        }
                     }
+
+                    // If currentInput1State === previousInput1State, do nothing (no change detected)
+
+                    this.messageSockets();
                 },
-                500,
+                700,
             );
         }
 
@@ -108,27 +126,6 @@ class ScaleManager {
                 }
             }, 1_000);
         }
-
-        // try {
-        //     this.sensorDriver = new Sensor(
-        //         (value) => {
-        //             if (!this.automaticMode) {
-        //                 return;
-        //             }
-
-        //             if (value) {
-        //                 this.activeScale = true;
-        //                 this.feedFastSet = false;
-        //                 this.feedSlowSet = false;
-
-        //                 logger('info', 'Sensor triggered, starting feed');
-        //                 this.messageSockets();
-        //             }
-        //         }
-        //     );
-        // } catch (error) {
-        //     logger('error', 'Could not initialize sensor', error);
-        // }
     }
 
     private async loadDatabase() {
@@ -457,8 +454,6 @@ class ScaleManager {
     }
 }
 
-
 const scaleManager = new ScaleManager();
-
 
 export default scaleManager;

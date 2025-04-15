@@ -114,6 +114,24 @@ export interface Hour {
 
 
 
+export interface WeightIndicatorState {
+    weight: number;
+    rawInputs: number;
+    rawOutputs: number;
+    inputs: {
+        input1: boolean; // State of Bit 0 of rawInputs
+        input2: boolean; // State of Bit 1 of rawInputs
+        input3: boolean; // State of Bit 2 of rawInputs
+    };
+    outputs: {
+        output1: boolean; // State of Bit 0 of rawOutputs
+        output2: boolean; // State of Bit 1 of rawOutputs
+        output3: boolean; // State of Bit 2 of rawOutputs
+        output4: boolean; // State of Bit 3 of rawOutputs
+        output5: boolean; // State of Bit 4 of rawOutputs
+    };
+}
+
 export interface WeightIndicatorDriver {
     getWeight(): Promise<number>;
     tare(): Promise<boolean>;
@@ -121,12 +139,10 @@ export interface WeightIndicatorDriver {
     setOutputCoarse(): Promise<boolean>;
     setOutputFine(): Promise<boolean>;
     resetOutputs(): Promise<boolean>;
-    getInputState(): Promise<boolean>;
-    pollInputChange(
-        inputFunction: () => Promise<boolean>,
-        callback: (newState: boolean) => void,
-        intervalMs?: number,
-    ): number;
+    startContinuousStateReading(
+        callback: (state: WeightIndicatorState) => void,
+        intervalMs: number,
+    ): void;
     __testSetWeight__(_weight: number): Promise<void>;
     onReconnect(callback: () => void): void;
 }

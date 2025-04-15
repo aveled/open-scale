@@ -1,5 +1,6 @@
 import {
     WeightIndicatorDriver,
+    WeightIndicatorState,
 } from '../../../data';
 import WeightIndicatorBase from '../base';
 
@@ -93,16 +94,10 @@ class Tester extends WeightIndicatorBase implements WeightIndicatorDriver {
         return this.setOutputs(false, false);
     }
 
-    public async getInputState(): Promise<boolean> {
-        return false;
-    }
-
-    public pollInputChange(
-        inputFunction: () => Promise<boolean>,
-        callback: (newState: boolean) => void,
-        intervalMs: number = 200
-    ): number {
-        return 0;
+    public startContinuousStateReading(
+        callback: (state: WeightIndicatorState) => void,
+        intervalMs: number,
+    ) {
     }
 
     public stopPolling(pollingId: number): boolean {
