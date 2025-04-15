@@ -1,6 +1,6 @@
-export const PROXY_ENDPOINT = process.env.NEXT_PROXY_ENDPOINT || '/api';
+export const PROXY_ENDPOINT = process.env.NEXT_PUBLIC_PROXY_ENDPOINT || '/api';
 // The server endpoint is also used for WebSockets
-export const SERVER_ENDPOINT = process.env.NEXT_SERVER_ENDPOINT || 'http://localhost:8485';
+export const SERVER_ENDPOINT = process.env.NEXT_PUBLIC_SERVER_ENDPOINT || 'http://localhost:8485';
 export const KIOSK_MODE = process.env.NEXT_PUBLIC_KIOSK_MODE === 'true';
 
 export const PATHS = {
