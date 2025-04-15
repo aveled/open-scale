@@ -1,6 +1,7 @@
 'use client';
 
 import {
+    useRef,
     useState,
     useCallback,
     useEffect,
@@ -44,6 +45,8 @@ import { logger } from '@/logic/utilities';
 
 
 export default function Home() {
+    const errorTimer = useRef<NodeJS.Timeout | number | null>(null);
+
     const [loading, setLoading] = useState(true);
 
     const {
@@ -306,6 +309,38 @@ export default function Home() {
 
         handleSocket();
     }, []);
+
+    /** Errors */
+    useEffect(() => {
+        const RESET_TIMEOUT = 10_000; // ms
+
+        const performHardReset = () => {
+            clearErrors();
+
+            setTimeout(() => {
+                location.reload();
+            }, RESET_TIMEOUT / 10);
+        }
+
+        if (errors.length > 1) {
+            if (errorTimer.current === null) {
+                errorTimer.current = setTimeout(() => {
+                    performHardReset();
+                }, RESET_TIMEOUT);
+            }
+        } else {
+            if (errorTimer.current !== null) {
+                clearTimeout(errorTimer.current);
+                errorTimer.current = null;
+            }
+        }
+
+        return () => {
+            if (errorTimer.current !== null) {
+                clearTimeout(errorTimer.current);
+            }
+        };
+    }, [errors]);
 
 
     if (errors.length > 0) {
